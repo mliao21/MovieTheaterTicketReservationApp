@@ -13,6 +13,7 @@ public class Theater {
 	public Theater(String nameId) {
 		super();
 		this.nameId = nameId;
+		seatList = new ArrayList<Seat>();
 	}
 
 
@@ -37,6 +38,30 @@ public class Theater {
 		
 		
 		
+	}
+
+
+
+	public String getNameId() {
+		return nameId;
+	}
+
+
+
+	public void setNameId(String nameId) {
+		this.nameId = nameId;
+	}
+
+
+
+	public ArrayList<Seat> getSeatList() {
+		return seatList;
+	}
+
+
+
+	public void setSeatList(ArrayList<Seat> seatList) {
+		this.seatList = seatList;
 	}
 	
 	
