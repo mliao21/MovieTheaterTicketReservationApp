@@ -1,8 +1,9 @@
-package model;
+package ensf614project.src.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Theater {
 	private String nameId;

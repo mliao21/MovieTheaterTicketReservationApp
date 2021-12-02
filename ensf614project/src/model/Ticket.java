@@ -1,4 +1,6 @@
-package model;
+package ensf614project.src.model;
+
+import ensf614project.src.model.Theater;
 
 import java.time.LocalDate;
 

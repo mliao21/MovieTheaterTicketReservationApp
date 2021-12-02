@@ -1,4 +1,5 @@
-package model;
+package ensf614project.src.model;
+import ensf614project.src.model.Theater;
 
 public class Movie {
 	private String name;

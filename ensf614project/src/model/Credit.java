@@ -1,4 +1,4 @@
-package model;
+package ensf614project.src.model;
 
 public class Credit {
 	private String code;
