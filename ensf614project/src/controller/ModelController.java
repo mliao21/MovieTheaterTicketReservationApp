@@ -1,4 +1,4 @@
-package ensf614project.src.controller;
+package controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 import config.Configuration;
-import ensf614project.src.model.*;
-
+import model.Movie;
+import model.Seat;
+import model.ShowTime;
+import model.Theater;
+import model.Ticket;
+import model.User;
 
 public class ModelController {
 	private User userInstance;
@@ -19,6 +23,8 @@ public class ModelController {
 	private ArrayList<Movie> moviePreSaleList;
 	private ArrayList<Theater> theaterList;
 	private ArrayList<ShowTime> showTimeList;
+	private ArrayList<Ticket> ticketList;
+	
 	public User getUserInstance() {
 		return userInstance;
 	}
@@ -42,8 +48,10 @@ public class ModelController {
 	public ArrayList<Ticket> getTicketList() {
 		return ticketList;
 	}
+	
+	
 
-	private ArrayList<Ticket> ticketList;
+	
 	public ModelController(User userInstance) {
 		super();
 		this.userInstance = userInstance;
@@ -221,6 +229,8 @@ public class ModelController {
         
 	}
 	
+	
+	
 	private HashMap<String, Boolean> getSeats(String theaterId){
 		String id = "";
 		
@@ -271,6 +281,40 @@ public class ModelController {
 		}
 	}
 	
+	public void createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
+		String statement = "";
+		PreparedStatement prepStatement;
+		try {
+			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+			Statement stmt = conn.createStatement();
+
+			statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID =" + showTimeId +" AND SeatInstanceID = " +seatInstanceID + ";";			
+			prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+           
+            statement =  "INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES ("+seatInstanceID+", "+price+", '"+ticketStatus+"', '"+email+"');";			
+			prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+            
+            statement =  "INSERT INTO PAYMENT (TicketID, CreditCardNo)\r\n"
+            		+ "VALUES (\r\n"
+            		+ "        (SELECT TicketID\r\n"
+            		+ "            FROM TICKET\r\n"
+            		+ "            WHERE SeatInstanceID = "+seatInstanceID+"\r\n"
+            		+ "            ), '"+creditCard+"'\r\n"
+            		+ "       );";			
+			prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+            
+            
+            
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 	

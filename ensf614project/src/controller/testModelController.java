@@ -1,10 +1,10 @@
-package ensf614project.src.controller;
+package controller;
 
 import java.util.ArrayList;
 
-import ensf614project.src.model.OrdinaryUser;
-import ensf614project.src.model.Seat;
-import ensf614project.src.model.User;
+import model.OrdinaryUser;
+import model.Seat;
+import model.User;
 
 public class testModelController {
 
@@ -23,6 +23,8 @@ public class testModelController {
 		for(int i = 0; i< test.getAllSubscribers().size();i++) {
 			System.out.println(test.getAllSubscribers().get(i));
 		}
+		
+		test.createTicket(1, 2, 10, "SOLD", "mike@mike.com", "111111111111");
 		
 		
 
