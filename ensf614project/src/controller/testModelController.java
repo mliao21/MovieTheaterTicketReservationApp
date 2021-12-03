@@ -1,10 +1,10 @@
-package controller;
+package ensf614project.src.controller;
 
 import java.util.ArrayList;
 
-import model.OrdinaryUser;
-import model.Seat;
-import model.User;
+import ensf614project.src.model.OrdinaryUser;
+import ensf614project.src.model.Seat;
+import ensf614project.src.model.User;
 
 public class testModelController {
 

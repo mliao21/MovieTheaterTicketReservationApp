@@ -1,4 +1,4 @@
-package controller;
+package ensf614project.src.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,12 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 import config.Configuration;
-import model.Movie;
-import model.Seat;
-import model.ShowTime;
-import model.Theater;
-import model.Ticket;
-import model.User;
+import ensf614project.src.model.*;
+
 
 public class ModelController {
 	private User userInstance;
