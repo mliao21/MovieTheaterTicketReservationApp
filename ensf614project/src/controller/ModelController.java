@@ -70,6 +70,29 @@ public class ModelController {
 		
 	}
 	
+	public ArrayList<String> getAllSubscribers(){
+		ArrayList<String> temp = new ArrayList<String>();
+		try {
+			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+			PreparedStatement prepStatement = conn
+                    .prepareStatement(
+                            "SELECT * FROM registered_users");
+            ResultSet resObj = prepStatement.executeQuery();
+            while(resObj.next()) {
+            	
+            	temp.add(resObj.getString("Email"));
+            }
+			
+            
+           
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
+		return temp;
+		
+		
+	}
+	
 	private void loadTheaters() {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
