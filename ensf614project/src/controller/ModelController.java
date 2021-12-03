@@ -148,6 +148,11 @@ public class ModelController {
 				return this.movieList.get(i);
 			}
 		}
+		for(int i = 0; i< this.moviePreSaleList.size();i++) {
+			if(this.moviePreSaleList.get(i).getId()==id) {
+				return this.moviePreSaleList.get(i);
+			}
+		}
 		return null;
 	}
 	
