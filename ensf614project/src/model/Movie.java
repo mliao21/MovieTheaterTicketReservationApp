@@ -1,15 +1,20 @@
-package ensf614project.src.model;
-import ensf614project.src.model.Theater;
+package model;
+
+import java.util.Date;
 
 public class Movie {
+	private int id, runTime;
 	private String name;
-	private String releaseDate;
-	private Theater t;
-	public Movie(String name, String releaseDate, Theater t) {
+	private String description;
+	private Date releaseDate;
+	
+	public Movie(int id, String name, Date releaseDate, String description, int runTime) {
 		super();
+		this.id = id;
 		this.name = name;
+		this.description = description;
 		this.releaseDate = releaseDate;
-		this.t = t;
+		
 	}
 	public String getName() {
 		return name;
@@ -17,18 +22,33 @@ public class Movie {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getReleaseDate() {
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
-	public void setReleaseDate(String releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
-	public Theater getT() {
-		return t;
+	public int getId() {
+		return id;
 	}
-	public void setT(Theater t) {
-		this.t = t;
+	public void setId(int id) {
+		this.id = id;
 	}
+	public int getRunTime() {
+		return runTime;
+	}
+	public void setRunTime(int runTime) {
+		this.runTime = runTime;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
+	
 	
 	
 

@@ -1,31 +1,43 @@
-package ensf614project.src.model;
-
-import ensf614project.src.model.Theater;
+package model;
 
 public class ShowTime {
-	private int hour;
-	private int minute;
+	private int id;
+	private String startTime, endTime;
 	private Movie movie;
 	private Theater theater;
-	public ShowTime(int hour, int minute, Movie movie, Theater theater) {
+	public ShowTime(int id, String startTime, String endTime, Movie movie, Theater theater) {
 		super();
-		this.hour = hour;
-		this.minute = minute;
+		this.id = id;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.movie = movie;
 		this.theater = theater;
 	}
-	public int getHour() {
-		return hour;
+	
+	public int getId() {
+		return id;
 	}
-	public void setHour(int hour) {
-		this.hour = hour;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	public int getMinute() {
-		return minute;
+
+	public String getStartTime() {
+		return startTime;
 	}
-	public void setMinute(int minute) {
-		this.minute = minute;
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	public Movie getMovie() {
 		return movie;
 	}

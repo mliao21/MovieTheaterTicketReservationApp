@@ -1,4 +1,5 @@
-package ensf614project.src.model;
+package model;
+
 public class OrdinaryUser extends User{
 	
 	private OrdinaryUser() {

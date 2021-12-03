@@ -1,11 +1,11 @@
-package ensf614project.src.model;
+package model;
 
 public class Seat {
 	private String id;
 	private int row;
-	private int col;
+	private String col;
 	private boolean status;
-	public Seat(String id, int row, int col) {
+	public Seat(String id, int row, String col) {
 		super();
 		this.id = id;
 		this.row = row;
@@ -25,10 +25,10 @@ public class Seat {
 	public void setRow(int row) {
 		this.row = row;
 	}
-	public int getCol() {
+	public String getCol() {
 		return col;
 	}
-	public void setCol(int col) {
+	public void setCol(String col) {
 		this.col = col;
 	}
 	public boolean isStatus() {

@@ -1,4 +1,5 @@
-package ensf614project.src.model;
+package model;
+
 import java.util.ArrayList;
 
 public class RegisteredUser extends User{
