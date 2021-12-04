@@ -11,8 +11,10 @@ import java.util.HashMap;
 import java.util.Date;
 import config.Configuration;
 import model.Movie;
+import model.MovieNotification;
 import model.Seat;
 import model.ShowTime;
+import model.Subscribers;
 import model.Theater;
 import model.Ticket;
 import model.User;
@@ -314,6 +316,73 @@ public class ModelController {
 			e.printStackTrace();
 		}
 
+	}
+	
+	
+	public void addMovies(String movieTitle, String openingDate, String movieDescription,int runTime, String theaterName, String startTime, String endTime, String showDate ) {
+		Connection conn;
+		String statement = "";
+		PreparedStatement prepStatement;
+		try {
+			conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+			
+			
+			statement = "INSERT INTO MOVIE(Title, OpeningDate, Description, Runtime)\r\n"
+                    + "VALUES('"+movieTitle+"', '"+openingDate+"', '"+movieDescription+"', "+runTime+");";
+			prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+            
+            statement ="INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
+            		+ "VALUES (\r\n"
+            		+ "        (SELECT MovieID\r\n"
+            		+ "            FROM MOVIE\r\n"
+            		+ "            WHERE Title = '"+movieTitle+"'\r\n"
+            		+ "            ),\r\n"
+            		+ "        (SELECT TheatreID\r\n"
+            		+ "            FROM THEATRE\r\n"
+            		+ "            WHERE TheatreName = '" + theaterName+"'\r\n"
+            		+ "            ),\r\n"
+            		+ "        '"+startTime+"',\r\n"
+            		+ "        '"+endTime+"',\r\n"
+            		+ "        '"+showDate+"');";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+            
+            
+            statement = "INSERT INTO SEAT_INSTANCE(SeatID, ShowtimeID)\r\n"
+            		+ "SELECT SeatID, ShowtimeID FROM (\r\n"
+            		+ "SELECT ShowtimeID FROM SHOWTIME\r\n"
+            		+ "JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID\r\n"
+            		+ "WHERE T.TheatreID = (SELECT TheatreID\r\n"
+            		+ "            FROM THEATRE\r\n"
+            		+ "            WHERE TheatreName = '"+theaterName+"')) ST\r\n"
+            		+ "CROSS JOIN (\r\n"
+            		+ "    SELECT SeatID FROM SEAT_CHART\r\n"
+            		+ "    WHERE TheatreID = (\r\n"
+            		+ "        SELECT TheatreID\r\n"
+            		+ "            FROM THEATRE\r\n"
+            		+ "            WHERE TheatreName = '\"+theaterName+\"')\r\n"
+            		+ "    ) CJ;";
+            
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+            
+            MovieNotification subject = new MovieNotification();
+            Subscribers ob1 = new Subscribers(subject);
+            subject.addObserver(ob1);
+            subject.notifyAllObservers(movieTitle + " is pre-saling tickets now! ShowDate is: " + showDate);
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
 	}
 	
 	

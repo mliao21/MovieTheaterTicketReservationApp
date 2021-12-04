@@ -1,4 +1,4 @@
-package ensf614project.src.model;
+package model;
 
 public class User {
 	protected static User onlyInstance;
