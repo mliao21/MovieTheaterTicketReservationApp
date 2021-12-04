@@ -1,4 +1,5 @@
-package model;
+package ensf614project.src.model;
+//package model;
 
 import java.util.Date;
 

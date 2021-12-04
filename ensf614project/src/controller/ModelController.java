@@ -1,4 +1,5 @@
-package controller;
+//package controller;
+package ensf614project.src.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,15 +10,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
-import config.Configuration;
-import model.Movie;
-import model.MovieNotification;
-import model.Seat;
-import model.ShowTime;
-import model.Subscribers;
-import model.Theater;
-import model.Ticket;
-import model.User;
+
+
+import ensf614project.src.config.Configuration;
+import ensf614project.src.model.*;
+
+//import config.Configuration;
+//import model.Movie;
+//import model.MovieNotification;
+//import model.Seat;
+//import model.ShowTime;
+//import model.Subscribers;
+//import model.Theater;
+//import model.Ticket;
+//import model.User;
 
 public class ModelController {
 	private User userInstance;
@@ -82,15 +88,14 @@ public class ModelController {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
                     .prepareStatement(
-                            "SELECT * FROM registered_users");
+                            "SELECT * FROM REGISTERED_USERS");
             ResultSet resObj = prepStatement.executeQuery();
             while(resObj.next()) {
             	
             	temp.add(resObj.getString("Email"));
             }
-			
-            
-           
+
+
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
@@ -127,7 +132,7 @@ public class ModelController {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
                     .prepareStatement(
-                            "SELECT * FROM MOVIE WHERE OpeningDate >= ?");
+                            "SELECT * FROM MOVIE WHERE OpeningDate >= ? AND MovieStatus = 'AVAILABLE'");
             // TODO : Change to current date not in milliseconds
             prepStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
             ResultSet resObj = prepStatement.executeQuery();
@@ -151,7 +156,7 @@ public class ModelController {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
                     .prepareStatement(
-                            "SELECT * FROM MOVIE WHERE OpeningDate < ?");
+                            "SELECT * FROM MOVIE WHERE OpeningDate < ? AND MovieStatus = 'AVAILABLE'");
             prepStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
             ResultSet resObj = prepStatement.executeQuery();
             while(resObj.next()) {
@@ -230,9 +235,7 @@ public class ModelController {
         
         
 	}
-	
-	
-	
+
 	private HashMap<String, Boolean> getSeats(String theaterId){
 		String id = "";
 		
@@ -319,7 +322,7 @@ public class ModelController {
 	}
 	
 	
-	public void addMovies(String movieTitle, String openingDate, String movieDescription,int runTime, String theaterName, String startTime, String endTime, String showDate ) {
+	public void addMovies(String movieTitle, String openingDate, String movieDescription, int runTime, String theaterName, String startTime, String endTime, String showDate ) {
 		Connection conn;
 		String statement = "";
 		PreparedStatement prepStatement;
@@ -331,18 +334,20 @@ public class ModelController {
                     + "VALUES('"+movieTitle+"', '"+openingDate+"', '"+movieDescription+"', "+runTime+");";
 			prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
-            
+
+			prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID();");
+			ResultSet resObj = prepStatement.executeQuery();
+			resObj.next();
+			int movieId = resObj.getInt(1);
+
             statement ="INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
             		+ "VALUES (\r\n"
-            		+ "        (SELECT MovieID\r\n"
-            		+ "            FROM MOVIE\r\n"
-            		+ "            WHERE Title = '"+movieTitle+"'\r\n"
-            		+ "            ),\r\n"
-            		+ "        (SELECT TheatreID\r\n"
-            		+ "            FROM THEATRE\r\n"
-            		+ "            WHERE TheatreName = '" + theaterName+"'\r\n"
-            		+ "            ),\r\n"
-            		+ "        '"+startTime+"',\r\n"
+					+ "        '"+movieId+"',\r\n"
+					+ "        (SELECT TheatreID\r\n"
+					+ "            FROM THEATRE\r\n"
+					+ "            WHERE TheatreName = '" + theaterName+"'\r\n"
+					+ "            ),\r\n"
+					+ "        '"+startTime+"',\r\n"
             		+ "        '"+endTime+"',\r\n"
             		+ "        '"+showDate+"');";
             prepStatement = conn.prepareStatement(statement);
@@ -361,7 +366,7 @@ public class ModelController {
             		+ "    WHERE TheatreID = (\r\n"
             		+ "        SELECT TheatreID\r\n"
             		+ "            FROM THEATRE\r\n"
-            		+ "            WHERE TheatreName = '\"+theaterName+\"')\r\n"
+            		+ "            WHERE TheatreName = '"+theaterName+"')\r\n"
             		+ "    ) CJ;";
             
             prepStatement = conn.prepareStatement(statement);
@@ -370,23 +375,13 @@ public class ModelController {
             MovieNotification subject = new MovieNotification();
             Subscribers ob1 = new Subscribers(subject);
             subject.addObserver(ob1);
-            subject.notifyAllObservers(movieTitle + " is pre-saling tickets now! ShowDate is: " + showDate);
+            subject.notifyAllObservers(movieTitle + " is pre-selling tickets now! ShowDate is: " + showDate);
 			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-	}
-	
-	
-	
-	
 
+	}
 }

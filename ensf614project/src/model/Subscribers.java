@@ -1,4 +1,5 @@
-package model;
+//package model;
+package ensf614project.src.model;
 
 import java.util.ArrayList;
 
@@ -15,9 +16,6 @@ public class Subscribers implements Observer {
 		this.subject = subject;
 	}
 
-
-
-	
 
 	@Override
 	public void update(String movieInfo) {

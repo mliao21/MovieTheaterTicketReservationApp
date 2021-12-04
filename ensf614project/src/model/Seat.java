@@ -1,4 +1,5 @@
-package model;
+//package model;
+package ensf614project.src.model;
 
 public class Seat {
 	private String id;
