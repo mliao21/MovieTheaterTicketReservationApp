@@ -248,3 +248,17 @@ public class NewFunctions {
         }
 
     }
+
+    public static void main(String[] args) throws SQLException {
+        NewFunctions newFunctions = new NewFunctions();
+//        newFunctions.cancelMovie(3);
+//        newFunctions.refundTicket(2);
+//        newFunctions.issueCoupon(2, false);
+//        newFunctions.issueCoupon(1, false);
+
+        Movie movie = new Movie("The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
+        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+
+
+    }
+}
