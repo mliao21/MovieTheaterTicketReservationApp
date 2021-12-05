@@ -295,6 +295,68 @@ public class NewFunctions {
         }
     }
 
+    public void createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
+        // update seat instance
+        String statement = "";
+        PreparedStatement prepStatement;
+
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            // check coupon code database:
+            statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ?";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, couponCode);
+            ResultSet resObj = prepStatement.executeQuery();
+            int couponValue = 0;
+
+            if(resObj.next()) {
+                couponValue = resObj.getInt("CouponValue");
+
+                // update coupon value to couponValue - price or 0 if couponValue - price < 0
+                statement = "UPDATE COUPONS SET CouponValue = ? WHERE CouponCode = ?";
+                prepStatement = conn.prepareStatement(statement);
+                prepStatement.setInt(1, Math.max(0, couponValue - price));
+                prepStatement.setString(2, couponCode);
+                prepStatement.executeUpdate();
+            }
+
+            // update seat instance
+            statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID = ? AND SeatInstanceID = ?";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, showTimeId);
+            prepStatement.setInt(2, seatInstanceId);
+            prepStatement.executeUpdate();
+
+            // insert ticket
+            statement = "INSERT INTO TICKET (SeatInstanceID, Price, TicketStatus, Email) VALUES (?, ?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, seatInstanceId);
+            prepStatement.setInt(2, price);
+            prepStatement.setString(3, ticketStatus);
+            prepStatement.setString(4, email);
+            prepStatement.executeUpdate();
+
+            // get the last movie id inserted to use for all showtimes
+            prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'TicketID';");
+            resObj = prepStatement.executeQuery();
+            int ticketId = 0;
+            while (resObj.next()) {
+                ticketId = resObj.getInt("TicketID");
+            }
+
+            // insert payment
+            statement = "INSERT INTO PAYMENT (TicketID, CreditCardNo, Amount) VALUES (?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, ticketId);
+            prepStatement.setString(2, creditCard);
+            prepStatement.setInt(3, Math.max(0, price - couponValue));
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) throws SQLException {
         NewFunctions newFunctions = new NewFunctions();
 //        newFunctions.cancelMovie(3);
@@ -333,12 +395,16 @@ public class NewFunctions {
             System.out.println("Registration Failed");
         }
 
-        if (newFunctions.registerUser("al", "Al", "L", "123456789", "AL@AL.com", "testpassword")) {
+        if (newFunctions.registerUser("alex", "Al", "L", "123456789", "AL@AL.com", "testpassword")) {
             System.out.println("Registration Successful");
         }
         else {
             System.out.println("Registration Failed");
         }
+
+        // create ticket
+        newFunctions.createTicket(1, 7,2000, "SOLD", "mike@mike.com", "111111111111", "AAAAAAAAAAAA");
+
 
     }
 }

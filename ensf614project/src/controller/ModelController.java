@@ -345,6 +345,7 @@ public class ModelController {
 			
 		}
 	}
+
 	
 	public void createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
 		String statement = "";
@@ -353,36 +354,33 @@ public class ModelController {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			Statement stmt = conn.createStatement();
 
-			statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID =" + showTimeId +" AND SeatInstanceID = " +seatInstanceID + ";";			
+			statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID =" + showTimeId +" AND SeatInstanceID = " +seatInstanceID + ";";
 			prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
-           
-            statement =  "INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES ("+seatInstanceID+", "+price+", '"+ticketStatus+"', '"+email+"');";			
+
+            statement =  "INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES ("+seatInstanceID+", "+price+", '"+ticketStatus+"', '"+email+"');";
 			prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
-            
+
             statement =  "INSERT INTO PAYMENT (TicketID, CreditCardNo)\r\n"
             		+ "VALUES (\r\n"
             		+ "        (SELECT TicketID\r\n"
             		+ "            FROM TICKET\r\n"
             		+ "            WHERE SeatInstanceID = "+seatInstanceID+"\r\n"
             		+ "            ), '"+creditCard+"'\r\n"
-            		+ "       );";			
+            		+ "       );";
 			prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
-            
-            
-            
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		this.loadModelsQuery();
 
 	}
-	
+
 	
 	public void addMovies(String movieTitle, String openingDate, String movieDescription, int runTime, String theaterName, String startTime, String endTime, String showDate ) {
 		Connection conn;
