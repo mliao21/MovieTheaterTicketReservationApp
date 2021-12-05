@@ -16,12 +16,12 @@ public class PaymentView {
 
 	private JTextField cardNumber, cardExpiry, cardCvv, cardHolderFName, cardHolderLName;
 	private JLabel cardNumberLabel, cardExpiryLabel, cardHolderFNameLabel, cardHolderLNameLabel, cardCvvLabel;
-	private JButton submit;
+	private JButton submitButton;
 
 	
 	public PaymentView() {
 		
-		JFrame frame = new JFrame("PaymentView");
+		JFrame frame = new JFrame("Payment");
 		frame.setBounds(100, 100, 491, 435);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -87,10 +87,10 @@ public class PaymentView {
 		cardHolderLName.setBounds(187, 260, 200, 20);
 		panel.add(cardHolderLName);
 		
-		submit = new JButton("Submit");
-		submit.setFont(new Font("Tahoma", Font.BOLD, 12));
-		submit.setBounds(181, 312, 92, 23);
-		panel.add(submit);
+		submitButton = new JButton("Submit");
+		submitButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		submitButton.setBounds(181, 312, 92, 23);
+		panel.add(submitButton);
 		
 		frame.setVisible(true);
 	}
@@ -147,7 +147,7 @@ public class PaymentView {
 
 
 	public JButton getSubmit() {
-		return submit;
+		return submitButton;
 	}
 
 
@@ -202,10 +202,10 @@ public class PaymentView {
 
 
 	public void setSubmit(JButton submit) {
-		this.submit = submit;
+		this.submitButton = submit;
 	}
 	
 	public void addButtonListener(ActionListener actionListener) {
-		submit.addActionListener(actionListener);
+		submitButton.addActionListener(actionListener);
 	}
 }
