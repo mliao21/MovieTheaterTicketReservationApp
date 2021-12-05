@@ -35,8 +35,8 @@ public class NewFunctions {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             // get ticket id that you are refunding
             PreparedStatement prepStatement = conn.prepareStatement(
-                            "SELECT TicketID FROM TICKET WHERE TicketStatus = 'SOLD'\n" +
-                                    "AND SeatInstanceID = ?;\n");
+                    "SELECT TicketID FROM TICKET WHERE TicketStatus = 'SOLD'\n" +
+                            "AND SeatInstanceID = ?;\n");
 
             prepStatement.setInt(1, seatInstanceId);
             ResultSet resultSet = prepStatement.executeQuery();
@@ -47,14 +47,14 @@ public class NewFunctions {
 
             // update ticket status to refunded
             prepStatement = conn.prepareStatement(
-                            "UPDATE TICKET SET TicketStatus = 'REFUNDED' WHERE TicketID = ?;");
+                    "UPDATE TICKET SET TicketStatus = 'REFUNDED' WHERE TicketID = ?;");
             prepStatement.setInt(1, ticketId);
             prepStatement.executeUpdate();
 
 
             // update seat instance status to available, presale to false by default
             prepStatement = conn.prepareStatement(
-                            "UPDATE SEAT_INSTANCE SET Occupied = FALSE AND Presale = FALSE WHERE SeatInstanceID = ?;");
+                    "UPDATE SEAT_INSTANCE SET Occupied = FALSE AND Presale = FALSE WHERE SeatInstanceID = ?;");
             prepStatement.setInt(1, seatInstanceId);
             prepStatement.executeUpdate();
 
@@ -75,11 +75,11 @@ public class NewFunctions {
             // get showdate and time and ticket price
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             PreparedStatement prepStatement = conn.prepareStatement(
-                            "SELECT ShowDate, StartTime, Price\n" +
-                                    "FROM SHOWTIME\n" +
-                                    "    JOIN SEAT_INSTANCE SI on SHOWTIME.ShowtimeID = SI.ShowtimeID\n" +
-                                    "    JOIN TICKET T on SI.SeatInstanceID = T.SeatInstanceID\n" +
-                                    "WHERE TicketID = ?");
+                    "SELECT ShowDate, StartTime, Price\n" +
+                            "FROM SHOWTIME\n" +
+                            "    JOIN SEAT_INSTANCE SI on SHOWTIME.ShowtimeID = SI.ShowtimeID\n" +
+                            "    JOIN TICKET T on SI.SeatInstanceID = T.SeatInstanceID\n" +
+                            "WHERE TicketID = ?");
             prepStatement.setInt(1, ticketId);
             ResultSet resultSet = prepStatement.executeQuery();
             String showDate = "";
@@ -96,7 +96,7 @@ public class NewFunctions {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime showDateTime = LocalDateTime.parse(showDate + " " + startTime, formatter);
             Duration duration = Duration.between(now, showDateTime);
-            long hours = duration.toHours();
+            long>>>>>>> main hours = duration.toHours();
 
 
             // get no coupon discount if within 72 hours
@@ -109,8 +109,8 @@ public class NewFunctions {
             // create COUPON in database
 
             prepStatement = conn.prepareStatement(
-                            "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID)\n" +
-                                    "VALUES((SELECT LEFT(MD5(RAND()), 15)), ?, ?);");
+                    "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID)\n" +
+                            "VALUES((SELECT LEFT(MD5(RAND()), 15)), ?, ?);");
 
             prepStatement.setInt(1, couponAmount);
             prepStatement.setInt(2, ticketId);
@@ -119,7 +119,7 @@ public class NewFunctions {
             // get coupon code
 
             prepStatement = conn.prepareStatement(
-                            "SELECT CouponCode FROM COUPONS WHERE TicketID = ?;");
+                    "SELECT CouponCode FROM COUPONS WHERE TicketID = ?;");
             prepStatement.setInt(1, ticketId);
             resultSet = prepStatement.executeQuery();
             String couponCode = "";
@@ -251,15 +251,16 @@ public class NewFunctions {
 
     public static void main(String[] args) throws SQLException {
         NewFunctions newFunctions = new NewFunctions();
-        newFunctions.cancelMovie(3);
-        newFunctions.refundTicket(2);
-        newFunctions.issueCoupon(2, false);
-        newFunctions.issueCoupon(1, false);
+//        newFunctions.cancelMovie(3);
+//        newFunctions.refundTicket(2);
+//        newFunctions.issueCoupon(2, false);
+//        newFunctions.issueCoupon(1, false);
 
         Movie movie = new Movie("The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
-        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2022-04-04");
+
+        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+
 
 
     }
 }
-

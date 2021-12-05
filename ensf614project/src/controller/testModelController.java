@@ -1,15 +1,15 @@
+//package ensf614project.src.controller;
 package ensf614project.src.controller;
-//package controller;
+
+//import ensf614project.src.model.OrdinaryUser;
+//import ensf614project.src.model.Seat;
+//import ensf614project.src.model.User;
+
+import java.util.ArrayList;
 
 import ensf614project.src.model.OrdinaryUser;
 import ensf614project.src.model.Seat;
 import ensf614project.src.model.User;
-
-import java.util.ArrayList;
-
-//import model.OrdinaryUser;
-//import model.Seat;
-//import model.User;
 
 public class testModelController {
 
@@ -24,16 +24,15 @@ public class testModelController {
 	      }  
 		
 		System.out.println(test.getMovieList().get(0).getName());
-		System.out.println(test.getShowTimeList().get(0).getMovie().getName());
+		//System.out.println(test.getShowTimeList().get(0).getMovie().getName());
 		for(int i = 0; i< test.getAllSubscribers().size();i++) {
 			System.out.println(test.getAllSubscribers().get(i));
 		}
 		
 		//test.createTicket(1, 2, 10, "SOLD", "mike@mike.com", "111111111111");
-//		test.addMovies("TEST Movie2", "2021-01-01", "Titanic, the movie", 100, "Black Theatre", "08:00:00", "11:14:00", "2021-02-02");
-		
-		
 
+		//test.addMovies("TEST Movie2", "2021-01-01", "Titanic, the movie", 100, "Black Theatre", "08:00:00", "11:14:00", "2021-02-02");
+		System.out.println(test.getCouponList().get(0).toString());
 	}
 
 }
