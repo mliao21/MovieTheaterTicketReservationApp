@@ -15,12 +15,12 @@ import java.awt.event.ActionEvent;
 public class SignUpView {
 
 	private JTextField firstName, lastName, emailAddress, password;
-	private JButton enterPayment, register;
+	private JButton enterPaymentButton, registerButton;
 
 
 	private SignUpView() {
 		
-		JFrame frame = new JFrame("SignUpView");
+		JFrame frame = new JFrame("SignUp");
 		frame.setBounds(100, 100, 423, 366);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -79,15 +79,15 @@ public class SignUpView {
 		password.setBounds(154, 164, 189, 20);
 		panel.add(password);
 		
-		enterPayment = new JButton("Make Payment");
-		enterPayment.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		enterPayment.setBounds(133, 210, 116, 23);
-		panel.add(enterPayment);
+		enterPaymentButton = new JButton("Make Payment");
+		enterPaymentButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		enterPaymentButton.setBounds(133, 210, 116, 23);
+		panel.add(enterPaymentButton);
 		
-		register = new JButton("Register");
-		register.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		register.setBounds(133, 254, 116, 23);
-		panel.add(register);
+		registerButton = new JButton("Register");
+		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		registerButton.setBounds(133, 254, 116, 23);
+		panel.add(registerButton);
 		
 		frame.setVisible(true);
 	}
@@ -114,12 +114,12 @@ public class SignUpView {
 
 
 	public JButton getEnterPayment() {
-		return enterPayment;
+		return enterPaymentButton;
 	}
 
 
 	public JButton getRegister() {
-		return register;
+		return registerButton;
 	}
 
 
@@ -144,22 +144,20 @@ public class SignUpView {
 
 
 	public void setEnterPayment(JButton enterPayment) {
-		this.enterPayment = enterPayment;
+		this.enterPaymentButton = enterPayment;
 	}
 
 
 	public void setRegister(JButton register) {
-		this.register = register;
+		this.registerButton = register;
 	}
 	
-	// private JButton enterPayment, register;
-	
-	public void addRegisterListener(ActionListener actionListener) {
-		register.addActionListener(actionListener);
+	public void addRegisterButtonListener(ActionListener actionListener) {
+		registerButton.addActionListener(actionListener);
 	}
 	
-	public void addEnterPaymentListener(ActionListener actionListener) {
-		enterPayment.addActionListener(actionListener);
+	public void addEnterPaymentButtonListener(ActionListener actionListener) {
+		enterPaymentButton.addActionListener(actionListener);
 	}	
 
 }
