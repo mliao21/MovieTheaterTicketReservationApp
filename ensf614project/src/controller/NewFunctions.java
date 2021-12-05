@@ -51,6 +51,7 @@ public class NewFunctions {
             prepStatement.setInt(1, ticketId);
             prepStatement.executeUpdate();
 
+
             // update seat instance status to available, presale to false by default
             prepStatement = conn.prepareStatement(
                             "UPDATE SEAT_INSTANCE SET Occupied = FALSE AND Presale = FALSE WHERE SeatInstanceID = ?;");
