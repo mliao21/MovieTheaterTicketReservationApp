@@ -1,12 +1,15 @@
 //package ensf614project.src.controller;
 package ensf614project.src.controller;
 
+import java.sql.Date;
+
 //import ensf614project.src.model.OrdinaryUser;
 //import ensf614project.src.model.Seat;
 //import ensf614project.src.model.User;
 
 import java.util.ArrayList;
 
+import ensf614project.src.model.Movie;
 import ensf614project.src.model.OrdinaryUser;
 import ensf614project.src.model.Seat;
 import ensf614project.src.model.User;
@@ -24,22 +27,21 @@ public class testModelController {
 	      }  
 		
 		System.out.println(test.getMovieList().get(0).getName());
-		for(int i = 0; i< test.getMovieList().size();i++) {
-
-			System.out.println("Movide id: "+test.getMovieList().get(i).getId());
-			
-		}
-		
-		System.out.println(test.getShowTimeList().get(0).getMovie().getName());
+		//System.out.println(test.getShowTimeList().get(0).getMovie().getName());
 		for(int i = 0; i< test.getAllSubscribers().size();i++) {
 			System.out.println(test.getAllSubscribers().get(i));
 		}
 		
 		//test.createTicket(1, 2, 10, "SOLD", "mike@mike.com", "111111111111");
-		test.addMovies("TEST Movie2", "2021-01-01", "Titanic, the movie", 100, "Black Theatre", "08:00:00", "11:14:00", "2021-02-02");
-		System.out.println(test.getCouponList().get(0).toString());
-		
+		//Movie movie = new Movie("The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
+		//test.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+		//test.cancelMovie(3);
+		//test.refundTicket(2);
+		//test.issueCoupon(2, false);
+		//test.issueCoupon(1, false);
 
+		
+		System.out.println(test.getCouponList().get(0).toString());
 	}
 
 }

@@ -7,7 +7,9 @@ import ensf614project.src.view.CancelView;
 import ensf614project.src.view.LoginView;
 import ensf614project.src.view.MainMenuView;
 import ensf614project.src.view.PaymentView;
+import ensf614project.src.view.SeatView;
 import ensf614project.src.view.SignUpView;
+import ensf614project.src.view.TheaterView;
 
 public class MovieApp {
 	private OrdinaryUser user;
@@ -16,6 +18,7 @@ public class MovieApp {
 	private MainMenuView mainMenuView;
 	private PaymentView paymentView;
 	private SignUpView signupView;
+	
 	private ModelController modelController;
 	private ViewController viewController;
 	
@@ -27,7 +30,9 @@ public class MovieApp {
 		this.mainMenuView = new MainMenuView();
 		this.paymentView = new PaymentView();
 		this.signupView = new SignUpView();
+		
 		this.modelController = new ModelController(user);
+		
 		this.viewController = new ViewController(cancelView, loginView, mainMenuView, paymentView, signupView, modelController);
 	}
 	
