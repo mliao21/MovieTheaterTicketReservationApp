@@ -1,5 +1,7 @@
-//package controller;
 package ensf614project.src.controller;
+//package ensf614project.src.controller;
+//import ensf614project.src.config.Configuration;
+//import ensf614project.src.model.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,19 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 
-
 import ensf614project.src.config.Configuration;
-import ensf614project.src.model.*;
-
-//import config.Configuration;
-//import model.Movie;
-//import model.MovieNotification;
-//import model.Seat;
-//import model.ShowTime;
-//import model.Subscribers;
-//import model.Theater;
-//import model.Ticket;
-//import model.User;
+import ensf614project.src.model.Credit;
+import ensf614project.src.model.Movie;
+import ensf614project.src.model.MovieNotification;
+import ensf614project.src.model.Seat;
+import ensf614project.src.model.ShowTime;
+import ensf614project.src.model.Subscribers;
+import ensf614project.src.model.Theater;
+import ensf614project.src.model.Ticket;
+import ensf614project.src.model.User;
 
 public class ModelController {
 	private User userInstance;
@@ -32,6 +31,9 @@ public class ModelController {
 	private ArrayList<Theater> theaterList;
 	private ArrayList<ShowTime> showTimeList;
 	private ArrayList<Ticket> ticketList;
+	private ArrayList<Credit> couponList;
+	
+	
 	
 	public User getUserInstance() {
 		return userInstance;
@@ -60,6 +62,10 @@ public class ModelController {
 	
 
 	
+	public ArrayList<Credit> getCouponList() {
+		return couponList;
+	}
+
 	public ModelController(User userInstance) {
 		super();
 		this.userInstance = userInstance;
@@ -68,19 +74,31 @@ public class ModelController {
 		theaterList = new ArrayList<Theater>();
 		showTimeList = new ArrayList<ShowTime>();
 		ticketList = new ArrayList<Ticket>();
+		this.couponList = new ArrayList<Credit>();
 		
 	}
 	
 	public void loadModelsQuery() {
+		
+		this.movieList.clear();
+		this.moviePreSaleList.clear();
+		this.theaterList.clear();
+		this.showTimeList.clear();
+		this.ticketList.clear();
+		this.couponList.clear();
+		
 		this.loadTheaters();
 		this.loadSeats();
 		this.loadMovies();
 		this.loadShowTime();
+		this.loadCredits();
 		
 		
 		
 		
 	}
+	
+	
 	
 	public ArrayList<String> getAllSubscribers(){
 		ArrayList<String> temp = new ArrayList<String>();
@@ -101,6 +119,25 @@ public class ModelController {
         }
 		return temp;
 		
+		
+	}
+	
+	private void loadCredits() {
+		try {
+			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+			PreparedStatement prepStatement = conn
+                    .prepareStatement(
+                            "SELECT * FROM coupons");
+            ResultSet resObj = prepStatement.executeQuery();
+            while(resObj.next()) {
+            	
+            	this.couponList.add( new Credit(resObj.getString("CouponCode"), resObj.getInt("CouponValue")));
+            }
+
+
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
 		
 	}
 	
@@ -318,6 +355,8 @@ public class ModelController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.loadModelsQuery();
 
 	}
 	
@@ -374,6 +413,7 @@ public class ModelController {
             
             MovieNotification subject = new MovieNotification();
             Subscribers ob1 = new Subscribers(subject);
+            ob1.setSubscriberList(getAllSubscribers());
             subject.addObserver(ob1);
             subject.notifyAllObservers(movieTitle + " is pre-selling tickets now! ShowDate is: " + showDate);
 			
@@ -382,6 +422,8 @@ public class ModelController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.loadModelsQuery();
 
 	}
 }

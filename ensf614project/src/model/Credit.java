@@ -1,15 +1,12 @@
+//package ensf614project.src.model;
 package ensf614project.src.model;
-//package model;
 
 public class Credit {
 	private String code;
 
-	private double balance;
-	public Credit(double balance) {
-		super();
-		this.balance = balance;
-	}
-	public Credit(String code, double balance) {
+	private int balance;
+	
+	public Credit(String code, int balance) {
 		super();
 		this.code = code;
 		this.balance = balance;
@@ -22,10 +19,10 @@ public class Credit {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public double getBalance() {
+	public int getBalance() {
 		return balance;
 	}
-	public void setBalance(double balance) {
+	public void setBalance(int balance) {
 		this.balance = balance;
 	}
 
