@@ -15,10 +15,11 @@ public class MainMenuView extends JFrame{
 	private JPanel sidePanel, panel;
 	private JButton buyTicketButton,cancelTicketButton, loginButton, registerButton, searchMovieButton;
 	private JLabel topLabel, movieLabel;
+	private JFrame frame;
 	
 	public MainMenuView() {
 		
-		JFrame frame = new JFrame("Alberta Cinema's");
+		frame = new JFrame("Alberta Cinema's");
 		
 		frame.setBackground(new Color(255, 255, 255));
 		frame.setBounds(100, 100, 805, 543);
@@ -81,9 +82,12 @@ public class MainMenuView extends JFrame{
 		movieLabel.setBounds(67, 0, 478, 396);
 		panel.add(movieLabel);
 		
-		frame.setVisible(true);
 	}
-
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+	
 	public JPanel getSidePanel() {
 		return sidePanel;
 	}
@@ -170,6 +174,7 @@ public class MainMenuView extends JFrame{
 	}
 	
 	public void addLoginButtonListener(ActionListener actionListener) {
+		System.out.println("View login pressed");
 		loginButton.addActionListener(actionListener);
 	}
 	

@@ -17,10 +17,11 @@ public class CancelView extends JFrame{
 	
 	private JTextField ticketNumber, emailAddress;
 	private JButton cancelButton, mainMenuButton;
-
+	private JFrame frame;
+	
 	public CancelView() {
 		
-		JFrame frame = new JFrame("Cancel Ticket");
+		frame = new JFrame("Cancel Ticket");
 		frame.setBounds(100, 100, 450, 274);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -65,7 +66,9 @@ public class CancelView extends JFrame{
 		panel.add(mainMenuButton);
 	}
 
-
+	public JFrame getFrame() {
+		return frame;
+	}
 
 	public JTextField getTicketNumber() {
 		return ticketNumber;

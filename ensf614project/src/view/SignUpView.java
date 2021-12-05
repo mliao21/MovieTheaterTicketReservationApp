@@ -16,11 +16,11 @@ public class SignUpView extends JFrame{
 
 	private JTextField firstName, lastName, emailAddress, password;
 	private JButton enterPaymentButton, registerButton;
-
+	private JFrame frame;
 
 	public SignUpView() {
 		
-		JFrame frame = new JFrame("SignUp");
+		frame = new JFrame("SignUp");
 		frame.setBounds(100, 100, 423, 366);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -89,9 +89,11 @@ public class SignUpView extends JFrame{
 		registerButton.setBounds(133, 254, 116, 23);
 		panel.add(registerButton);
 		
-		frame.setVisible(true);
 	}
-
+	
+	public JFrame getFrame() {
+		return frame;
+	}
 
 	public JTextField getFirstName() {
 		return firstName;

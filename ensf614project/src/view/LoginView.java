@@ -18,11 +18,11 @@ public class LoginView extends JFrame {
 	private JTextField emailAddress;
 	private JTextField password;
 	private JButton loginButton;
-
+	private JFrame frame;
 
 	public LoginView() {
 		
-		JFrame frame = new JFrame("Login");
+		frame = new JFrame("Login");
 		frame.setBounds(100, 100, 400, 246);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -61,10 +61,12 @@ public class LoginView extends JFrame {
 		loginButton.setBounds(120, 140, 89, 23);
 		panel.add(loginButton);
 		
-		frame.setVisible(true);
 	}
 
-
+	public JFrame getFrame() {
+		return frame;
+	}
+	
 	public JTextField getEmailAddress() {
 		return emailAddress;
 	}

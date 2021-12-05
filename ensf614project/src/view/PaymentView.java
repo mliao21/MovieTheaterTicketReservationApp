@@ -17,11 +17,11 @@ public class PaymentView extends JFrame{
 	private JTextField cardNumber, cardExpiry, cardCvv, cardHolderFName, cardHolderLName;
 	private JLabel cardNumberLabel, cardExpiryLabel, cardHolderFNameLabel, cardHolderLNameLabel, cardCvvLabel;
 	private JButton submitButton;
-
+	private JFrame frame;
 	
 	public PaymentView() {
 		
-		JFrame frame = new JFrame("Payment");
+		frame = new JFrame("Payment");
 		frame.setBounds(100, 100, 491, 435);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -92,10 +92,12 @@ public class PaymentView extends JFrame{
 		submitButton.setBounds(181, 312, 92, 23);
 		panel.add(submitButton);
 		
-		frame.setVisible(true);
 	}
 
-
+	public JFrame getFrame() {
+		return frame;
+	}
+	
 	public JTextField getCardNumber() {
 		return cardNumber;
 	}
