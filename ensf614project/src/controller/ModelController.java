@@ -378,10 +378,13 @@ public class ModelController {
 			prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
 
-			prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID();");
+			// get the last movie id inserted to use for all showtimes
+			prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'MovieID';");
 			ResultSet resObj = prepStatement.executeQuery();
-			resObj.next();
-			int movieId = resObj.getInt(1);
+			int movieId = 0;
+			while (resObj.next()) {
+				movieId = resObj.getInt("MovieID");
+			}
 
             statement ="INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
             		+ "VALUES (\r\n"
