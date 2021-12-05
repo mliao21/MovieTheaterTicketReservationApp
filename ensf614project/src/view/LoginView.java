@@ -22,7 +22,7 @@ public class LoginView extends JFrame {
 
 	public LoginView() {
 		
-		JFrame frame = new JFrame("LoginView");
+		JFrame frame = new JFrame("Login");
 		frame.setBounds(100, 100, 400, 246);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
