@@ -71,5 +71,9 @@ fabric.properties
 .idea/httpRequests
 
 # Android studio 3.1+ serialized cache file
+<<<<<<< HEAD
 .idea/caches/build_file_checksums.ser
 /.metadata/
+=======
+.idea/caches/build_file_checksums.ser
+>>>>>>> 1f533e5cddc5d3cade16d4e7e112aede53227502

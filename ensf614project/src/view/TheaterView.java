@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package view;
+=======
+package ensf614project.src.view;
+>>>>>>> 1f533e5cddc5d3cade16d4e7e112aede53227502
 
 import java.awt.BorderLayout;
 import java.awt.Container;
