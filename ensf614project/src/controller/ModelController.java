@@ -127,7 +127,7 @@ public class ModelController {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
                     .prepareStatement(
-                            "SELECT * FROM coupons");
+                            "SELECT * FROM COUPONS");
             ResultSet resObj = prepStatement.executeQuery();
             while(resObj.next()) {
             	
