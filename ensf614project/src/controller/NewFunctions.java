@@ -249,6 +249,26 @@ public class NewFunctions {
 
     }
 
+    public boolean verifyLogin(String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            String statement = "SELECT * FROM REGISTERED_USERS WHERE Email = ? AND Password = ?;";
+            PreparedStatement prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, email);
+            prepStatement.setString(2, password);
+            ResultSet resultSet = prepStatement.executeQuery();
+            if (resultSet.next()) {
+                conn.close();
+                return true;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) throws SQLException {
         NewFunctions newFunctions = new NewFunctions();
 //        newFunctions.cancelMovie(3);
@@ -259,6 +279,26 @@ public class NewFunctions {
         Movie movie = new Movie(1,"The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
         newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
 
+        if (newFunctions.verifyLogin("al@test.com", "testpassword")) {
+            System.out.println("Login Successful");
+        }
+        else {
+            System.out.println("Login Failed");
+        }
+
+        if (newFunctions.verifyLogin("al@test.com", "wrongpassword")) {
+            System.out.println("Login Successful");
+        }
+        else {
+            System.out.println("Login Failed");
+        }
+
+        if (newFunctions.verifyLogin("wrongemail@email.com", "testpassword")) {
+            System.out.println("Login Successful");
+        }
+        else {
+            System.out.println("Login Failed");
+        }
 
     }
 }
