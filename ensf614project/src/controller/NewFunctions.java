@@ -1,12 +1,16 @@
 package ensf614project.src.controller;
 
 import ensf614project.src.config.Configuration;
-import ensf614project.src.model.Credit;
+import ensf614project.src.model.*;
 
 import java.sql.*;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewFunctions {
 
@@ -61,6 +65,7 @@ public class NewFunctions {
     public Credit issueCoupon(int ticketId, boolean subscriber) {
         double multiplier = 1;
 
+        // if subscriber is false, multiplier is 0.85
         if (!subscriber) {
             multiplier = 0.85;
         }
@@ -132,12 +137,126 @@ public class NewFunctions {
         return null;
     }
 
+    public void addMovies(Movie movie, int theaterId, int cleaningTime,String openingDateString, String endDateString) {
+
+        // set a opening time of the theater for 8 am
+        String openingTime = "08:00:00";
+        // last showing time of 10 pm
+        String lastShowing = "22:00:00";
+
+
+        // get all dates between openingDate and endDate
+        List<String> dates = new ArrayList<>();
+        LocalDate startDate = LocalDate.parse(openingDateString);
+        LocalDate endDate = LocalDate.parse(endDateString);
+        while (startDate.isBefore(endDate) || startDate.isEqual(endDate)) {
+            dates.add(startDate.toString());
+            startDate = startDate.plusDays(1);
+        }
+
+        // get all times between openingTime and lastShowing base on movie runtime + cleaning time
+        List<String> times = new ArrayList<>();
+        LocalTime startTime = LocalTime.parse(openingTime);
+        LocalTime endTime = LocalTime.parse(lastShowing);
+        while (startTime.isBefore(endTime) && startTime.plusMinutes(1).isAfter(LocalTime.parse(openingTime))) {
+            times.add(startTime.toString());
+            startTime = startTime.plusMinutes(movie.getRunTime() + cleaningTime);
+        }
+
+        Connection conn;
+        String statement = "";
+        PreparedStatement prepStatement;
+        try {
+            conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+
+            // initial insert of the movie
+            statement = "INSERT INTO MOVIE(Title, OpeningDate, Description, Runtime)\r\n"
+                    + "VALUES(?, ?, ?, ?);";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, movie.getName());
+            prepStatement.setDate(2, (Date) movie.getReleaseDate());
+            prepStatement.setString(3, movie.getDescription());
+            prepStatement.setInt(4, movie.getRunTime());
+            prepStatement.executeUpdate();
+
+            // get the last movie id inserted to use for all showtimes
+            prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'MovieID';");
+            ResultSet resObj = prepStatement.executeQuery();
+            int movieId = 0;
+            while (resObj.next()) {
+                movieId = resObj.getInt("MovieID");
+            }
+
+            for (String date : dates) {
+                for (String time : times) {
+                    // insert showtime
+                    statement ="INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
+                            + "VALUES(?, ?, ?, ?, ?);";
+                    prepStatement = conn.prepareStatement(statement);
+                    prepStatement.setInt(1, movieId);
+                    prepStatement.setInt(2, theaterId);
+                    prepStatement.setString(3, time);
+                    prepStatement.setString(4, String.valueOf(LocalTime.parse(time).plusMinutes(movie.getRunTime())));
+                    prepStatement.setString(5, date);
+                    prepStatement.executeUpdate();
+                }
+            }
+
+            // get all showtimes with the movie id
+            statement = "SELECT ShowtimeID FROM SHOWTIME WHERE MovieID = ?;";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, movieId);
+            ResultSet resultSet = prepStatement.executeQuery();
+            ArrayList<Integer> showtimeIds = new ArrayList<>();
+            while (resultSet.next()) {
+                showtimeIds.add(resultSet.getInt("ShowtimeID"));
+            }
+
+            // insert into SEAT_INSTANCE for all Showtime
+            for (int showtimeId : showtimeIds) {
+                statement = "INSERT INTO SEAT_INSTANCE(SeatID, ShowtimeID)\r\n"
+                        + "SELECT SeatID, ShowtimeID FROM (\n" +
+                        "SELECT ShowtimeID FROM SHOWTIME\n" +
+                        "JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID\n" +
+                        "WHERE T.TheatreID = ?\n" +
+                        "    AND ShowtimeID = ?\n" +
+                        "    ) ST\n" +
+                        "CROSS JOIN (\n" +
+                        "    SELECT SeatID FROM SEAT_CHART\n" +
+                        "    WHERE TheatreID = ?\n" +
+                        "    ) CJ;";
+                prepStatement = conn.prepareStatement(statement);
+                prepStatement.setInt(1, theaterId);
+                prepStatement.setInt(2, showtimeId);
+                prepStatement.setInt(3, theaterId);
+                prepStatement.executeUpdate();
+            }
+
+
+            conn.close();
+
+            MovieNotification subject = new MovieNotification();
+            Subscribers ob1 = new Subscribers(subject);
+            subject.addObserver(ob1);
+            subject.notifyAllObservers(movie.getName() + " is pre-selling tickets now! ShowDates are: " + dates);
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) throws SQLException {
         NewFunctions newFunctions = new NewFunctions();
         newFunctions.cancelMovie(3);
         newFunctions.refundTicket(2);
         newFunctions.issueCoupon(2, false);
         newFunctions.issueCoupon(1, false);
+
+        Movie movie = new Movie("The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
+        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2022-04-04");
 
 
     }
