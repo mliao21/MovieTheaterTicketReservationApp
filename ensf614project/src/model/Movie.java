@@ -9,16 +9,6 @@ public class Movie {
 	private String description;
 	private Date releaseDate;
 
-
-	public Movie(String name, Date releaseDate, String description, int runTime) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.releaseDate = releaseDate;
-
-	}
-
-
 	public Movie(int id, String name, Date releaseDate, String description, int runTime) {
 		super();
 		this.id = id;

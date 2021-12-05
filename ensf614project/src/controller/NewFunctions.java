@@ -96,7 +96,7 @@ public class NewFunctions {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime showDateTime = LocalDateTime.parse(showDate + " " + startTime, formatter);
             Duration duration = Duration.between(now, showDateTime);
-            long>>>>>>> main hours = duration.toHours();
+            long hours = duration.toHours();
 
 
             // get no coupon discount if within 72 hours
