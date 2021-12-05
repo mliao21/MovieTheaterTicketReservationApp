@@ -4,6 +4,8 @@ import ensf614project.src.config.Configuration;
 import ensf614project.src.model.*;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -268,6 +270,30 @@ public class NewFunctions {
         return false;
     }
 
+    public boolean registerUser(String username, String firstName, String lastName, String creditCardNumber, String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn.prepareStatement(
+                    "INSERT INTO REGISTERED_USERS(Username, FName, LName, CreditCardNo, MembershipStart, Email, Password) VALUES(?, ?, ?, ?, ?, ?, ?);");
+            prepStatement.setString(1, username);
+            prepStatement.setString(2, firstName);
+            prepStatement.setString(3, lastName);
+            prepStatement.setString(4, creditCardNumber);
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            prepStatement.setString(5, dtf.format(now).toString());
+            prepStatement.setString(6, email);
+            prepStatement.setString(7, password);
+            prepStatement.executeUpdate();
+
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public static void main(String[] args) throws SQLException {
         NewFunctions newFunctions = new NewFunctions();
@@ -276,8 +302,8 @@ public class NewFunctions {
 //        newFunctions.issueCoupon(2, false);
 //        newFunctions.issueCoupon(1, false);
 
-        Movie movie = new Movie(1,"The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
-        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+//        Movie movie = new Movie(1,"The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
+//        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
 
         if (newFunctions.verifyLogin("al@test.com", "testpassword")) {
             System.out.println("Login Successful");
@@ -298,6 +324,20 @@ public class NewFunctions {
         }
         else {
             System.out.println("Login Failed");
+        }
+
+        if (newFunctions.registerUser("al", "Al", "L", "123456789", "AL@AL.com", "testpassword")) {
+            System.out.println("Registration Successful");
+        }
+        else {
+            System.out.println("Registration Failed");
+        }
+
+        if (newFunctions.registerUser("al", "Al", "L", "123456789", "AL@AL.com", "testpassword")) {
+            System.out.println("Registration Successful");
+        }
+        else {
+            System.out.println("Registration Failed");
         }
 
     }
