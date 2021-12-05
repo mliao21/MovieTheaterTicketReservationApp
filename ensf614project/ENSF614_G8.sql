@@ -11,8 +11,8 @@ CREATE TABLE MOVIE_STATUS
 
 INSERT INTO MOVIE_STATUS
 VALUES
-       ('AVAILABLE'),
-       ('CANCELLED');
+    ('AVAILABLE'),
+    ('CANCELLED');
 
 DROP TABLE IF EXISTS MOVIE;
 CREATE TABLE MOVIE
@@ -73,22 +73,22 @@ VALUES (1,1,'08:00:00', '11:14:00', '2022-01-01'),
        (1,1,'12:00:00', '15:14:00', '2022-01-01'),
        (1,1,'16:00:00', '19:14:00', '2022-01-01'),
        (1,1,'08:00:00', '11:14:00', '2022-01-02'),
-        (1,1,'12:00:00', '15:14:00', '2022-01-02'),
+       (1,1,'12:00:00', '15:14:00', '2022-01-02'),
        (1,1,'16:00:00', '19:14:00', '2022-01-02'),
        (2,2,'08:00:00', '11:14:00', '2022-01-01'),
        (2,2,'12:00:00', '15:14:00', '2022-01-01'),
        (2,2,'16:00:00', '19:14:00', '2022-01-01'),
        (2,2,'08:00:00', '11:14:00', '2022-01-02'),
-        (2,2,'12:00:00', '15:14:00', '2022-01-02'),
+       (2,2,'12:00:00', '15:14:00', '2022-01-02'),
        (2,2,'16:00:00', '19:14:00', '2022-01-02');
 
 SELECT Title, TheatreName, ShowtimeID,StartTime, EndTime, ShowDate
 FROM SHOWTIME S
-JOIN MOVIE M on S.MovieID = M.MovieID
-JOIN THEATRE T on S.TheatreID = T.TheatreID
+         JOIN MOVIE M on S.MovieID = M.MovieID
+         JOIN THEATRE T on S.TheatreID = T.TheatreID
 WHERE M.Title = 'Titanic'
-AND ShowDate = '2022-01-02'
-AND MovieStatus = 'AVAILABLE';
+  AND ShowDate = '2022-01-02'
+  AND MovieStatus = 'AVAILABLE';
 
 DROP TABLE IF EXISTS SEAT_ROW;
 CREATE TABLE SEAT_ROW
@@ -143,17 +143,17 @@ CREATE TABLE SEAT_CHART
 #  Red Theatre
 INSERT INTO SEAT_CHART(SeatRow, SeatCol, TheatreID)
 SELECT SeatRow, SeatCol, 1 FROM SEAT_COL
-CROSS JOIN SEAT_ROW;
+                                    CROSS JOIN SEAT_ROW;
 
 #  Blue Theatre
 INSERT INTO SEAT_CHART(SeatRow, SeatCol, TheatreID)
 SELECT SeatRow, SeatCol, 2 FROM SEAT_COL
-CROSS JOIN SEAT_ROW;
+                                    CROSS JOIN SEAT_ROW;
 
 #  Black Theatre
 INSERT INTO SEAT_CHART(SeatRow, SeatCol, TheatreID)
 SELECT SeatRow, SeatCol, 3 FROM SEAT_COL
-CROSS JOIN SEAT_ROW;
+                                    CROSS JOIN SEAT_ROW;
 
 SELECT COUNT(*) FROM SEAT_CHART;
 
@@ -174,25 +174,25 @@ CREATE TABLE SEAT_INSTANCE
 #  Quick way to insert for theatre 1
 INSERT INTO SEAT_INSTANCE(SeatID, ShowtimeID)
 SELECT SeatID, ShowtimeID FROM (
-SELECT ShowtimeID FROM SHOWTIME
-JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID
-WHERE T.TheatreID = 1) ST
-CROSS JOIN (
+                                   SELECT ShowtimeID FROM SHOWTIME
+                                                              JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID
+                                   WHERE T.TheatreID = 1) ST
+                                   CROSS JOIN (
     SELECT SeatID FROM SEAT_CHART
     WHERE TheatreID = 1
-    ) CJ;
+) CJ;
 
 INSERT INTO SEAT_INSTANCE(SeatID, ShowtimeID)
 SELECT SeatID, ShowtimeID FROM (
-SELECT ShowtimeID FROM SHOWTIME
-JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID
-WHERE T.TheatreID = 2
-    AND ShowtimeID = 1
-    ) ST
-CROSS JOIN (
+                                   SELECT ShowtimeID FROM SHOWTIME
+                                                              JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID
+                                   WHERE T.TheatreID = 2
+                                     AND ShowtimeID = 1
+                               ) ST
+                                   CROSS JOIN (
     SELECT SeatID FROM SEAT_CHART
     WHERE TheatreID = 2
-    ) CJ;
+) CJ;
 
 SELECT * FROM SHOWTIME;
 
@@ -210,9 +210,9 @@ CREATE TABLE TICKET_STATUS
 
 INSERT INTO TICKET_STATUS
 VALUES
-       ('SOLD'),
-       ('AVAILABLE'),
-       ('REFUNDED');
+    ('SOLD'),
+    ('AVAILABLE'),
+    ('REFUNDED');
 
 
 
@@ -261,52 +261,53 @@ CREATE TABLE REGISTERED_USERS
     Lname 		    VARCHAR(20)			    NOT NULL,
     CreditCardNo    VARCHAR(16)                     ,
     MembershipStart DATE                    NOT NULL,
-    Email           VARCHAR(16)                     ,
+    Email           VARCHAR(50)                     ,
+    Password        VARCHAR(20)             NOT NULL,
     PRIMARY KEY(UserID),
     UNIQUE (Username),
     UNIQUE (Email));
 
-INSERT INTO REGISTERED_USERS(Username, Fname, Lname, CreditCardNo, MembershipStart, Email)
-VALUES ('aleakos', 'Alex', 'Leakos', '000000000000000', '2021-11-11', 'al@test.com');
+INSERT INTO REGISTERED_USERS(Username, Fname, Lname, CreditCardNo, MembershipStart, Email, Password)
+VALUES ('aleakos', 'Alex', 'Leakos', '000000000000000', '2021-11-11', 'al@test.com', 'testpassword');
 
 
 #  Example to be able to get seat instance
 SELECT TheatreName, SC.SeatRow, SC.SeatCol FROM SHOWTIME ST
-JOIN THEATRE T on ST.TheatreID = T.TheatreID
-JOIN SEAT_INSTANCE SI on ST.ShowtimeID = SI.ShowtimeID
-JOIN SEAT_CHART SC on SI.SeatID = SC.SeatID
-JOIN MOVIE M on ST.MovieID = M.MovieID
+                                                    JOIN THEATRE T on ST.TheatreID = T.TheatreID
+                                                    JOIN SEAT_INSTANCE SI on ST.ShowtimeID = SI.ShowtimeID
+                                                    JOIN SEAT_CHART SC on SI.SeatID = SC.SeatID
+                                                    JOIN MOVIE M on ST.MovieID = M.MovieID
 WHERE Title = 'Titanic'
-AND TheatreName = 'Red Theatre'
-AND ST.ShowDate = '2022-01-01'
-AND ST.StartTime = '08:00'
-AND MovieStatus = 'AVAILABLE'
+  AND TheatreName = 'Red Theatre'
+  AND ST.ShowDate = '2022-01-01'
+  AND ST.StartTime = '08:00'
+  AND MovieStatus = 'AVAILABLE'
 ORDER BY SeatRow, SeatCol;
 
 #  Example to be able to get seat instance
 SELECT SeatInstanceID, SC.SeatCol, SC.SeatRow, Presale, Occupied FROM SHOWTIME ST
-JOIN THEATRE T on ST.TheatreID = T.TheatreID
-JOIN SEAT_INSTANCE SI on ST.ShowtimeID = SI.ShowtimeID
-JOIN SEAT_CHART SC on SI.SeatID = SC.SeatID
-JOIN MOVIE M on ST.MovieID = M.MovieID
+                                                                          JOIN THEATRE T on ST.TheatreID = T.TheatreID
+                                                                          JOIN SEAT_INSTANCE SI on ST.ShowtimeID = SI.ShowtimeID
+                                                                          JOIN SEAT_CHART SC on SI.SeatID = SC.SeatID
+                                                                          JOIN MOVIE M on ST.MovieID = M.MovieID
 WHERE M.MovieID = 1
-AND T.TheatreID = 1
-AND ST.ShowtimeID = 3
-AND MovieStatus = 'AVAILABLE'
+  AND T.TheatreID = 1
+  AND ST.ShowtimeID = 3
+  AND MovieStatus = 'AVAILABLE'
 ORDER BY SeatCol, SeatRow;
 
 SELECT * FROM SHOWTIME
-JOIN MOVIE M
-    ON SHOWTIME.MovieID = M.MovieID
+                  JOIN MOVIE M
+                       ON SHOWTIME.MovieID = M.MovieID
 WHERE Title = 'Titanic'
-AND MovieStatus = 'AVAILABLE';
+  AND MovieStatus = 'AVAILABLE';
 
 
 SELECT Title, ShowDate, StartTime FROM SHOWTIME ST
-JOIN MOVIE M on ST.MovieID = M.MovieID
+                                           JOIN MOVIE M on ST.MovieID = M.MovieID
 WHERE ShowDate = '2022-01-01'
-AND StartTime > '10:00:00'
-AND MovieStatus = 'AVAILABLE';
+  AND StartTime > '10:00:00'
+  AND MovieStatus = 'AVAILABLE';
 
 DROP USER IF EXISTS 'mock_user'@'localhost';
 FLUSH PRIVILEGES;
@@ -327,10 +328,10 @@ VALUES (1, 2000, 'SOLD', 'test@email.com');
 # must match seat instance id
 INSERT INTO PAYMENT (TicketID, CreditCardNo)
 VALUES (
-        (SELECT TicketID
+           (SELECT TicketID
             FROM TICKET
             WHERE SeatInstanceID = 1
-            ), '111111111111'
+           ), '111111111111'
        );
 
 UPDATE SEAT_INSTANCE SET Occupied = TRUE
@@ -342,10 +343,10 @@ INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES (2, 2000,
 # must match seat instance id
 INSERT INTO PAYMENT (TicketID, CreditCardNo)
 VALUES (
-        (SELECT TicketID
+           (SELECT TicketID
             FROM TICKET
             WHERE SeatInstanceID = 2
-            ), '222222222222'
+           ), '222222222222'
        );
 
 SELECT * FROM TICKET;
@@ -364,33 +365,33 @@ VALUES('TEST Movie', '2021-01-01', 'Titanic, the movie', 100);
 # would get theatre ID and movie ID from objects selected and time objets auto generated
 INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)
 VALUES (
-        (SELECT MovieID
+           (SELECT MovieID
             FROM MOVIE
             WHERE Title = 'TEST Movie'
-            AND MovieStatus = 'AVAILABLE'
-            ),
-        (SELECT TheatreID
+              AND MovieStatus = 'AVAILABLE'
+           ),
+           (SELECT TheatreID
             FROM THEATRE
             WHERE TheatreName = 'Black Theatre'
-            ),
-        '08:00:00',
-        '11:14:00',
-        '2021-02-02');
+           ),
+           '08:00:00',
+           '11:14:00',
+           '2021-02-02');
 
 INSERT INTO SEAT_INSTANCE(SeatID, ShowtimeID)
 SELECT SeatID, ShowtimeID FROM (
-SELECT ShowtimeID FROM SHOWTIME
-JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID
-WHERE T.TheatreID = (SELECT TheatreID
-            FROM THEATRE
-            WHERE TheatreName = 'Black Theatre')) ST
-CROSS JOIN (
+                                   SELECT ShowtimeID FROM SHOWTIME
+                                                              JOIN THEATRE T on SHOWTIME.TheatreID = T.TheatreID
+                                   WHERE T.TheatreID = (SELECT TheatreID
+                                                        FROM THEATRE
+                                                        WHERE TheatreName = 'Black Theatre')) ST
+                                   CROSS JOIN (
     SELECT SeatID FROM SEAT_CHART
     WHERE TheatreID = (
         SELECT TheatreID
-            FROM THEATRE
-            WHERE TheatreName = 'Black Theatre')
-    ) CJ;
+        FROM THEATRE
+        WHERE TheatreName = 'Black Theatre')
+) CJ;
 
 
 SELECT * FROM MOVIE WHERE MovieStatus = 'AVAILABLE';
@@ -406,7 +407,7 @@ SELECT * FROM SEAT_INSTANCE WHERE ShowtimeID = 13;
 
 #return ticketID to insert for coupon later
 SELECT TicketID FROM TICKET WHERE TicketStatus = 'SOLD'
-AND SeatInstanceID = 1;
+                              AND SeatInstanceID = 1;
 
 #  updates the ticket status -
 UPDATE TICKET SET TicketStatus = 'REFUNDED'
@@ -425,6 +426,7 @@ VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1);
 
 
 
+
 #  START  -------------------------- CANCEL MOVIE ------------------------------
 
 UPDATE MOVIE SET MovieStatus = 'CANCELLED' WHERE MovieID = 1;
@@ -434,12 +436,21 @@ SELECT * FROM MOVIE;
 SELECT * FROM MOVIE WHERE MovieStatus = 'AVAILABLE';
 
 SELECT M.Title, SHOWTIME.* FROM SHOWTIME
-JOIN MOVIE M on SHOWTIME.MovieID = M.MovieID
+                                    JOIN MOVIE M on SHOWTIME.MovieID = M.MovieID
 WHERE MovieStatus = 'AVAILABLE';
 
 SELECT ShowDate, StartTime, Price
 FROM SHOWTIME
-    JOIN SEAT_INSTANCE SI on SHOWTIME.ShowtimeID = SI.ShowtimeID
-    JOIN TICKET T on SI.SeatInstanceID = T.SeatInstanceID
+         JOIN SEAT_INSTANCE SI on SHOWTIME.ShowtimeID = SI.ShowtimeID
+         JOIN TICKET T on SI.SeatInstanceID = T.SeatInstanceID
 WHERE TicketID = 1
 
+SELECT * FROM SHOWTIME;
+
+SELECT S.* FROM SHOWTIME S
+                    JOIN MOVIE M ON S.MovieID = M.MovieID
+WHERE M.MovieStatus = 'AVAILABLE'
+
+SELECT * FROM MOVIE;
+
+SELECT * FROM REGISTERED_USERS;
