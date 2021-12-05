@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 public class MainMenuView extends JFrame{
 	
 	private JPanel sidePanel, panel;
-	private JButton buyTicket,cancelTicket, login, register, searchMovie;
+	private JButton buyTicketButton,cancelTicketButton, loginButton, registerButton, searchMovieButton;
 	private JLabel topLabel, movieLabel;
 	
 	public MainMenuView() {
@@ -31,39 +31,39 @@ public class MainMenuView extends JFrame{
 		frame.getContentPane().add(sidePanel);
 		sidePanel.setLayout(null);
 		
-		buyTicket = new JButton("Buy Ticket");
-		buyTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		buyTicket.setForeground(new Color(0, 0, 0));
-		buyTicket.setBackground(Color.LIGHT_GRAY);
-		buyTicket.setBounds(32, 217, 119, 23);
-		sidePanel.add(buyTicket);
+		buyTicketButton = new JButton("Buy Ticket");
+		buyTicketButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		buyTicketButton.setForeground(new Color(0, 0, 0));
+		buyTicketButton.setBackground(Color.LIGHT_GRAY);
+		buyTicketButton.setBounds(32, 217, 119, 23);
+		sidePanel.add(buyTicketButton);
 		
-		cancelTicket = new JButton("Cancel Ticket");
-		cancelTicket.setBackground(Color.LIGHT_GRAY);
-		cancelTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cancelTicket.setBounds(32, 272, 119, 23);
-		sidePanel.add(cancelTicket);
+		cancelTicketButton = new JButton("Cancel Ticket");
+		cancelTicketButton.setBackground(Color.LIGHT_GRAY);
+		cancelTicketButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cancelTicketButton.setBounds(32, 272, 119, 23);
+		sidePanel.add(cancelTicketButton);
 		
-		login = new JButton("Login");
+		loginButton = new JButton("Login");
 	
-		login.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		login.setBackground(Color.LIGHT_GRAY);
-		login.setBounds(32, 166, 119, 23);
-		sidePanel.add(login);
+		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		loginButton.setBackground(Color.LIGHT_GRAY);
+		loginButton.setBounds(32, 166, 119, 23);
+		sidePanel.add(loginButton);
 		
-		register = new JButton("Register");
-		register.setBackground(Color.LIGHT_GRAY);
-		register.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		registerButton = new JButton("Register");
+		registerButton.setBackground(Color.LIGHT_GRAY);
+		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		
-		register.setBounds(32, 120, 119, 23);
-		sidePanel.add(register);
+		registerButton.setBounds(32, 120, 119, 23);
+		sidePanel.add(registerButton);
 		
-		searchMovie = new JButton("Search Movie");
-		searchMovie.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		searchMovie.setBackground(Color.LIGHT_GRAY);
-		searchMovie.setBounds(32, 67, 119, 23);
-		sidePanel.add(searchMovie);
+		searchMovieButton = new JButton("Search Movie");
+		searchMovieButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		searchMovieButton.setBackground(Color.LIGHT_GRAY);
+		searchMovieButton.setBounds(32, 67, 119, 23);
+		sidePanel.add(searchMovieButton);
 		
 		topLabel = new JLabel("New label");
 		topLabel.setIcon(new ImageIcon("Images\\Alberta Cinema's.png"));
@@ -93,23 +93,23 @@ public class MainMenuView extends JFrame{
 	}
 
 	public JButton getBuyTicket() {
-		return buyTicket;
+		return buyTicketButton;
 	}
 
 	public JButton getCancelTicket() {
-		return cancelTicket;
+		return cancelTicketButton;
 	}
 
 	public JButton getLogin() {
-		return login;
+		return loginButton;
 	}
 
 	public JButton getRegister() {
-		return register;
+		return registerButton;
 	}
 
 	public JButton getSearchMovie() {
-		return searchMovie;
+		return searchMovieButton;
 	}
 
 	public JLabel getTopLabel() {
@@ -129,23 +129,23 @@ public class MainMenuView extends JFrame{
 	}
 
 	public void setBuyTicket(JButton buyTicket) {
-		this.buyTicket = buyTicket;
+		this.buyTicketButton = buyTicket;
 	}
 
 	public void setCancelTicket(JButton cancelTicket) {
-		this.cancelTicket = cancelTicket;
+		this.cancelTicketButton = cancelTicket;
 	}
 
 	public void setLogin(JButton login) {
-		this.login = login;
+		this.loginButton = login;
 	}
 
 	public void setRegister(JButton register) {
-		this.register = register;
+		this.registerButton = register;
 	}
 
 	public void setSearchMovie(JButton searchMovie) {
-		this.searchMovie = searchMovie;
+		this.searchMovieButton = searchMovie;
 	}
 
 	public void setTopLabel(JLabel topLabel) {
@@ -156,26 +156,25 @@ public class MainMenuView extends JFrame{
 		this.movieLabel = movieLabel;
 	}
 	
-	//private JButton buyTicket,cancelTicket, login, register, searchMovie;
 	
-	public void addBuyTicketListener(ActionListener actionListener) {
-		buyTicket.addActionListener(actionListener);
+	public void addBuyTicketButtonListener(ActionListener actionListener) {
+		buyTicketButton.addActionListener(actionListener);
 	}
 	
-	public void addCancelTicketListener(ActionListener actionListener) {
-		cancelTicket.addActionListener(actionListener);
+	public void addCancelTicketButtonListener(ActionListener actionListener) {
+		cancelTicketButton.addActionListener(actionListener);
 	}
 	
-	public void addSearchMovieListener(ActionListener actionListener) {
-		searchMovie.addActionListener(actionListener);
+	public void addSearchMovieButtonListener(ActionListener actionListener) {
+		searchMovieButton.addActionListener(actionListener);
 	}
 	
-	public void addLoginListener(ActionListener actionListener) {
-		login.addActionListener(actionListener);
+	public void addLoginButtonListener(ActionListener actionListener) {
+		loginButton.addActionListener(actionListener);
 	}
 	
-	public void addRegisterListener(ActionListener actionListener) {
-		register.addActionListener(actionListener);
+	public void addRegisterButtonListener(ActionListener actionListener) {
+		registerButton.addActionListener(actionListener);
 	}
 
 }
