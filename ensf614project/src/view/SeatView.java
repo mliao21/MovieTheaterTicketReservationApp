@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-package view;
-=======
 package ensf614project.src.view;
->>>>>>> 1f533e5cddc5d3cade16d4e7e112aede53227502
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -95,9 +91,9 @@ public class SeatView extends JFrame {
 		return seatlist;
 	}
 
-	public static void main(String[] args) {
-		SeatView theView = new SeatView("ShowTime: Movie Titanic at 7pm", "Blue Theater");
-		theView.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		SeatView theView = new SeatView("ShowTime: Movie Titanic at 7pm", "Blue Theater");
+//		theView.setVisible(true);
+//	}
 	
 }

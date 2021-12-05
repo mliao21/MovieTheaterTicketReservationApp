@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-package view;
-=======
 package ensf614project.src.view;
->>>>>>> 1f533e5cddc5d3cade16d4e7e112aede53227502
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -54,9 +50,9 @@ public class TheaterView extends JFrame {
 		return theatersDB;
 	}
 
-	public static void main(String[] args) {
-		TheaterView theView = new TheaterView("ShowTime: Movie Titanic at 7pm");
-		theView.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		TheaterView theView = new TheaterView("ShowTime: Movie Titanic at 7pm");
+//		theView.setVisible(true);
+//	}
 
 }

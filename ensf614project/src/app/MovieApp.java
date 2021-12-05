@@ -16,6 +16,8 @@ public class MovieApp {
 	private MainMenuView mainMenuView;
 	private PaymentView paymentView;
 	private SignUpView signupView;
+	private SeatView seatView;
+	private TheaterView theaterView;
 	private ModelController modelController;
 	private ViewController viewController;
 	
@@ -27,8 +29,10 @@ public class MovieApp {
 		this.mainMenuView = new MainMenuView();
 		this.paymentView = new PaymentView();
 		this.signupView = new SignUpView();
+		this.theaterView = new TheaterView("ShowTime: Movie Titanic at 7pm");
+		this.seatView = new SeatView("ShowTime: Movie Titanic at 7pm", "Blue Theater");
 		this.modelController = new ModelController(user);
-		this.viewController = new ViewController(cancelView, loginView, mainMenuView, paymentView, signupView, modelController);
+		this.viewController = new ViewController(cancelView, loginView, mainMenuView, paymentView, signupView, seatView, theaterView, modelController);
 	}
 	
 	public void start() {
