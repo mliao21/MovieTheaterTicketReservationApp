@@ -248,7 +248,9 @@ public class ModelController {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
                     .prepareStatement(
-                            "SELECT * FROM SHOWTIME");
+                            "SELECT S.* FROM SHOWTIME S " +
+							"JOIN MOVIE M ON S.MovieID = M.MovieID " +
+							"WHERE M.MovieStatus = 'AVAILABLE'");
             ResultSet resObj = prepStatement.executeQuery();
             while(resObj.next()) {
             	showTimeID = resObj.getInt("ShowtimeID");
@@ -415,7 +417,6 @@ public class ModelController {
             Subscribers ob1 = new Subscribers(subject);
             subject.addObserver(ob1);
             subject.notifyAllObservers(movieTitle + " is pre-selling tickets now! ShowDate is: " + showDate);
-			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
