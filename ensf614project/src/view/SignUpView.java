@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SignUpView {
+public class SignUpView extends JFrame{
 
 	private JTextField firstName, lastName, emailAddress, password;
 	private JButton enterPaymentButton, registerButton;
