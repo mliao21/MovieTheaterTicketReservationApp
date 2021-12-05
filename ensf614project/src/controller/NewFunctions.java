@@ -96,7 +96,7 @@ public class NewFunctions {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime showDateTime = LocalDateTime.parse(showDate + " " + startTime, formatter);
             Duration duration = Duration.between(now, showDateTime);
-            long hours = duration.toHours();
+            long>>>>>>> main hours = duration.toHours();
 
 
             // get no coupon discount if within 72 hours
@@ -257,7 +257,9 @@ public class NewFunctions {
 //        newFunctions.issueCoupon(1, false);
 
         Movie movie = new Movie("The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
+
         newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+
 
 
     }

@@ -30,10 +30,9 @@ public class testModelController {
 		}
 		
 		//test.createTicket(1, 2, 10, "SOLD", "mike@mike.com", "111111111111");
+
 		//test.addMovies("TEST Movie2", "2021-01-01", "Titanic, the movie", 100, "Black Theatre", "08:00:00", "11:14:00", "2021-02-02");
 		System.out.println(test.getCouponList().get(0).toString());
-		
-
 	}
 
 }
