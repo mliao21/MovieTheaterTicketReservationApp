@@ -17,6 +17,7 @@ import ensf614project.src.config.Configuration;
 import ensf614project.src.model.Credit;
 import ensf614project.src.model.Movie;
 import ensf614project.src.model.MovieNotification;
+import ensf614project.src.model.RegisteredUser;
 import ensf614project.src.model.Seat;
 import ensf614project.src.model.ShowTime;
 import ensf614project.src.model.Subscribers;
@@ -37,6 +38,26 @@ public class ModelController {
 	
 	public User getUserInstance() {
 		return userInstance;
+	}
+	
+	public void login(int id, String firstName, String lastName, String email, String address, String cardFullName,
+			String cardNum, String cardExp, int cardCVV, ArrayList<String> creditCodes, String password) {
+		//check if user match
+		RegisteredUser.RegisteredInstance();
+		RegisteredUser temp = (RegisteredUser) RegisteredUser.getOnlyInstance();
+		temp.loadUserinfo(id, firstName, lastName, email, address, cardFullName, cardNum, cardExp, cardCVV, creditCodes, password);
+		
+	}
+	
+	public void register(String firstName, String lastName, String email, String address, String cardFullName,
+			String cardNum, String cardExp, int cardCVV, String password) {
+		//add user to database
+		RegisteredUser.RegisteredInstance();
+		RegisteredUser temp = (RegisteredUser) RegisteredUser.getOnlyInstance();
+		int id = 0;//comes from database
+		ArrayList<String> creditCodes = new ArrayList<String>(); //comes from database?
+		temp.loadUserinfo(id,firstName, lastName, email, address, cardFullName, cardNum, cardExp, cardCVV, creditCodes, password);
+		
 	}
 
 	public ArrayList<Movie> getMovieList() {

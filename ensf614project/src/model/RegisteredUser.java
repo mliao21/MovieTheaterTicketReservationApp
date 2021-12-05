@@ -29,6 +29,11 @@ public class RegisteredUser extends User{
 	} 
 	
 	
+	public static synchronized void RegisteredInstance() {
+		onlyInstance = new RegisteredUser();
+	}
+	
+	
 	
 	
 	public void loadUserinfo(int id, String firstName, String lastName, String email, String address, String cardFullName,
