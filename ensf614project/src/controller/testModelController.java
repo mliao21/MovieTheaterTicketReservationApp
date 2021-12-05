@@ -24,7 +24,7 @@ public class testModelController {
 	      }  
 		
 		System.out.println(test.getMovieList().get(0).getName());
-		System.out.println(test.getShowTimeList().get(0).getMovie().getName());
+		//System.out.println(test.getShowTimeList().get(0).getMovie().getName());
 		for(int i = 0; i< test.getAllSubscribers().size();i++) {
 			System.out.println(test.getAllSubscribers().get(i));
 		}

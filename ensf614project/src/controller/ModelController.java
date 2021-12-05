@@ -413,7 +413,6 @@ public class ModelController {
             
             MovieNotification subject = new MovieNotification();
             Subscribers ob1 = new Subscribers(subject);
-            ob1.setSubscriberList(getAllSubscribers());
             subject.addObserver(ob1);
             subject.notifyAllObservers(movieTitle + " is pre-selling tickets now! ShowDate is: " + showDate);
 			
