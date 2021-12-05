@@ -236,6 +236,7 @@ CREATE TABLE PAYMENT
     PaymentID 	     INT AUTO_INCREMENT	NOT NULL,
     TicketID         INT                NOT NULL,
     CreditCardNo     VARCHAR(16)        NOT NULL,
+    Amount            INT                NOT NULL,
     PRIMARY KEY(PaymentID),
     FOREIGN KEY(TicketID) REFERENCES TICKET(TicketID)
 );
@@ -326,12 +327,12 @@ INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)
 VALUES (1, 2000, 'SOLD', 'test@email.com');
 
 # must match seat instance id
-INSERT INTO PAYMENT (TicketID, CreditCardNo)
+INSERT INTO PAYMENT (TicketID, CreditCardNo, Amount)
 VALUES (
            (SELECT TicketID
             FROM TICKET
             WHERE SeatInstanceID = 1
-           ), '111111111111'
+           ), '111111111111', 2000
        );
 
 UPDATE SEAT_INSTANCE SET Occupied = TRUE
@@ -341,12 +342,12 @@ WHERE ShowtimeID = 1 AND SeatInstanceID = 2;
 INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES (2, 2000, 'SOLD', 'test@email.com');
 
 # must match seat instance id
-INSERT INTO PAYMENT (TicketID, CreditCardNo)
+INSERT INTO PAYMENT (TicketID, CreditCardNo, Amount)
 VALUES (
            (SELECT TicketID
             FROM TICKET
             WHERE SeatInstanceID = 2
-           ), '222222222222'
+           ), '222222222222', 2000
        );
 
 SELECT * FROM TICKET;
@@ -420,7 +421,12 @@ WHERE SeatInstanceID = 1;
 
 # conditionally execute - value calculated by ticket price - code auto generated, doesn't check for collisions
 INSERT INTO COUPONS(CouponCode, CouponValue, TicketID)
-VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1);
+VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1),
+      ('AAAAAAAAAAAA', 200000, 1),
+      ('BBBBBBBBBBBB', 20000, 1),
+      ('CCCCCCCCCCCC', 1500, 1);
+
+
 
 #  END  -------------------------- INSERT SHOWTIMES - SEQUENCE ------------------------------
 
@@ -449,8 +455,12 @@ SELECT * FROM SHOWTIME;
 
 SELECT S.* FROM SHOWTIME S
                     JOIN MOVIE M ON S.MovieID = M.MovieID
-WHERE M.MovieStatus = 'AVAILABLE'
+WHERE M.MovieStatus = 'AVAILABLE';
 
 SELECT * FROM MOVIE;
 
 SELECT * FROM REGISTERED_USERS;
+
+SELECT * FROM TICKET;
+
+SELECT * FROM COUPONS
