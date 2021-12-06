@@ -1,4 +1,4 @@
-package ensf614project.src.controller;
+package controller;
 
 public class TestContoller {
 }

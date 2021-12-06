@@ -1,4 +1,4 @@
-package ensf614project.src.view;
+package view;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 public class MainMenuView extends JFrame{
 	
 	private JPanel sidePanel, panel;
+	private JFrame frame;
 	private JButton buyTicketButton,cancelTicketButton, loginButton, registerButton, searchMovieButton;
 	private JLabel topLabel, movieLabel;
-	private JFrame frame;
 	
 	public MainMenuView() {
 		

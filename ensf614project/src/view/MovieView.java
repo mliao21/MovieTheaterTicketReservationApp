@@ -1,10 +1,10 @@
-package ensf614project.src.view;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -12,28 +12,24 @@ public class MovieView extends JFrame {
 	
 	private ArrayList<JButton> movies;	
 	
-	public MovieView() {
+	public MovieView() {}
+	
+	public MovieView(ArrayList<String> movieList) {
 
 		movies = new ArrayList<JButton>();
-		this.setMovieListButtons(getMovieDB());
+		this.setMovieListButtons(movieList);
 		
 		JPanel menu = new JPanel();
-		menu.setLayout(new GridLayout(0, 1));
 		menu.setBackground(new Color(0, 128, 128));
 
-		
-		for(JButton t: movies) {
-			t.setPreferredSize(new Dimension(300, 50));
-			menu.add(t);
+		for(JButton m: movies) {
+			m.setPreferredSize(new Dimension(300, 50));
+			menu.add(m);
 		}
-		
-		JScrollPane scrollPane = new JScrollPane(menu,
-	            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-	            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.add("Center", scrollPane);
+		contentPane.add("Center", menu);
 		
 		setTitle("MOVIES AVAILABLE");
 		setSize(400, 400);
@@ -47,22 +43,17 @@ public class MovieView extends JFrame {
 		}
 	}
 	
-	public ArrayList<String> getMovieDB() {
-		
-		ArrayList<String> movieDB = new ArrayList<String>();
-		movieDB.add("Titanic");
-		movieDB.add("The Matrix");
-		movieDB.add("Lord of the Rings");
-		movieDB.add("Harry Potter");
-		movieDB.add("The Avengers 1");
-		movieDB.add("The Avengers 2");
-		movieDB.add("The Avengers 3");
-		return movieDB;
+	public ArrayList<JButton> getMoviesButtons() {
+		return movies;
 	}
-
-	public static void main(String[] args) {
-		MovieView theView = new MovieView();
-		theView.setVisible(true);
+	
+	public void selectMovieButtonListener(ActionListener actionListener) {
+		if (movies != null) {
+			for(JButton m: movies) {
+				m.addActionListener(actionListener);
+			}
+		}
+		
 	}
 
 }

@@ -1,4 +1,4 @@
-package ensf614project.src.view;
+package view;
 
 import java.awt.EventQueue;
 
@@ -18,7 +18,7 @@ public class CancelView extends JFrame{
 	private JTextField ticketNumber, emailAddress;
 	private JButton cancelButton, mainMenuButton;
 	private JFrame frame;
-	
+
 	public CancelView() {
 		
 		frame = new JFrame("Cancel Ticket");
@@ -73,6 +73,7 @@ public class CancelView extends JFrame{
 	public JTextField getTicketNumber() {
 		return ticketNumber;
 	}
+
 
 
 	public JTextField getEmailAddress() {

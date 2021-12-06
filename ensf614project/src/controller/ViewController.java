@@ -1,15 +1,8 @@
-package ensf614project.src.controller;
+package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import view.CancelView;
-import view.LoginView;
-import view.MainMenuView;
-import view.PaymentView;
-import view.SignUpView;
-import view.TheaterView;
-import view.SeatView;
+import view.*;
 
 public class ViewController {
 	private CancelView cancelView; 
@@ -19,11 +12,16 @@ public class ViewController {
 	private SignUpView signupView;
 	private SeatView seatView;
 	private TheaterView theaterView;
+	private MovieView movieView;
+	private ShowTimeView showTimeView;
+	private AdminMovieView adminMovieView;
 	private ModelController modelController;
+	private String selectedMovie;
+	private String selectedTheater;
 	
 	public ViewController(CancelView cancelView, LoginView loginView, MainMenuView mainMenuView,
 			PaymentView paymentView, SignUpView signupView, SeatView seatView, TheaterView theaterView,
-			ModelController modelController) {
+			MovieView movieView, ShowTimeView showTimeView, AdminMovieView adminMovieView, ModelController modelController) {
 		super();
 		this.cancelView = cancelView;
 		this.loginView = loginView;
@@ -32,6 +30,9 @@ public class ViewController {
 		this.signupView = signupView;
 		this.theaterView = theaterView;
 		this.seatView = seatView;
+		this.movieView = movieView;
+		this.showTimeView = showTimeView;
+		this.adminMovieView = adminMovieView;
 		this.modelController = modelController;
 	}
 	
@@ -42,6 +43,9 @@ public class ViewController {
 		this.signupView.getFrame().setVisible(false);
 		this.seatView.setVisible(false);
 		this.theaterView.setVisible(false);
+		this.movieView.setVisible(false);
+		this.showTimeView.setVisible(false);
+		this.adminMovieView.setVisible(false);
 		this.mainMenuView.getFrame().setVisible(true);
 		loadListeners();
 	}
@@ -57,12 +61,10 @@ public class ViewController {
 		this.mainMenuView.addSearchMovieButtonListener(new menuSearchMovieButtonListener());
 		
 		// Adding loginView ActionListeners 
-		
 		this.loginView.addLoginButtonListener(new loginButtonListener());
 		this.loginView.addMainMenuButtonListener(new loginMainMenuButtonListener());
 		
 		// Adding signupView ActionListeners
-		
 		this.signupView.addRegisterButtonListener(new signupRegisterButtonListener());
 		this.signupView.addEnterPaymentButtonListener(new signupEnterPaymentButtonListener());
 		this.signupView.addMainMenuButtonListener(new signupMainMenuButtonListener());
@@ -71,151 +73,177 @@ public class ViewController {
 		this.paymentView.addSubmitButtonListener(new paymentSubmitButtonListener());
 		
 		// Adding cancelView ActionListeners
-		
 		this.cancelView.addCancelButtonListener(new cancelButtonListener());
 		this.cancelView.addMainMenuButtonListener(new cancelMainMenuButtonListener());
 		
+		// Adding movieView ActionListeners
+		this.movieView.selectMovieButtonListener(new selectMovieButtonListener());
 		
+		// Adding theaterView ActionListeners
+		this.theaterView.selectTheaterButtonListener(new selectTheaterButtonListener());
 		
+		// Adding showtimeView ActionListeners
+		this.showTimeView.selectShowTimeButtonListener(new selectShowTimeButtonListener());
 		
+		// Adding seatView ActionListeners
+		this.seatView.checkoutButtonListener(new checkoutButtonListener());
+		
+		// Adding adminMovieView ActionListeners
+		this.adminMovieView.addButtonListener(new addNewMovieButtonListener());
+
 	}
 	
 	class menuLoginViewListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			System.out.println("Login pressed");
 			mainMenuView.getFrame().setVisible(false);
-			loginView.getFrame().setVisible(true);
-			
-			
-			
+			loginView.getFrame().setVisible(true);	
 		}
 	}
 	
 	class menuRegisterButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+			mainMenuView.getFrame().setVisible(false);
+			signupView.getFrame().setVisible(true);	
 		}
-		
 	}
 	
-	// MainMenuView ButtonListeners
-	
 	class menuCancelButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+			mainMenuView.getFrame().setVisible(false);
+			cancelView.getFrame().setVisible(true);	
 		}
-		
 	}
 	
 	class menuSearchMovieButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+			mainMenuView.getFrame().setVisible(false);
+			movieView = new MovieView(modelController.getMovieNameList());
+			movieView.setVisible(true);
+			movieView.selectMovieButtonListener(new selectMovieButtonListener());
 		}
-		
 	}
 	
 	class menuTicketButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+			mainMenuView.getFrame().setVisible(false);
+			movieView = new MovieView(modelController.getMovieNameList());
+			movieView.setVisible(true);
+			movieView.selectMovieButtonListener(new selectMovieButtonListener());
 		}
-		
 	}
 	
 	// LoginView ButtonListeners
 	
 	class loginButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	
 		}
 	}
 	
 	class loginMainMenuButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	
 		}
 	}
 	
 	// signupView ButtonListeners
 	class signupRegisterButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+
 		}
 	}
 	
 	class signupEnterPaymentButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	
 		}
 	}
 	
 	class signupMainMenuButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	
 		}
 	}
 	
 	// paymentView ButtonListeners
 	
 	class paymentSubmitButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	
 		}
 	}
 	
 	// cancelView ButtonListeners
 	
 	class cancelButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	
 		}
 	}
 	
 	class cancelMainMenuButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			
+			cancelView.getFrame().setVisible(false);
+			mainMenuView.getFrame().setVisible(true);	
 		}
 	}
 	
+	class selectMovieButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			selectedMovie = e.getActionCommand();
+			movieView.setVisible(false);
+			theaterView = new TheaterView(modelController.getTheaterNameList());
+			theaterView.setVisible(true);
+			theaterView.selectTheaterButtonListener(new selectTheaterButtonListener());
+		}
+	}
 	
+	class selectTheaterButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			selectedTheater = e.getActionCommand();
+			theaterView.setVisible(false);
+			showTimeView = new ShowTimeView(modelController.getAvailableShowTimesList(selectedMovie, selectedTheater));
+			showTimeView.setVisible(true);
+			showTimeView.selectShowTimeButtonListener(new selectShowTimeButtonListener());
+		}
+	}
 	
+	class selectShowTimeButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		}
+	}
+	
+	class checkoutButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		}
+	}
+	
+	class addNewMovieButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		}
+	}
 
 }

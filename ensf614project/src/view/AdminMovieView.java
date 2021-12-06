@@ -1,4 +1,4 @@
-package ensf614project.src.view;
+package view;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -125,13 +125,8 @@ public class AdminMovieView extends JFrame {
 		return addButton;
 	}
 	
-	public void addUpdateButtonListener(ActionListener actionListener) {
+	public void addButtonListener(ActionListener actionListener) {
 		addButton.addActionListener(actionListener);
-	}
-
-	public static void main(String[] args) {
-		AdminMovieView theView = new AdminMovieView();
-		theView.setVisible(true);
 	}
 
 }

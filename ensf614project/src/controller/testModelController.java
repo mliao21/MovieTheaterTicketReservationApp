@@ -1,5 +1,5 @@
 //package ensf614project.src.controller;
-package ensf614project.src.controller;
+package controller;
 
 //import ensf614project.src.model.OrdinaryUser;
 //import ensf614project.src.model.Seat;
@@ -7,9 +7,9 @@ package ensf614project.src.controller;
 
 import java.util.ArrayList;
 
-import ensf614project.src.model.OrdinaryUser;
-import ensf614project.src.model.Seat;
-import ensf614project.src.model.User;
+import model.OrdinaryUser;
+import model.Seat;
+import model.User;
 
 public class testModelController {
 

@@ -1,7 +1,7 @@
-package ensf614project.src.controller;
+package controller;
 
-import ensf614project.src.config.Configuration;
-import ensf614project.src.model.*;
+import config.Configuration;
+import model.*;
 
 import java.sql.*;
 import java.time.Duration;
