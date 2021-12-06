@@ -4,13 +4,15 @@ package ensf614project.src.model;
 public class ShowTime {
 	private int id;
 	private String startTime, endTime;
+	private String showDate;
 	private Movie movie;
 	private Theater theater;
-	public ShowTime(int id, String startTime, String endTime, Movie movie, Theater theater) {
+	public ShowTime(int id, String startTime, String endTime, String showDate, Movie movie, Theater theater) {
 		super();
 		this.id = id;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.setShowDate(showDate);
 		this.movie = movie;
 		this.theater = theater;
 	}
@@ -52,6 +54,12 @@ public class ShowTime {
 		this.theater = theater;
 	}
 	
-	
+	public String getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(String showDate) {
+		this.showDate = showDate;
+	}
 
 }

@@ -176,72 +176,46 @@ public class ModelController {
 		return theaterNameList;
 	}
 	
-	public ArrayList<Movie> getMovieByTitle(String title) {
-        ArrayList<Movie> movies = new ArrayList<>();
+	public ArrayList<ShowTime> getShowTimeList(String selectedMovie, String selectedTheater) {
+		showTimeList = new ArrayList<ShowTime>();
         try {
             Connection connObj = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             PreparedStatement prepStatement = connObj
                     .prepareStatement(
-                            "SELECT * FROM MOVIE WHERE Title LIKE ?");
-            prepStatement.setString(1, "%" + title + "%");
+                            		"SELECT M.*, T.*, S.* " +
+                                    "FROM SHOWTIME AS S, MOVIE AS M, THEATRE AS T " +
+                                    "WHERE S.MovieID = M.MovieID AND S.TheatreID = T.TheatreID " +
+                                    "AND M.Title = ? " +
+                                    "AND T.TheatreName = ?;");
+            prepStatement.setString(1, selectedMovie);
+            prepStatement.setString(2, selectedTheater);
+
             ResultSet resObj = prepStatement.executeQuery();
             while(resObj.next()) {
-                Movie movie = new Movie(
-                        resObj.getInt("MovieID"),
-                        resObj.getString("Title"),
-                        resObj.getDate("OpeningDate"),
-                        resObj.getString("Description"),
-                        resObj.getInt("Runtime")
-                        );
-                movies.add(movie);
+            	Movie movie = new Movie(
+                        resObj.getInt("M.MovieID"),
+                        resObj.getString("M.Title"),
+                        resObj.getDate("M.OpeningDate"),
+                        resObj.getString("M.Description"),
+                        resObj.getInt("Runtime"));
+
+                Theater theatre = new Theater(
+                        resObj.getInt("T.TheatreID"),
+                        resObj.getString("T.TheatreName"),
+                        resObj.getInt("T.Capacity"));
+
+                ShowTime showtime = new ShowTime(
+                        resObj.getInt("S.ShowtimeID"),
+                        resObj.getString("S.StartTime"),
+                        resObj.getString("S.EndTime"),
+                        resObj.getString("S.ShowDate"),
+                        movie,
+                        theatre
+                );
+                showTimeList.add(showtime);
             }
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
-        }
-        return movies;
-    }
-	
-	public ArrayList<ShowTime> getShowTimeList(String selectedMovie, String selectedTheater) {
-        ArrayList<ShowTime> showtimes = new ArrayList<>();
-        ArrayList<Movie> myMovies = getMovieByTitle(selectedMovie);
-
-        for(Movie m : myMovies) {
-            try {
-                Connection connObj = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-                PreparedStatement prepStatement = connObj
-                        .prepareStatement(
-                                "SELECT M.Title, " +
-                                        "T.TheatreID, T.TheatreName, T.Capacity, " +
-                                        "S.ShowtimeID, S.StartTime, S.EndTime, S.ShowDate " +
-                                        "FROM SHOWTIME S " +
-                                        "JOIN MOVIE M on S.MovieID = M.MovieID " +
-                                        "JOIN THEATRE T on S.TheatreID = T.TheatreID " +
-                                        "WHERE M.Title = ? " +
-                                        "AND T.TheatreName = ?;");
-                prepStatement.setString(1, selectedMovie);
-                prepStatement.setString(2, selectedTheater);
-
-                ResultSet resObj = prepStatement.executeQuery();
-                while(resObj.next()) {
-                    Theater theatre = new Theater(
-                            resObj.getInt("TheatreID"),
-                            resObj.getString("TheatreName"),
-                            resObj.getInt("Capacity"));
-
-                    System.out.println(resObj.getString("Title"));
-
-                    ShowTime showtime = new ShowTime(
-                            resObj.getInt("ShowtimeID"),
-                            resObj.getString("StartTime"),
-                            resObj.getString("EndTime"),
-                            m,
-                            theatre
-                    );
-                    showtimes.add(showtime);
-                }
-            } catch (Exception sqlException) {
-                sqlException.printStackTrace();
-            }
         }
         return showTimeList;
 	}
@@ -250,7 +224,7 @@ public class ModelController {
 		ArrayList<String> showTimesList = new ArrayList<String>();
 		ArrayList<ShowTime> showtimes = getShowTimeList(selectedMovie, selectedTheater);
 		for (ShowTime s: showtimes) {
-			showTimesList.add(s.getStartTime() + " - " + s.getEndTime());
+			showTimesList.add("Start Time: " + s.getStartTime() + ", End Time:" + s.getEndTime() + ", Show Date: " + s.getShowDate());
 		}	
 		return showTimesList;
 	}

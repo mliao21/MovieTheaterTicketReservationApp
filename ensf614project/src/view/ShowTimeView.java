@@ -23,7 +23,7 @@ public class ShowTimeView extends JFrame {
 		menu.setBackground(new Color(0, 128, 128));
 		
 		for(JButton s: showTimes) {
-			s.setPreferredSize(new Dimension(300, 50));
+			s.setPreferredSize(new Dimension(600, 50));
 			menu.add(s);
 		}
 	
@@ -32,7 +32,7 @@ public class ShowTimeView extends JFrame {
 		contentPane.add("Center", menu);
 		
 		setTitle("AVAILABLE SHOWTIMES");
-		setSize(400, 400);
+		setSize(600, 400);
 		setResizable(false);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
