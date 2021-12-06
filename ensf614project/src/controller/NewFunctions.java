@@ -4,6 +4,8 @@ import ensf614project.src.config.Configuration;
 import ensf614project.src.model.*;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -109,8 +111,8 @@ public class NewFunctions {
             // create COUPON in database
 
             prepStatement = conn.prepareStatement(
-                    "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID)\n" +
-                            "VALUES((SELECT LEFT(MD5(RAND()), 15)), ?, ?);");
+                    "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID, ExpiryDate)\n" +
+                            "VALUES((SELECT LEFT(MD5(RAND()), 15)), ?, ?, NOW() + INTERVAL 1 YEAR);");
 
             prepStatement.setInt(1, couponAmount);
             prepStatement.setInt(2, ticketId);
@@ -249,6 +251,112 @@ public class NewFunctions {
 
     }
 
+    public boolean verifyLogin(String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            String statement = "SELECT * FROM REGISTERED_USERS WHERE Email = ? AND Password = ?;";
+            PreparedStatement prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, email);
+            prepStatement.setString(2, password);
+            ResultSet resultSet = prepStatement.executeQuery();
+            if (resultSet.next()) {
+                conn.close();
+                return true;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean registerUser(String username, String firstName, String lastName, String creditCardNumber, String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn.prepareStatement(
+                    "INSERT INTO REGISTERED_USERS(Username, FName, LName, CreditCardNo, MembershipStart, Email, Password) VALUES(?, ?, ?, ?, ?, ?, ?);");
+            prepStatement.setString(1, username);
+            prepStatement.setString(2, firstName);
+            prepStatement.setString(3, lastName);
+            prepStatement.setString(4, creditCardNumber);
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            prepStatement.setString(5, dtf.format(now).toString());
+            prepStatement.setString(6, email);
+            prepStatement.setString(7, password);
+            prepStatement.executeUpdate();
+
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
+        // update seat instance
+        String statement = "";
+        PreparedStatement prepStatement;
+
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            // check coupon code database:
+            statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ? AND ExpiryDate > CURRENT_DATE;";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, couponCode);
+            ResultSet resObj = prepStatement.executeQuery();
+            int couponValue = 0;
+
+            if(resObj.next()) {
+                couponValue = resObj.getInt("CouponValue");
+
+                // update coupon value to couponValue - price or 0 if couponValue - price < 0
+                statement = "UPDATE COUPONS SET CouponValue = ? WHERE CouponCode = ?";
+                prepStatement = conn.prepareStatement(statement);
+                prepStatement.setInt(1, Math.max(0, couponValue - price));
+                prepStatement.setString(2, couponCode);
+                prepStatement.executeUpdate();
+            }
+
+            // update seat instance
+            statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID = ? AND SeatInstanceID = ?";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, showTimeId);
+            prepStatement.setInt(2, seatInstanceId);
+            prepStatement.executeUpdate();
+
+            // insert ticket
+            statement = "INSERT INTO TICKET (SeatInstanceID, Price, TicketStatus, Email) VALUES (?, ?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, seatInstanceId);
+            prepStatement.setInt(2, price);
+            prepStatement.setString(3, ticketStatus);
+            prepStatement.setString(4, email);
+            prepStatement.executeUpdate();
+
+            // get the last movie id inserted to use for all showtimes
+            prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'TicketID';");
+            resObj = prepStatement.executeQuery();
+            int ticketId = 0;
+            while (resObj.next()) {
+                ticketId = resObj.getInt("TicketID");
+            }
+
+            // insert payment
+            statement = "INSERT INTO PAYMENT (TicketID, CreditCardNo, Amount) VALUES (?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, ticketId);
+            prepStatement.setString(2, creditCard);
+            prepStatement.setInt(3, Math.max(0, price - couponValue));
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) throws SQLException {
         NewFunctions newFunctions = new NewFunctions();
 //        newFunctions.cancelMovie(3);
@@ -256,9 +364,47 @@ public class NewFunctions {
 //        newFunctions.issueCoupon(2, false);
 //        newFunctions.issueCoupon(1, false);
 
-        Movie movie = new Movie(1,"The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
 
-        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+//        Movie movie = new Movie(1,"The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
+//        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
+
+        if (newFunctions.verifyLogin("al@test.com", "testpassword")) {
+            System.out.println("Login Successful");
+        }
+        else {
+            System.out.println("Login Failed");
+        }
+
+        if (newFunctions.verifyLogin("al@test.com", "wrongpassword")) {
+            System.out.println("Login Successful");
+        }
+        else {
+            System.out.println("Login Failed");
+        }
+
+        if (newFunctions.verifyLogin("wrongemail@email.com", "testpassword")) {
+            System.out.println("Login Successful");
+        }
+        else {
+            System.out.println("Login Failed");
+        }
+
+        if (newFunctions.registerUser("al", "Al", "L", "123456789", "AL@AL.com", "testpassword")) {
+            System.out.println("Registration Successful");
+        }
+        else {
+            System.out.println("Registration Failed");
+        }
+
+        if (newFunctions.registerUser("alex", "Al", "L", "123456789", "AL@AL.com", "testpassword")) {
+            System.out.println("Registration Successful");
+        }
+        else {
+            System.out.println("Registration Failed");
+        }
+
+        // create ticket
+        newFunctions.createTicket(1, 7,2000, "SOLD", "mike@mike.com", "111111111111", "AAAAAAAAAAAA");
 
 
 
