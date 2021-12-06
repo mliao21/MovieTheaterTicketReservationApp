@@ -250,6 +250,7 @@ CREATE TABLE COUPONS
     CouponCode		VARCHAR(15)			    NOT NULL,
     CouponValue	    INT		                NOT NULL,
     TicketID        INT                     NOT NULL,
+    ExpiryDate      DATE                    NOT NULL,
     PRIMARY KEY(CouponCode),
     FOREIGN KEY(TicketID) REFERENCES TICKET(TicketID));
 
@@ -420,11 +421,11 @@ SET Occupied = false, Presale = false
 WHERE SeatInstanceID = 1;
 
 # conditionally execute - value calculated by ticket price - code auto generated, doesn't check for collisions
-INSERT INTO COUPONS(CouponCode, CouponValue, TicketID)
-VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1),
-      ('AAAAAAAAAAAA', 200000, 1),
-      ('BBBBBBBBBBBB', 20000, 1),
-      ('CCCCCCCCCCCC', 1500, 1);
+INSERT INTO COUPONS(CouponCode, CouponValue, TicketID, ExpiryDate)
+VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1, NOW() + INTERVAL 1 YEAR),
+      ('AAAAAAAAAAAA', 200000, 1, NOW() + INTERVAL 1 YEAR),
+      ('BBBBBBBBBBBB', 20000, 1, NOW() + INTERVAL 1 YEAR),
+      ('CCCCCCCCCCCC', 1500, 1, NOW() + INTERVAL 1 YEAR);
 
 
 
@@ -463,4 +464,4 @@ SELECT * FROM REGISTERED_USERS;
 
 SELECT * FROM TICKET;
 
-SELECT * FROM COUPONS
+SELECT * FROM COUPONS;

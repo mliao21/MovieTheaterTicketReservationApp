@@ -111,8 +111,8 @@ public class NewFunctions {
             // create COUPON in database
 
             prepStatement = conn.prepareStatement(
-                    "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID)\n" +
-                            "VALUES((SELECT LEFT(MD5(RAND()), 15)), ?, ?);");
+                    "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID, ExpiryDate)\n" +
+                            "VALUES((SELECT LEFT(MD5(RAND()), 15)), ?, ?, NOW() + INTERVAL 1 YEAR);");
 
             prepStatement.setInt(1, couponAmount);
             prepStatement.setInt(2, ticketId);
@@ -303,7 +303,7 @@ public class NewFunctions {
         try {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             // check coupon code database:
-            statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ?";
+            statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ? AND ExpiryDate > CURRENT_DATE;";
             prepStatement = conn.prepareStatement(statement);
             prepStatement.setString(1, couponCode);
             ResultSet resObj = prepStatement.executeQuery();
