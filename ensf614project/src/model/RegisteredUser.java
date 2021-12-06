@@ -57,6 +57,39 @@ public class RegisteredUser extends User{
 				+ ", address=" + address + ", cardFullName=" + cardFullName + ", cardNum=" + cardNum + ", cardExp="
 				+ cardExp + ", cardCVV=" + cardCVV + ", creditCodes=" + creditCodes + ", password=" + password + "]";
 	}
+	public int getId() {
+		return id;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public String getCardFullName() {
+		return cardFullName;
+	}
+	public String getCardNum() {
+		return cardNum;
+	}
+	public String getCardExp() {
+		return cardExp;
+	}
+	public int getCardCVV() {
+		return cardCVV;
+	}
+	public ArrayList<String> getCreditCodes() {
+		return creditCodes;
+	}
+	public String getPassword() {
+		return password;
+	}
 	
 	
 	

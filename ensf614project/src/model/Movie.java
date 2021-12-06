@@ -1,4 +1,3 @@
-
 //package ensf614project.src.model;
 package ensf614project.src.model;
 
@@ -55,4 +54,3 @@ public class Movie {
 	
 
 }
-
