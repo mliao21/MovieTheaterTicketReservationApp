@@ -75,7 +75,6 @@ public class CancelView extends JFrame{
 	}
 
 
-
 	public JTextField getEmailAddress() {
 		return emailAddress;
 	}
