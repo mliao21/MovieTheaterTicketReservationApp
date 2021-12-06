@@ -9,20 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Date;
 
+import java.util.Date;
 import ensf614project.src.config.Configuration;
-import ensf614project.src.model.Credit;
-import ensf614project.src.model.Movie;
-import ensf614project.src.model.MovieNotification;
-import ensf614project.src.model.Seat;
-import ensf614project.src.model.ShowTime;
-import ensf614project.src.model.Subscribers;
-import ensf614project.src.model.Theater;
-import ensf614project.src.model.Ticket;
-import ensf614project.src.model.User;
+import ensf614project.src.model.*;
 
 public class ModelController {
 	private User userInstance;
@@ -33,14 +27,116 @@ public class ModelController {
 	private ArrayList<Ticket> ticketList;
 	private ArrayList<Credit> couponList;
 	
-	
-	
 	public User getUserInstance() {
 		return userInstance;
 	}
+	
+	public boolean login(String email, String password) {
+		
+		int id, cardCVV;
+		String firstName, lastName, address, cardFullName,  cardNum, cardExp, username;
+		ArrayList<String> creditCodes = new ArrayList<String> (); 
+		
+		try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            String statement = "SELECT * FROM REGISTERED_USERS WHERE Email = ? AND Password = ?;";
+            PreparedStatement prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, email);
+            prepStatement.setString(2, password);
+            ResultSet resultSet = prepStatement.executeQuery();
+            if (resultSet.next()) {
+            	
+            	id = resultSet.getInt("UserID");
+            	username = resultSet.getString("Username");
+            	firstName = resultSet.getString("Fname");
+            	lastName = resultSet.getString("Lname");
+            	cardNum = resultSet.getString("CreditCardNo");
+            	address = "";
+            	cardFullName = firstName + lastName;
+            	cardExp = "";
+            	cardCVV = 0;
+                
+            	
+                
+            	
+            	
+            	RegisteredUser.RegisteredInstance();
+        		RegisteredUser temp = (RegisteredUser) RegisteredUser.getOnlyInstance();
+        		temp.loadUserinfo(id, firstName, lastName, email, address, cardFullName, cardNum, cardExp, cardCVV, creditCodes, password);
+        		System.out.println(temp.toString());
+            	conn.close();
+            	return true;
+                
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+        return false;
+		//check if user match
+		
+		
+	}
+	
+	public boolean registerUser(String username, String firstName, String lastName, String creditCardNumber, String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn.prepareStatement(
+                    "INSERT INTO REGISTERED_USERS(Username, FName, LName, CreditCardNo, MembershipStart, Email, Password) VALUES(?, ?, ?, ?, ?, ?, ?);");
+            prepStatement.setString(1, username);
+            prepStatement.setString(2, firstName);
+            prepStatement.setString(3, lastName);
+            prepStatement.setString(4, creditCardNumber);
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            prepStatement.setString(5, dtf.format(now).toString());
+            prepStatement.setString(6, email);
+            prepStatement.setString(7, password);
+            prepStatement.executeUpdate();
+
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 	public ArrayList<Movie> getMovieList() {
+        movieList = new ArrayList<Movie>();
+        try {
+            Connection connObj = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = connObj
+                    .prepareStatement(
+                            "SELECT * FROM MOVIE WHERE OpeningDate >= ?");
+            // TODO : Change to current date not in milliseconds
+            prepStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+            ResultSet resObj = prepStatement.executeQuery();
+            while(resObj.next()) {
+                Movie movie = new Movie(
+                        resObj.getInt("MovieID"),
+                        resObj.getString("Title"),
+                        resObj.getDate("OpeningDate"),
+                        resObj.getString("Description"),
+                        resObj.getInt("Runtime")
+                );
+                movieList.add(movie);
+            }
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
 		return movieList;
+	}
+	
+	public ArrayList<String> getMovieNameList() {
+		ArrayList<String> movieNameList = new ArrayList<String>();
+		ArrayList<Movie> movies = getMovieList();
+		for (Movie m: movies) {
+			movieNameList.add(m.getName());
+		}	
+		return movieNameList;
 	}
 
 	public ArrayList<Movie> getMoviePreSaleList() {
@@ -48,11 +144,114 @@ public class ModelController {
 	}
 
 	public ArrayList<Theater> getTheaterList() {
+		theaterList = new ArrayList<Theater>();
+
+        try {
+            Connection connObj = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = connObj
+                    .prepareStatement(
+                            "SELECT * FROM THEATRE");
+            ResultSet resObj = prepStatement.executeQuery();
+            while(resObj.next()) {
+                Theater theatre = new Theater(
+                        resObj.getInt("TheatreID"),
+                        resObj.getString("TheatreName"),
+                        resObj.getInt("Capacity")
+                );
+                theaterList.add(theatre);
+            }
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
 		return theaterList;
 	}
+	
+	public ArrayList<String> getTheaterNameList() {
+		ArrayList<String> theaterNameList = new ArrayList<String>();
+		ArrayList<Theater> theaters = getTheaterList();
+		for (Theater t: theaters) {
+			theaterNameList.add(t.getNameId());
+		}	
+		return theaterNameList;
+	}
+	
+	public ArrayList<Movie> getMovieByTitle(String title) {
+        ArrayList<Movie> movies = new ArrayList<>();
+        try {
+            Connection connObj = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = connObj
+                    .prepareStatement(
+                            "SELECT * FROM MOVIE WHERE Title LIKE ?");
+            prepStatement.setString(1, "%" + title + "%");
+            ResultSet resObj = prepStatement.executeQuery();
+            while(resObj.next()) {
+                Movie movie = new Movie(
+                        resObj.getInt("MovieID"),
+                        resObj.getString("Title"),
+                        resObj.getDate("OpeningDate"),
+                        resObj.getString("Description"),
+                        resObj.getInt("Runtime")
+                        );
+                movies.add(movie);
+            }
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
+        return movies;
+    }
+	
+	public ArrayList<ShowTime> getShowTimeList(String selectedMovie, String selectedTheater) {
+        ArrayList<ShowTime> showtimes = new ArrayList<>();
+        ArrayList<Movie> myMovies = getMovieByTitle(selectedMovie);
 
-	public ArrayList<ShowTime> getShowTimeList() {
-		return showTimeList;
+        for(Movie m : myMovies) {
+            try {
+                Connection connObj = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+                PreparedStatement prepStatement = connObj
+                        .prepareStatement(
+                                "SELECT M.Title, " +
+                                        "T.TheatreID, T.TheatreName, T.Capacity, " +
+                                        "S.ShowtimeID, S.StartTime, S.EndTime, S.ShowDate " +
+                                        "FROM SHOWTIME S " +
+                                        "JOIN MOVIE M on S.MovieID = M.MovieID " +
+                                        "JOIN THEATRE T on S.TheatreID = T.TheatreID " +
+                                        "WHERE M.Title = ? " +
+                                        "AND T.TheatreName = ?;");
+                prepStatement.setString(1, selectedMovie);
+                prepStatement.setString(2, selectedTheater);
+
+                ResultSet resObj = prepStatement.executeQuery();
+                while(resObj.next()) {
+                    Theater theatre = new Theater(
+                            resObj.getInt("TheatreID"),
+                            resObj.getString("TheatreName"),
+                            resObj.getInt("Capacity"));
+
+                    System.out.println(resObj.getString("Title"));
+
+                    ShowTime showtime = new ShowTime(
+                            resObj.getInt("ShowtimeID"),
+                            resObj.getString("StartTime"),
+                            resObj.getString("EndTime"),
+                            m,
+                            theatre
+                    );
+                    showtimes.add(showtime);
+                }
+            } catch (Exception sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+        return showTimeList;
+	}
+	
+	public ArrayList<String> getAvailableShowTimesList(String selectedMovie, String selectedTheater) {
+		ArrayList<String> showTimesList = new ArrayList<String>();
+		ArrayList<ShowTime> showtimes = getShowTimeList(selectedMovie, selectedTheater);
+		for (ShowTime s: showtimes) {
+			showTimesList.add(s.getStartTime() + " - " + s.getEndTime());
+		}	
+		return showTimesList;
 	}
 
 	public ArrayList<Ticket> getTicketList() {
