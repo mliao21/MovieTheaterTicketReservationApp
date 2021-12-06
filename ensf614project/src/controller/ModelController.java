@@ -33,155 +33,149 @@ import ensf614project.src.model.Ticket;
 import ensf614project.src.model.User;
 
 public class ModelController {
-	private User userInstance;
-	private ArrayList<Movie> movieList;
-	private ArrayList<Movie> moviePreSaleList;
-	private ArrayList<Theater> theaterList;
-	private ArrayList<ShowTime> showTimeList;
-	private ArrayList<Ticket> ticketList;
-	private ArrayList<Credit> couponList;
-	
-	
-	
-	public User getUserInstance() {
-		return userInstance;
-	}
+    private User userInstance;
+    private ArrayList<Movie> movieList;
+    private ArrayList<Movie> moviePreSaleList;
+    private ArrayList<Theater> theaterList;
+    private ArrayList<ShowTime> showTimeList;
+    private ArrayList<Ticket> ticketList;
+    private ArrayList<Credit> couponList;
 
-	public ArrayList<Movie> getMovieList() {
-		return movieList;
-	}
 
-	public ArrayList<Movie> getMoviePreSaleList() {
-		return moviePreSaleList;
-	}
+    public User getUserInstance() {
+        return userInstance;
+    }
 
-	public ArrayList<Theater> getTheaterList() {
-		return theaterList;
-	}
+    public ArrayList<Movie> getMovieList() {
+        return movieList;
+    }
 
-	public ArrayList<ShowTime> getShowTimeList() {
-		return showTimeList;
-	}
+    public ArrayList<Movie> getMoviePreSaleList() {
+        return moviePreSaleList;
+    }
 
-	public ArrayList<Ticket> getTicketList() {
-		return ticketList;
-	}
-	
-	
+    public ArrayList<Theater> getTheaterList() {
+        return theaterList;
+    }
 
-	
-	public ArrayList<Credit> getCouponList() {
-		return couponList;
-	}
+    public ArrayList<ShowTime> getShowTimeList() {
+        return showTimeList;
+    }
 
-	public ModelController(User userInstance) {
-		super();
-		this.userInstance = userInstance;
-		movieList = new ArrayList<Movie>();
-		moviePreSaleList = new ArrayList<Movie>();
-		theaterList = new ArrayList<Theater>();
-		showTimeList = new ArrayList<ShowTime>();
-		ticketList = new ArrayList<Ticket>();
-		this.couponList = new ArrayList<Credit>();
-		
-	}
-	
-	public void loadModelsQuery() {
-		
-		this.movieList.clear();
-		this.moviePreSaleList.clear();
-		this.theaterList.clear();
-		this.showTimeList.clear();
-		this.ticketList.clear();
-		this.couponList.clear();
-		
-		this.loadTheaters();
-		this.loadSeats();
-		this.loadMovies();
-		this.loadShowTime();
-		this.loadCredits();
-		
-		
-		
-		
-	}
-	
-	
-	
-	public ArrayList<String> getAllSubscribers(){
-		ArrayList<String> temp = new ArrayList<String>();
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			PreparedStatement prepStatement = conn
+    public ArrayList<Ticket> getTicketList() {
+        return ticketList;
+    }
+
+
+    public ArrayList<Credit> getCouponList() {
+        return couponList;
+    }
+
+    public ModelController(User userInstance) {
+        super();
+        this.userInstance = userInstance;
+        movieList = new ArrayList<Movie>();
+        moviePreSaleList = new ArrayList<Movie>();
+        theaterList = new ArrayList<Theater>();
+        showTimeList = new ArrayList<ShowTime>();
+        ticketList = new ArrayList<Ticket>();
+        this.couponList = new ArrayList<Credit>();
+
+    }
+
+    public void loadModelsQuery() {
+
+        this.movieList.clear();
+        this.moviePreSaleList.clear();
+        this.theaterList.clear();
+        this.showTimeList.clear();
+        this.ticketList.clear();
+        this.couponList.clear();
+
+        this.loadTheaters();
+        this.loadSeats();
+        this.loadMovies();
+        this.loadShowTime();
+        this.loadCredits();
+
+
+    }
+
+
+    public ArrayList<String> getAllSubscribers() {
+        ArrayList<String> temp = new ArrayList<String>();
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn
                     .prepareStatement(
                             "SELECT * FROM REGISTERED_USERS");
             ResultSet resObj = prepStatement.executeQuery();
-            while(resObj.next()) {
-            	
-            	temp.add(resObj.getString("Email"));
+            while (resObj.next()) {
+
+                temp.add(resObj.getString("Email"));
             }
 
 
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
-		return temp;
-		
-		
-	}
-	
-	private void loadCredits() {
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			PreparedStatement prepStatement = conn
+        return temp;
+
+
+    }
+
+    private void loadCredits() {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn
                     .prepareStatement(
                             "SELECT * FROM COUPONS");
             ResultSet resObj = prepStatement.executeQuery();
-            while(resObj.next()) {
-            	
-            	this.couponList.add( new Credit(resObj.getString("CouponCode"), resObj.getInt("CouponValue")));
+            while (resObj.next()) {
+
+                this.couponList.add(new Credit(resObj.getString("CouponCode"), resObj.getInt("CouponValue")));
             }
 
 
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
-		
-	}
-	
-	private void loadTheaters() {
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			PreparedStatement prepStatement = conn
+
+    }
+
+    private void loadTheaters() {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn
                     .prepareStatement(
                             "SELECT * FROM THEATRE");
             ResultSet resObj = prepStatement.executeQuery();
-            while(resObj.next()) {
-            	Theater theatre = new Theater(
+            while (resObj.next()) {
+                Theater theatre = new Theater(
                         resObj.getInt("TheatreID"),
                         resObj.getString("TheatreName"),
                         resObj.getInt("Capacity")
                 );
-            	theaterList.add(theatre);
+                theaterList.add(theatre);
             }
-			
-           
+
+
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
-		
-	}
-	
-	private void loadMovies() {
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			PreparedStatement prepStatement = conn
+
+    }
+
+    private void loadMovies() {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn
                     .prepareStatement(
                             "SELECT * FROM MOVIE WHERE OpeningDate >= ? AND MovieStatus = 'AVAILABLE'");
             // TODO : Change to current date not in milliseconds
             prepStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
             ResultSet resObj = prepStatement.executeQuery();
-            while(resObj.next()) {
+            while (resObj.next()) {
                 Movie movie = new Movie(
                         resObj.getInt("MovieID"),
                         resObj.getString("Title"),
@@ -191,20 +185,20 @@ public class ModelController {
                 );
                 movieList.add(movie);
             }
-			
-           
+
+
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
-		
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			PreparedStatement prepStatement = conn
+
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn
                     .prepareStatement(
                             "SELECT * FROM MOVIE WHERE OpeningDate < ? AND MovieStatus = 'AVAILABLE'");
             prepStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
             ResultSet resObj = prepStatement.executeQuery();
-            while(resObj.next()) {
+            while (resObj.next()) {
                 Movie movie = new Movie(
                         resObj.getInt("MovieID"),
                         resObj.getString("Title"),
@@ -217,164 +211,163 @@ public class ModelController {
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
-		
-		
-	}
-	
-	public Movie getMovie(int id) {
-		for(int i = 0; i< this.movieList.size();i++) {
-			if(this.movieList.get(i).getId()==id) {
-				return this.movieList.get(i);
-			}
-		}
-		for(int i = 0; i< this.moviePreSaleList.size();i++) {
-			if(this.moviePreSaleList.get(i).getId()==id) {
-				return this.moviePreSaleList.get(i);
-			}
-		}
-		return null;
-	}
-	
-	public Theater getTheater(int id) {
-		for(int i = 0; i< this.theaterList.size();i++) {
-			if(this.theaterList.get(i).getId()==id) {
-				return this.theaterList.get(i);
-			}
-		}
-		return null;
-	}
-
-	private void loadShowTime() {
-		int showTimeID, movieID, theatreID;
-		String startTime, endTime;
-		Date date;
-		Movie tempM;
-		Theater tempT;
-
-		try {
-
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			PreparedStatement prepStatement = conn
-
-					.prepareStatement(
-							"SELECT S.* FROM SHOWTIME S " +
-									"JOIN MOVIE M ON S.MovieID = M.MovieID " +
-									"WHERE M.MovieStatus = 'AVAILABLE'");
-			ResultSet resObj = prepStatement.executeQuery();
-			while(resObj.next()) {
-				showTimeID = resObj.getInt("ShowtimeID");
-				movieID = resObj.getInt("MovieID");
-				theatreID = resObj.getInt("TheatreID");
-				startTime = resObj.getString("StartTime");
-				endTime = resObj.getString("EndTime");
-				date = resObj.getDate("ShowDate");
-				tempM = this.getMovie(movieID);
-				tempT = this.getTheater(theatreID);
-				ShowTime stemp = new ShowTime(showTimeID, startTime, endTime,tempM, tempT);
 
 
-				this.showTimeList.add(stemp);
-			}
+    }
 
-
-		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
-		}
-
-
-
-	}
-
-	private HashMap<String, Boolean> getSeats(String theaterId){
-		String id = "";
-		
-		boolean occupy = false;
-		HashMap<String, Boolean> test = new HashMap<String, Boolean>();
-		
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			Statement stmt = conn.createStatement();
-			Statement stmt2 = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM SEAT_CHART WHERE THEATREID = " + theaterId);
-			ResultSet seat;
-			while(rs.next()){
-                id = rs.getString("SEATID");
-                
-                seat = stmt2.executeQuery("SELECT * FROM SEAT_INSTANCE WHERE SEATID = " + id);
-                while(seat.next()){
-                if(seat.getString("Occupied") == "1") {
-                	occupy = true;
-                } else {
-                	occupy = false;
-                }
-                }
-                test.put(id + ":" + rs.getString("SEATROW")+ ":" + rs.getString("SEATCOL"), occupy);
-                
-                
+    public Movie getMovie(int id) {
+        for (int i = 0; i < this.movieList.size(); i++) {
+            if (this.movieList.get(i).getId() == id) {
+                return this.movieList.get(i);
             }
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        }
+        for (int i = 0; i < this.moviePreSaleList.size(); i++) {
+            if (this.moviePreSaleList.get(i).getId() == id) {
+                return this.moviePreSaleList.get(i);
+            }
+        }
+        return null;
+    }
 
-		
-		return test;
-	}
-	
-	private void loadSeats() {
-		
-		for(int j = 0;j<this.theaterList.size();j++) {
-			Theater tt = this.theaterList.get(j);
-			tt.createAllSeats(this.getSeats(String.valueOf(tt.getId())));
-			ArrayList<Seat> seatList = tt.getSeatList();
-			for (int i = 0; i < seatList.size(); i++) { 		      
-		          System.out.println("Seat: " + seatList.get(i).getId() + " row: " + seatList.get(i).getRow() + " column: " + seatList.get(i).getCol() + " status: " + seatList.get(i).isStatus()); 		
-		      }   
-			
-			
-		}
-	}
-	
-	public void createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
-		String statement = "";
-		PreparedStatement prepStatement;
-		try {
-			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			Statement stmt = conn.createStatement();
+    public Theater getTheater(int id) {
+        for (int i = 0; i < this.theaterList.size(); i++) {
+            if (this.theaterList.get(i).getId() == id) {
+                return this.theaterList.get(i);
+            }
+        }
+        return null;
+    }
 
-			statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID =" + showTimeId +" AND SeatInstanceID = " +seatInstanceID + ";";			
-			prepStatement = conn.prepareStatement(statement);
-            prepStatement.executeUpdate();
-           
-            statement =  "INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES ("+seatInstanceID+", "+price+", '"+ticketStatus+"', '"+email+"');";			
-			prepStatement = conn.prepareStatement(statement);
-            prepStatement.executeUpdate();
-            
-            statement =  "INSERT INTO PAYMENT (TicketID, CreditCardNo)\r\n"
-            		+ "VALUES (\r\n"
-            		+ "        (SELECT TicketID\r\n"
-            		+ "            FROM TICKET\r\n"
-            		+ "            WHERE SeatInstanceID = "+seatInstanceID+"\r\n"
-            		+ "            ), '"+creditCard+"'\r\n"
-            		+ "       );";			
-			prepStatement = conn.prepareStatement(statement);
-            prepStatement.executeUpdate();
-            
-            
-            
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		this.loadModelsQuery();
+    private void loadShowTime() {
+        int showTimeID, movieID, theatreID;
+        String startTime, endTime;
+        Date date;
+        Movie tempM;
+        Theater tempT;
 
-	}
-	
-	
-	public void addMovies(Movie movie, int theaterId, int cleaningTime,String openingDateString, String endDateString) {
-		 // set a opening time of the theater for 8 am
+        try {
+
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn
+
+                    .prepareStatement(
+                            "SELECT S.* FROM SHOWTIME S " +
+                                    "JOIN MOVIE M ON S.MovieID = M.MovieID " +
+                                    "WHERE M.MovieStatus = 'AVAILABLE'");
+            ResultSet resObj = prepStatement.executeQuery();
+            while (resObj.next()) {
+                showTimeID = resObj.getInt("ShowtimeID");
+                movieID = resObj.getInt("MovieID");
+                theatreID = resObj.getInt("TheatreID");
+                startTime = resObj.getString("StartTime");
+                endTime = resObj.getString("EndTime");
+                date = resObj.getDate("ShowDate");
+                tempM = this.getMovie(movieID);
+                tempT = this.getTheater(theatreID);
+                ShowTime stemp = new ShowTime(showTimeID, startTime, endTime, tempM, tempT);
+
+
+                this.showTimeList.add(stemp);
+            }
+
+
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
+
+
+    }
+
+    private HashMap<String, Boolean> getSeats(String theaterId) {
+        String id = "";
+
+        boolean occupy = false;
+        HashMap<String, Boolean> test = new HashMap<String, Boolean>();
+
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            Statement stmt = conn.createStatement();
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM SEAT_CHART WHERE THEATREID = " + theaterId);
+            ResultSet seat;
+            while (rs.next()) {
+                id = rs.getString("SEATID");
+
+                seat = stmt2.executeQuery("SELECT * FROM SEAT_INSTANCE WHERE SEATID = " + id);
+                while (seat.next()) {
+                    if (seat.getString("Occupied") == "1") {
+                        occupy = true;
+                    } else {
+                        occupy = false;
+                    }
+                }
+                test.put(id + ":" + rs.getString("SEATROW") + ":" + rs.getString("SEATCOL"), occupy);
+
+
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        return test;
+    }
+
+    private void loadSeats() {
+
+        for (int j = 0; j < this.theaterList.size(); j++) {
+            Theater tt = this.theaterList.get(j);
+            tt.createAllSeats(this.getSeats(String.valueOf(tt.getId())));
+            ArrayList<Seat> seatList = tt.getSeatList();
+            for (int i = 0; i < seatList.size(); i++) {
+                System.out.println("Seat: " + seatList.get(i).getId() + " row: " + seatList.get(i).getRow() + " column: " + seatList.get(i).getCol() + " status: " + seatList.get(i).isStatus());
+            }
+
+
+        }
+    }
+
+    // TODO delete this method
+    // OLD VERSION
+    public void createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
+        String statement = "";
+        PreparedStatement prepStatement;
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            Statement stmt = conn.createStatement();
+
+            statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID =" + showTimeId + " AND SeatInstanceID = " + seatInstanceID + ";";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+
+            statement = "INSERT INTO TICKET(SeatInstanceID, Price, TicketStatus, Email)  VALUES (" + seatInstanceID + ", " + price + ", '" + ticketStatus + "', '" + email + "');";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+
+            statement = "INSERT INTO PAYMENT (TicketID, CreditCardNo)\r\n"
+                    + "VALUES (\r\n"
+                    + "        (SELECT TicketID\r\n"
+                    + "            FROM TICKET\r\n"
+                    + "            WHERE SeatInstanceID = " + seatInstanceID + "\r\n"
+                    + "            ), '" + creditCard + "'\r\n"
+                    + "       );";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        this.loadModelsQuery();
+
+    }
+
+
+    public void addMovies(Movie movie, int theaterId, int cleaningTime, String openingDateString, String endDateString) {
+        // set a opening time of the theater for 8 am
         String openingTime = "08:00:00";
         // last showing time of 10 pm
         String lastShowing = "22:00:00";
@@ -425,7 +418,7 @@ public class ModelController {
             for (String date : dates) {
                 for (String time : times) {
                     // insert showtime
-                    statement ="INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
+                    statement = "INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
                             + "VALUES(?, ?, ?, ?, ?);";
                     prepStatement = conn.prepareStatement(statement);
                     prepStatement.setInt(1, movieId);
@@ -480,13 +473,13 @@ public class ModelController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-		
-		this.loadModelsQuery();
 
-	}
-	
-	
-	public void cancelMovie(int movieId) {
+        this.loadModelsQuery();
+
+    }
+
+
+    public void cancelMovie(int movieId) {
         try {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 
@@ -502,9 +495,9 @@ public class ModelController {
         }
         this.loadModelsQuery();
     }
-	
-	
-	public void refundTicket(int seatInstanceId) {
+
+
+    public void refundTicket(int seatInstanceId) {
         try {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             // get ticket id that you are refunding
@@ -537,8 +530,8 @@ public class ModelController {
         }
         this.loadModelsQuery();
     }
-	
-	public Credit issueCoupon(int ticketId, boolean subscriber) {
+
+    public Credit issueCoupon(int ticketId, boolean subscriber) {
         double multiplier = 1;
 
         // if subscriber is false, multiplier is 0.85
@@ -607,12 +600,120 @@ public class ModelController {
             System.out.println(credit);
             this.loadModelsQuery();
             return credit;
-        }
-        catch (Exception sqlException) {
+        } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
-        
+
         return null;
     }
-	
+
+    public boolean verifyLogin(String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            String statement = "SELECT * FROM REGISTERED_USERS WHERE Email = ? AND Password = ?;";
+            PreparedStatement prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, email);
+            prepStatement.setString(2, password);
+            ResultSet resultSet = prepStatement.executeQuery();
+            if (resultSet.next()) {
+                conn.close();
+                return true;
+            }
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean registerUser(String username, String firstName, String lastName, String creditCardNumber, String email, String password) {
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            PreparedStatement prepStatement = conn.prepareStatement(
+                    "INSERT INTO REGISTERED_USERS(Username, FName, LName, CreditCardNo, MembershipStart, Email, Password) VALUES(?, ?, ?, ?, ?, ?, ?);");
+            prepStatement.setString(1, username);
+            prepStatement.setString(2, firstName);
+            prepStatement.setString(3, lastName);
+            prepStatement.setString(4, creditCardNumber);
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            prepStatement.setString(5, dtf.format(now).toString());
+            prepStatement.setString(6, email);
+            prepStatement.setString(7, password);
+            prepStatement.executeUpdate();
+
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
+        // update seat instance
+        String statement = "";
+        PreparedStatement prepStatement;
+
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            // check coupon code database:
+            statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ? AND ExpiryDate > CURRENT_DATE;";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, couponCode);
+            ResultSet resObj = prepStatement.executeQuery();
+            int couponValue = 0;
+
+            if (resObj.next()) {
+                couponValue = resObj.getInt("CouponValue");
+
+                // update coupon value to couponValue - price or 0 if couponValue - price < 0
+                statement = "UPDATE COUPONS SET CouponValue = ? WHERE CouponCode = ?";
+                prepStatement = conn.prepareStatement(statement);
+                prepStatement.setInt(1, Math.max(0, couponValue - price));
+                prepStatement.setString(2, couponCode);
+                prepStatement.executeUpdate();
+            }
+
+            // update seat instance
+            statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID = ? AND SeatInstanceID = ?";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, showTimeId);
+            prepStatement.setInt(2, seatInstanceId);
+            prepStatement.executeUpdate();
+
+            // insert ticket
+            statement = "INSERT INTO TICKET (SeatInstanceID, Price, TicketStatus, Email) VALUES (?, ?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, seatInstanceId);
+            prepStatement.setInt(2, price);
+            prepStatement.setString(3, ticketStatus);
+            prepStatement.setString(4, email);
+            prepStatement.executeUpdate();
+
+            // get the last movie id inserted to use for all showtimes
+            prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'TicketID';");
+            resObj = prepStatement.executeQuery();
+            int ticketId = 0;
+            while (resObj.next()) {
+                ticketId = resObj.getInt("TicketID");
+            }
+
+            // insert payment
+            statement = "INSERT INTO PAYMENT (TicketID, CreditCardNo, Amount) VALUES (?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, ticketId);
+            prepStatement.setString(2, creditCard);
+            prepStatement.setInt(3, Math.max(0, price - couponValue));
+
+            System.out.println("TicketID: " + ticketId);
+            System.out.println("CreditCardNo: " + creditCard);
+            System.out.println("Amount: " + Math.max(0, price - couponValue));
+
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
