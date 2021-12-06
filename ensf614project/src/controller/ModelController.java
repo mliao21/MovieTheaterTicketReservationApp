@@ -435,7 +435,7 @@ public class ModelController {
             	date = resObj.getDate("ShowDate");
             	tempM = this.getMovie(movieID);
             	tempT = this.getTheater(theatreID);
-            	ShowTime stemp = new ShowTime(showTimeID, startTime, endTime,tempM, tempT);
+            	ShowTime stemp = new ShowTime(showTimeID, startTime, endTime,date.toString(),tempM, tempT);
             	
             	
             	this.showTimeList.add(stemp);
