@@ -434,46 +434,44 @@ public class ModelController {
 		}
 		return null;
 	}
-
+	
 	private void loadShowTime() {
 		int showTimeID, movieID, theatreID;
 		String startTime, endTime;
 		Date date;
 		Movie tempM;
 		Theater tempT;
-
+		
 		try {
-
+			
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
-
-					.prepareStatement(
-							"SELECT S.* FROM SHOWTIME S " +
-									"JOIN MOVIE M ON S.MovieID = M.MovieID " +
-									"WHERE M.MovieStatus = 'AVAILABLE'");
-			ResultSet resObj = prepStatement.executeQuery();
-			while(resObj.next()) {
-				showTimeID = resObj.getInt("ShowtimeID");
-				movieID = resObj.getInt("MovieID");
-				theatreID = resObj.getInt("TheatreID");
-				startTime = resObj.getString("StartTime");
-				endTime = resObj.getString("EndTime");
-				date = resObj.getDate("ShowDate");
-				tempM = this.getMovie(movieID);
-				tempT = this.getTheater(theatreID);
-				ShowTime stemp = new ShowTime(showTimeID, startTime, endTime,tempM, tempT);
-
-
-				this.showTimeList.add(stemp);
-			}
-
-
-		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
-		}
-
-
-
+                    .prepareStatement(
+                            "SELECT S.* FROM SHOWTIME S " +
+							"JOIN MOVIE M ON S.MovieID = M.MovieID " +
+							"WHERE M.MovieStatus = 'AVAILABLE'");
+            ResultSet resObj = prepStatement.executeQuery();
+            while(resObj.next()) {
+            	showTimeID = resObj.getInt("ShowtimeID");
+            	movieID = resObj.getInt("MovieID");
+            	theatreID = resObj.getInt("TheatreID");
+            	startTime = resObj.getString("StartTime");
+            	endTime = resObj.getString("EndTime");
+            	date = resObj.getDate("ShowDate");
+            	tempM = this.getMovie(movieID);
+            	tempT = this.getTheater(theatreID);
+            	ShowTime stemp = new ShowTime(showTimeID, startTime, endTime,tempM, tempT);
+            	
+            	
+            	this.showTimeList.add(stemp);
+            }
+			
+           
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        }
+        
+        
 	}
 
 	private HashMap<String, Boolean> getSeats(String theaterId){
@@ -563,6 +561,70 @@ public class ModelController {
 
 	}
 	
+	public void createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
+        // update seat instance
+        String statement = "";
+        PreparedStatement prepStatement;
+
+        try {
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            // check coupon code database:
+            statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ? AND ExpiryDate > CURRENT_DATE;";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setString(1, couponCode);
+            ResultSet resObj = prepStatement.executeQuery();
+            int couponValue = 0;
+
+            if(resObj.next()) {
+                couponValue = resObj.getInt("CouponValue");
+
+                // update coupon value to couponValue - price or 0 if couponValue - price < 0
+                statement = "UPDATE COUPONS SET CouponValue = ? WHERE CouponCode = ?";
+                prepStatement = conn.prepareStatement(statement);
+                prepStatement.setInt(1, Math.max(0, couponValue - price));
+                prepStatement.setString(2, couponCode);
+                prepStatement.executeUpdate();
+            }
+
+            // update seat instance
+            statement = "UPDATE SEAT_INSTANCE SET Occupied = TRUE WHERE ShowtimeID = ? AND SeatInstanceID = ?";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, showTimeId);
+            prepStatement.setInt(2, seatInstanceId);
+            prepStatement.executeUpdate();
+
+            // insert ticket
+            statement = "INSERT INTO TICKET (SeatInstanceID, Price, TicketStatus, Email) VALUES (?, ?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, seatInstanceId);
+            prepStatement.setInt(2, price);
+            prepStatement.setString(3, ticketStatus);
+            prepStatement.setString(4, email);
+            prepStatement.executeUpdate();
+
+            // get the last movie id inserted to use for all showtimes
+            prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'TicketID';");
+            resObj = prepStatement.executeQuery();
+            int ticketId = 0;
+            while (resObj.next()) {
+                ticketId = resObj.getInt("TicketID");
+            }
+
+            // insert payment
+            statement = "INSERT INTO PAYMENT (TicketID, CreditCardNo, Amount) VALUES (?, ?, ?)";
+            prepStatement = conn.prepareStatement(statement);
+            prepStatement.setInt(1, ticketId);
+            prepStatement.setString(2, creditCard);
+            prepStatement.setInt(3, Math.max(0, price - couponValue));
+            
+            this.loadModelsQuery();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+	
 	
 	public void addMovies(String movieTitle, String openingDate, String movieDescription, int runTime, String theaterName, String startTime, String endTime, String showDate ) {
 		Connection conn;
@@ -577,13 +639,10 @@ public class ModelController {
 			prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
 
-			// get the last movie id inserted to use for all showtimes
-			prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID() AS 'MovieID';");
+			prepStatement = conn.prepareStatement("SELECT LAST_INSERT_ID();");
 			ResultSet resObj = prepStatement.executeQuery();
-			int movieId = 0;
-			while (resObj.next()) {
-				movieId = resObj.getInt("MovieID");
-			}
+			resObj.next();
+			int movieId = resObj.getInt(1);
 
             statement ="INSERT INTO SHOWTIME(MovieID, TheatreID, StartTime, EndTime, ShowDate)\r\n"
             		+ "VALUES (\r\n"
