@@ -90,10 +90,13 @@ public class SeatView extends JFrame {
 		}
 		return seatlist;
 	}
-
-//	public static void main(String[] args) {
-//		SeatView theView = new SeatView("ShowTime: Movie Titanic at 7pm", "Blue Theater");
-//		theView.setVisible(true);
-//	}
+	
+	public JButton getCheckoutButton() {
+		return checkout;
+	}
+	
+	public void checkoutButtonListener(ActionListener actionListener) {
+		checkout.addActionListener(actionListener);
+	}
 	
 }

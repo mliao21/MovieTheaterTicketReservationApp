@@ -18,7 +18,7 @@ public class CancelView extends JFrame{
 	private JTextField ticketNumber, emailAddress;
 	private JButton cancelButton, mainMenuButton;
 	private JFrame frame;
-	
+
 	public CancelView() {
 		
 		frame = new JFrame("Cancel Ticket");

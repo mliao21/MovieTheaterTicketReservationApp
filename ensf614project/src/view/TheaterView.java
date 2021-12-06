@@ -1,24 +1,29 @@
 package ensf614project.src.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
 public class TheaterView extends JFrame {
 	
-	private ArrayList<JButton> theaters;	
+	private ArrayList<JButton> theaters;
 	
-	public TheaterView(String ShowTime) {
+	public TheaterView() {}
+	
+	public TheaterView(ArrayList<String> theaterList) {
 		
 		theaters = new ArrayList<JButton>();
-		this.setTheatersListButtons(getTheaterDB(ShowTime));
+		this.setTheatersListButtons(theaterList);
 		
 		JPanel menu = new JPanel();
-		menu.setLayout(new GridLayout(0, 1));
+		menu.setBackground(new Color(0, 128, 128));
 		
 		for(JButton t: theaters) {
+			t.setPreferredSize(new Dimension(300, 50));
 			menu.add(t);
 		}
 	
@@ -27,8 +32,8 @@ public class TheaterView extends JFrame {
 		contentPane.add("Center", menu);
 		
 		setTitle("THEATERS AVAILABLE");
-		setSize(600, 300);
-		setResizable(false); //can't change the size of the screen
+		setSize(400, 400);
+		setResizable(false);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 		
@@ -38,21 +43,18 @@ public class TheaterView extends JFrame {
 		}
 	}
 	
-	public ArrayList<String> getTheaterDB(String showtime) {
+	public ArrayList<JButton> getTheatersButton() {
+		return theaters;
+	}
+	
+	public void selectTheaterButtonListener(ActionListener actionListener) {
+		if (theaters != null) {
+			for(JButton t: theaters) {
+				t.addActionListener(actionListener);
+			}			
+		}
 		
-		// retrieve list of available theaters at showtime input
-		ArrayList<String> theatersDB = new ArrayList<String>();
-		theatersDB.add("Red Theater");
-		theatersDB.add("Blue Theater");
-		theatersDB.add("Black Theater");
-		theatersDB.add("Green Theater");
-		theatersDB.add("Yellow Theater");
-		return theatersDB;
 	}
 
-//	public static void main(String[] args) {
-//		TheaterView theView = new TheaterView("ShowTime: Movie Titanic at 7pm");
-//		theView.setVisible(true);
-//	}
 
 }

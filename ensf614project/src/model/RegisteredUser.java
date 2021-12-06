@@ -29,6 +29,11 @@ public class RegisteredUser extends User{
 	} 
 	
 	
+	public static synchronized void RegisteredInstance() {
+		onlyInstance = new RegisteredUser();
+	}
+	
+	
 	
 	
 	public void loadUserinfo(int id, String firstName, String lastName, String email, String address, String cardFullName,
@@ -46,6 +51,14 @@ public class RegisteredUser extends User{
 		this.creditCodes = creditCodes;
 		this.password = password;
 	}
+	@Override
+	public String toString() {
+		return "RegisteredUser [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", address=" + address + ", cardFullName=" + cardFullName + ", cardNum=" + cardNum + ", cardExp="
+				+ cardExp + ", cardCVV=" + cardCVV + ", creditCodes=" + creditCodes + ", password=" + password + "]";
+	}
+	
+	
 	
 	
 	

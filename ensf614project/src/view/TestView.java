@@ -1,7 +1,5 @@
 package ensf614project.src.view;
 
-import ensf614project.src.model.TestModel;
-
 public class TestView {
 	
 	

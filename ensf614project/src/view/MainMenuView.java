@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 public class MainMenuView extends JFrame{
 	
 	private JPanel sidePanel, panel;
+	private JFrame frame;
 	private JButton buyTicketButton,cancelTicketButton, loginButton, registerButton, searchMovieButton;
 	private JLabel topLabel, movieLabel;
-	private JFrame frame;
 	
 	public MainMenuView() {
 		
@@ -174,7 +174,6 @@ public class MainMenuView extends JFrame{
 	}
 	
 	public void addLoginButtonListener(ActionListener actionListener) {
-		System.out.println("View login pressed");
 		loginButton.addActionListener(actionListener);
 	}
 	

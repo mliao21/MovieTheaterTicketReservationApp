@@ -91,13 +91,13 @@ public class PaymentView extends JFrame{
 		submitButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		submitButton.setBounds(181, 312, 92, 23);
 		panel.add(submitButton);
-		
-	}
 
+	}
+	
 	public JFrame getFrame() {
 		return frame;
 	}
-	
+
 	public JTextField getCardNumber() {
 		return cardNumber;
 	}
@@ -207,7 +207,7 @@ public class PaymentView extends JFrame{
 		this.submitButton = submit;
 	}
 	
-	public void addButtonListener(ActionListener actionListener) {
+	public void addSubmitButtonListener(ActionListener actionListener) {
 		submitButton.addActionListener(actionListener);
 	}
 }

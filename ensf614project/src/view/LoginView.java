@@ -8,6 +8,9 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+
+
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -17,13 +20,14 @@ public class LoginView extends JFrame {
 	
 	private JTextField emailAddress;
 	private JTextField password;
-	private JButton loginButton;
+	private JButton loginButton, mainMenuButton;
 	private JFrame frame;
+	private JLabel emailAddressLabel, passwordLabel;
 
 	public LoginView() {
 		
 		frame = new JFrame("Login");
-		frame.setBounds(100, 100, 400, 246);
+		frame.setBounds(100, 100, 402, 246);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -33,13 +37,13 @@ public class LoginView extends JFrame {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel emailAddressLabel = new JLabel("Email Address:");
+		emailAddressLabel = new JLabel("Email Address:");
 		emailAddressLabel.setForeground(new Color(255, 255, 255));
 		emailAddressLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		emailAddressLabel.setBounds(28, 57, 102, 14);
 		panel.add(emailAddressLabel);
 		
-		JLabel passwordLabel = new JLabel("Password:");
+		passwordLabel = new JLabel("Password:");
 		passwordLabel.setForeground(Color.WHITE);
 		passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		passwordLabel.setBounds(28, 93, 102, 14);
@@ -58,15 +62,20 @@ public class LoginView extends JFrame {
 		panel.add(password);
 		
 		loginButton = new JButton("Login");
-		loginButton.setBounds(120, 140, 89, 23);
+		loginButton.setBounds(130, 139, 89, 23);
 		panel.add(loginButton);
 		
+		mainMenuButton = new JButton("Main Menu");
+		mainMenuButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		mainMenuButton.setBounds(239, 11, 102, 23);
+		panel.add(mainMenuButton);
+		
 	}
-
+	
 	public JFrame getFrame() {
 		return frame;
 	}
-	
+
 	public JTextField getEmailAddress() {
 		return emailAddress;
 	}
@@ -81,6 +90,30 @@ public class LoginView extends JFrame {
 		return loginButton;
 	}
 
+
+	public JLabel getEmailAddressLabel() {
+		return emailAddressLabel;
+	}
+
+	public JLabel getPasswordLabel() {
+		return passwordLabel;
+	}
+
+	public JButton getMainMenuButton() {
+		return mainMenuButton;
+	}
+
+	public void setMainMenuButton(JButton mainMenuButton) {
+		this.mainMenuButton = mainMenuButton;
+	}
+
+	public void setEmailAddressLabel(JLabel emailAddressLabel) {
+		this.emailAddressLabel = emailAddressLabel;
+	}
+
+	public void setPasswordLabel(JLabel passwordLabel) {
+		this.passwordLabel = passwordLabel;
+	}
 
 	public void setEmailAddress(JTextField emailAddress) {
 		this.emailAddress = emailAddress;
@@ -99,5 +132,9 @@ public class LoginView extends JFrame {
 	public void addLoginButtonListener(ActionListener actionListener) {
 		loginButton.addActionListener(actionListener);
 	}
-
+	
+	public void addMainMenuButtonListener(ActionListener actionListener) {
+		mainMenuButton.addActionListener(actionListener);
+	}
+	
 }
