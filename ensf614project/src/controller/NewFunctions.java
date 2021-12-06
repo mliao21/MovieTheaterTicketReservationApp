@@ -364,6 +364,7 @@ public class NewFunctions {
 //        newFunctions.issueCoupon(2, false);
 //        newFunctions.issueCoupon(1, false);
 
+
 //        Movie movie = new Movie(1,"The Matrix",new Date(2018, 11, 7),"The Matrix is a 1999 American epic science fiction film directed by The Wachowskis and produced by Wachowski Productions, based on the story of the same name by Dan ", 150);
 //        newFunctions.addMovies(movie, 1,10, "2021-12-07", "2021-12-25");
 
@@ -404,6 +405,7 @@ public class NewFunctions {
 
         // create ticket
         newFunctions.createTicket(1, 7,2000, "SOLD", "mike@mike.com", "111111111111", "AAAAAAAAAAAA");
+
 
 
     }

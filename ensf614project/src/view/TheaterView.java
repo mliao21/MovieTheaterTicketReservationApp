@@ -50,9 +50,9 @@ public class TheaterView extends JFrame {
 		return theatersDB;
 	}
 
-	public static void main(String[] args) {
-		TheaterView theView = new TheaterView("ShowTime: Movie Titanic at 7pm");
-		theView.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		TheaterView theView = new TheaterView("ShowTime: Movie Titanic at 7pm");
+//		theView.setVisible(true);
+//	}
 
 }
