@@ -152,14 +152,35 @@ public class ViewController {
 	class loginButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-	
+			// TODO Auto-generated method stub
+//			String emailAddress;
+//			String password;
+//			try {
+//				emailAddress = loginView.getEmailAddress();
+//				password = loginView.getPassword();
+//				
+//				boolean response = modelController.verifyLogin(emailAddress, password);
+//				
+//				if(response = true) {
+//					loginView.getFrame().setVisible(false);
+//					mainMenuView.getFrame().setVisible(true);
+//				} else if (response = false) {
+//					JOptionPane.showMessageDialog(null,"Invalid input" );
+//					loginView.setEmailAddress(null);
+//					loginView.setPassword(null);
+//				}
+//				
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//			}			
 		}
 	}
 	
 	class loginMainMenuButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-	
+			loginView.getFrame().setVisible(false);
+			mainMenuView.getFrame().setVisible(true);
 		}
 	}
 	
@@ -167,21 +188,53 @@ public class ViewController {
 	class signupRegisterButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+//			String firstName;
+//			String lastName;
+//			String emailAddress;
+//			String password;
+//			String ccnumber;
+//			
+//			try {
+//				firstName = signupView.getFirstName();
+//				lastName = signupView.getLastName();
+//				emailAddress = signupView.getEmailAddress();
+//				password = signupView.getPassword();
+//				ccnumber = signupView.getCcn();
+//				
+//				boolean response = modelcontroller.registerUser(firstName, lastName,
+//						ccnumber, emailAddress, password);
+//				
+//				if (response = true) {
+//					signupView.getFrame().setVisible(false);
+//					mainMenuView.getFrame().setVisible(true);
+//				} else if (response = false) {
+//			
+//					JOptionPane.showMessageDialog(null,"Invalid input" );
+//					signupView.setFirstName(null);
+//					signupView.setLastName(null);
+//					signupView.setEmailAddress(null);
+//					signupView.setPassword(null);
+//					signupView.setCcn(null);
+//				}
+//				
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//			}	
 		}
 	}
 	
 	class signupEnterPaymentButtonListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-	
+		public void actionPerformed(ActionEvent e) {	
 		}
 	}
 	
 	class signupMainMenuButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-	
+			// go back to main menu
+			signupView.getFrame().setVisible(false);
+			mainMenuView.getFrame().setVisible(true);
 		}
 	}
 	
@@ -199,7 +252,29 @@ public class ViewController {
 	class cancelButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-	
+//			String ticketNumber;
+//			String emailAddress;
+//			
+//			try {
+//				
+//				ticketNumber = cancelView.getTicketNumber();
+//				emailAddress = cancelView.getEmailAddress();
+//				
+//				// NEED TO ADD THIS METHOD IN M CTR
+//				boolean response = modelController.cancelTicket(ticketNumber, emailAddress);
+//				
+//				if(response = true) {
+//					cancelView.getFrame().setVisible(false);
+//					mainMenuView.getFrame().setVisible(true);
+//				} else if (response = false) {
+//					JOptionPane.showMessageDialog(null,"Invalid input" );
+//					cancelView.setEmailAddress(null);
+//					cancelView.setTicketNumber(null);
+//				}
+//				
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//			}
 		}
 	}
 	
