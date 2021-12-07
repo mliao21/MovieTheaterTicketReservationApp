@@ -27,6 +27,7 @@ public class TestContoller {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		TestContoller test = new TestContoller();
+		System.out.println('J'-'A'+1);
 		
 	}
 }

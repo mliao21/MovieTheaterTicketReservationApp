@@ -10,6 +10,8 @@ public class Theater {
 	
 	private String nameId;
 	private ArrayList<Seat> seatList;
+	private int rows;
+	
 	
 	
 	

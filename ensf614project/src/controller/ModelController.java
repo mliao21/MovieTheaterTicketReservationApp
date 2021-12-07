@@ -143,6 +143,11 @@ public class ModelController {
 	public ArrayList<Movie> getMoviePreSaleList() {
 		return moviePreSaleList;
 	}
+	
+	public ArrayList<Theater> getTheaters() {
+		return this.theaterList;
+	}
+	
 
 	public ArrayList<Theater> getTheaterList() {
 		theaterList = new ArrayList<Theater>();
@@ -249,6 +254,7 @@ public class ModelController {
 		showTimeList = new ArrayList<ShowTime>();
 		ticketList = new ArrayList<Ticket>();
 		this.couponList = new ArrayList<Credit>();
+		this.loadModelsQuery();
 		
 	}
 	
@@ -487,13 +493,15 @@ public class ModelController {
 	
 	private void loadSeats() {
 		
+		
 		for(int j = 0;j<this.theaterList.size();j++) {
 			Theater tt = this.theaterList.get(j);
 			tt.createAllSeats(this.getSeats(String.valueOf(tt.getId())));
 			ArrayList<Seat> seatList = tt.getSeatList();
-			for (int i = 0; i < seatList.size(); i++) { 		      
-		          System.out.println("Seat: " + seatList.get(i).getId() + " row: " + seatList.get(i).getRow() + " column: " + seatList.get(i).getCol() + " status: " + seatList.get(i).isStatus()); 		
-		      }   
+			
+			this.theaterList.set(j, tt);
+			
+			  
 			
 			
 		}
