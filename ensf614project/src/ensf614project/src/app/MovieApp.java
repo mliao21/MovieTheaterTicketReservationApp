@@ -31,6 +31,7 @@ public class MovieApp {
 		this.seatView = new SeatView();
 		this.movieView = new MovieView();
 		this.showTimeView = new ShowTimeView();
+		this.adminMovieView = new AdminMovieView();
 		this.modelController = new ModelController(user);
 		this.viewController = new ViewController(cancelView, loginView, mainMenuView, paymentView, signupView, 
 				seatView, theaterView, movieView, showTimeView, adminMovieView, modelController);

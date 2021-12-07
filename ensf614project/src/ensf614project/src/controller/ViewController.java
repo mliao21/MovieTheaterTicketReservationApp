@@ -29,7 +29,7 @@ public class ViewController {
 	
 	public ViewController(CancelView cancelView, LoginView loginView, MainMenuView mainMenuView,
 			PaymentView paymentView, SignUpView signupView, SeatView seatView, TheaterView theaterView,
-			MovieView movieView, ShowTimeView showTimeView, ModelController modelController) {
+			MovieView movieView, ShowTimeView showTimeView, AdminMovieView adminMovieView, ModelController modelController) {
 		super();
 		this.cancelView = cancelView;
 		this.loginView = loginView;
@@ -40,11 +40,6 @@ public class ViewController {
 		this.seatView = seatView;
 		this.movieView = movieView;
 		this.showTimeView = showTimeView;
-		this.modelController = modelController;
-	}
-	
-	public ViewController(AdminMovieView adminMovieView, ModelController modelController) {
-		super();
 		this.adminMovieView = adminMovieView;
 		this.modelController = modelController;
 	}
