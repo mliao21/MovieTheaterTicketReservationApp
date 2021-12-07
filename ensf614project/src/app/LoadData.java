@@ -184,23 +184,60 @@ public class LoadData {
         try {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             // create seat instance array
-            ArrayList<Integer> seatIds = new ArrayList<>();
+            ArrayList<Integer> ticketIds = new ArrayList<>();
 
-            String statement = "SELECT SeatID FROM SEAT_INSTANCE WHERE SeatID IN (20,208)";
+
+            String statement = "SELECT TicketId FROM TICKET WHERE SeatInstanceID IN (2,5) AND TicketStatus = 'SOLD'";
             PreparedStatement prepStatement = conn.prepareStatement(statement);
             ResultSet rs = prepStatement.executeQuery();
+            while (rs.next()) {
+                ticketIds.add(rs.getInt("TicketID"));
+            }
+
+            for (Integer ticketId : ticketIds) {
+                mc.issueCoupon(ticketId, false);
+                System.out.println("Coupon for " + ticketId + " issued");
+
+            }
+
+            ArrayList<Integer> seatIds = new ArrayList<>();
+
+            statement = "SELECT SeatID FROM SEAT_INSTANCE WHERE SeatInstanceID IN (2,5)";
+            prepStatement = conn.prepareStatement(statement);
+            rs = prepStatement.executeQuery();
             while (rs.next()) {
                 seatIds.add(rs.getInt("SeatID"));
             }
 
             for (Integer seatId : seatIds) {
                 mc.refundTicket(seatId);
+                System.out.println("Ticket " + seatId + " has been refunded");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void insertCoupons(){
+        // insert coupons into database
+        try{
+            Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+            String statement = "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID, ExpiryDate) " +
+                    "VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1, NOW() + INTERVAL 1 YEAR),\n" +
+                    "       ('AAAAAAAAAAAA', 200000, 1, NOW() + INTERVAL 1 YEAR),\n" +
+                    "       ('BBBBBBBBBBBB', 20000, 1, NOW() + INTERVAL 1 YEAR),\n" +
+                    "       ('CCCCCCCCCCCC', 1500, 1, NOW() + INTERVAL 1 YEAR);\n" +
+                    "\n";
+
+            PreparedStatement prepStatement = conn.prepareStatement(statement);
+            prepStatement.executeUpdate();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -215,7 +252,7 @@ public class LoadData {
         loadData.insertMovies();
         loadData.sellTickets();
         loadData.refundTickets();
-
+        loadData.insertCoupons();
 
     }
 
