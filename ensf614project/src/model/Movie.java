@@ -8,6 +8,7 @@ public class Movie {
 	private String name;
 	private String description;
 	private Date releaseDate;
+	private String releaseDateString;
 	
 	public Movie(int id, String name, Date releaseDate, String description, int runTime) {
 		super();
@@ -16,6 +17,14 @@ public class Movie {
 		this.description = description;
 		this.releaseDate = releaseDate;
 		
+	}
+
+	public Movie(String name, String releaseDate, String description, int runTime) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.releaseDateString = releaseDate;
+
 	}
 	public String getName() {
 		return name;
@@ -47,10 +56,22 @@ public class Movie {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
-	
-	
+	public String getReleaseDateString() {
+        return releaseDateString;
+    }
+	public void setReleaseDateString(String releaseDateString) {
+        this.releaseDateString = releaseDateString;
+    }
 
+	@Override
+	public String toString() {
+		return "Movie{" +
+				"id=" + id +
+				", runTime=" + runTime +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", releaseDate=" + releaseDate +
+				", releaseDateString='" + releaseDateString + '\'' +
+				'}';
+	}
 }
