@@ -327,9 +327,15 @@ public class ViewController {
 			selectedShowTime = e.getActionCommand();
 			showTimeView.setVisible(false);
 			selectedShowTimeID = modelController.searchShowTimeID(selectedMovie, selectedTheater, selectedShowTime);
-			seatView = new SeatView(modelController.getSeatsStatuses(selectedShowTimeID));
-			seatView.setVisible(true);
-			seatView.selectSeatButtonListener(new selectSeatButtonListener());
+			if (selectedShowTimeID == 0) {
+				JOptionPane.showMessageDialog(null, "Tickets are sold out... Please try again!");
+				showTimeView.setVisible(true);
+			}
+			else {
+				seatView = new SeatView(modelController.getSeatsStatuses(selectedShowTimeID));
+				seatView.setVisible(true);
+				seatView.selectSeatButtonListener(new selectSeatButtonListener());
+			}
 		}
 	}
 	

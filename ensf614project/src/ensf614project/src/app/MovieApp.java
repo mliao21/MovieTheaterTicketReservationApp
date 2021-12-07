@@ -14,6 +14,7 @@ public class MovieApp {
 	private SeatView seatView;
 	private TheaterView theaterView;
 	private MovieView movieView;
+	private AdminMovieView adminMovieView;
 	private ModelController modelController;
 	private ShowTimeView showTimeView;
 	private ViewController viewController;
@@ -32,7 +33,7 @@ public class MovieApp {
 		this.showTimeView = new ShowTimeView();
 		this.modelController = new ModelController(user);
 		this.viewController = new ViewController(cancelView, loginView, mainMenuView, paymentView, signupView, 
-				seatView, theaterView, movieView, showTimeView, modelController);
+				seatView, theaterView, movieView, showTimeView, adminMovieView, modelController);
 	}
 	
 	public void start() {
