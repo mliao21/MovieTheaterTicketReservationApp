@@ -1,9 +1,8 @@
 package ensf614project.src.app;
 
-import ensf614project.src.controller.ModelController;
-import  ensf614project.src.controller.ViewController;
-import  ensf614project.src.model.OrdinaryUser;
-import  ensf614project.src.view.*;
+import ensf614project.src.controller.*;
+import ensf614project.src.model.*;
+import ensf614project.src.view.*;
 
 public class MovieApp {
 	private OrdinaryUser user;
@@ -15,7 +14,6 @@ public class MovieApp {
 	private SeatView seatView;
 	private TheaterView theaterView;
 	private MovieView movieView;
-	private AdminMovieView adminMovieView;
 	private ModelController modelController;
 	private ShowTimeView showTimeView;
 	private ViewController viewController;
@@ -32,10 +30,9 @@ public class MovieApp {
 		this.seatView = new SeatView();
 		this.movieView = new MovieView();
 		this.showTimeView = new ShowTimeView();
-		this.adminMovieView = new AdminMovieView();
 		this.modelController = new ModelController(user);
 		this.viewController = new ViewController(cancelView, loginView, mainMenuView, paymentView, signupView, 
-				seatView, theaterView, movieView, showTimeView, adminMovieView, modelController);
+				seatView, theaterView, movieView, showTimeView, modelController);
 	}
 	
 	public void start() {
