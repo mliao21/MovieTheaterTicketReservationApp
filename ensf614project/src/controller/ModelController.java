@@ -835,7 +835,7 @@ public class ModelController {
 					+ "VALUES(?, ?, ?, ?);";
 			prepStatement = conn.prepareStatement(statement);
 			prepStatement.setString(1, movie.getName());
-			prepStatement.setDate(2, (java.sql.Date) movie.getReleaseDate());
+			prepStatement.setString(2,movie.getReleaseDateString());
 			prepStatement.setString(3, movie.getDescription());
 			prepStatement.setInt(4, movie.getRunTime());
 			prepStatement.executeUpdate();
