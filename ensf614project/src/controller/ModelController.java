@@ -35,7 +35,7 @@ public class ModelController {
 	public boolean login(String email, String password) {
 		
 		int id, cardCVV;
-		String firstName, lastName, address, cardFullName,  cardNum, cardExp, username;
+		String firstName, lastName, address, cardFullName,  cardNum, cardExp;
 		ArrayList<String> creditCodes = new ArrayList<String> (); 
 		
 		try {
@@ -48,7 +48,6 @@ public class ModelController {
             if (resultSet.next()) {
             	
             	id = resultSet.getInt("UserID");
-            	username = resultSet.getString("Username");
             	firstName = resultSet.getString("Fname");
             	lastName = resultSet.getString("Lname");
             	cardNum = resultSet.getString("CreditCardNo");
@@ -56,11 +55,7 @@ public class ModelController {
             	cardFullName = firstName + lastName;
             	cardExp = "";
             	cardCVV = 0;
-                
-            	
-                
-            	
-            	
+
             	RegisteredUser.RegisteredInstance();
         		RegisteredUser temp = (RegisteredUser) RegisteredUser.getOnlyInstance();
         		temp.loadUserinfo(id, firstName, lastName, email, address, cardFullName, cardNum, cardExp, cardCVV, creditCodes, password);
