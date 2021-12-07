@@ -44,34 +44,34 @@ public class testModelController {
 //		System.out.println(test.getCouponList().get(0).toString());
 //		test.login("al@test.com", "testpassword");
 		
-		ArrayList<Seat> seatList = test.getTheaters().get(0).getSeatList();
-		
-		int maxRow = 7;
-		ArrayList<ArrayList<Seat>> seatMatrix = new ArrayList<ArrayList<Seat>>();
-		for(int i = 0; i < maxRow; i++) {
-			seatMatrix.add(new ArrayList<Seat>());
-		}
-		int row = -1;
-		for (int i = 0; i < seatList.size(); i++) { 
-				row = seatList.get(i).getRow();
-				
-				seatMatrix.get(row-1).add(seatList.get(i));
-	          
-	      } 
-		
-		for (int i = 0; i < seatMatrix.size(); i++) { 
-			ArrayList<Seat> sortedSeats = seatMatrix.get(i); 
-			sortedSeats.sort((o1, o2)
-                    -> o1.getCol().compareTo(
-                        o2.getCol()));
-			seatMatrix.set(i, sortedSeats);
-			
-		}
-		
-		for (int i = 0; i < seatMatrix.get(0).size(); i++) { 
-			System.out.println(seatMatrix.get(0).get(i).getId());
-		}
-		
+//		ArrayList<Seat> seatList = test.getTheaters().get(0).getSeatList();
+//
+//		int maxRow = 7;
+//		ArrayList<ArrayList<Seat>> seatMatrix = new ArrayList<ArrayList<Seat>>();
+//		for(int i = 0; i < maxRow; i++) {
+//			seatMatrix.add(new ArrayList<Seat>());
+//		}
+//		int row = -1;
+//		for (int i = 0; i < seatList.size(); i++) {
+//				row = seatList.get(i).getRow();
+//
+//				seatMatrix.get(row-1).add(seatList.get(i));
+//
+//	      }
+//
+//		for (int i = 0; i < seatMatrix.size(); i++) {
+//			ArrayList<Seat> sortedSeats = seatMatrix.get(i);
+//			sortedSeats.sort((o1, o2)
+//                    -> o1.getCol().compareTo(
+//                        o2.getCol()));
+//			seatMatrix.set(i, sortedSeats);
+//
+//		}
+//
+//		for (int i = 0; i < seatMatrix.get(0).size(); i++) {
+//			System.out.println(seatMatrix.get(0).get(i).getId());
+//		}
+//
 		
 
 	}
