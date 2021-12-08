@@ -119,27 +119,27 @@ public class LoadData {
 
         //create list of startdate strings
         ArrayList<String> startDates = new ArrayList<>();
-        startDates.add("2021-12-31");
-        startDates.add("2021-12-31");
-        startDates.add("2021-12-31");
-        startDates.add("2021-12-");
-        startDates.add("2021-12-13");
         startDates.add("2021-12-15");
         startDates.add("2021-12-15");
         startDates.add("2021-12-15");
-        startDates.add("2021-12-15");
+        startDates.add("2021-12-17");
+        startDates.add("2021-12-17");
+        startDates.add("2021-12-17");
+        startDates.add("2021-12-19");
+        startDates.add("2021-12-19");
+        startDates.add("2021-12-19");
 
         //create list of enddate strings
         ArrayList<String> endDates = new ArrayList<>();
-        endDates.add("2021-12-08");
-        endDates.add("2021-12-08");
-        endDates.add("2021-12-08");
-        endDates.add("2021-12-10");
-        endDates.add("2021-12-10");
-        endDates.add("2021-12-10");
-        endDates.add("2021-12-12");
-        endDates.add("2021-12-12");
-        endDates.add("2021-12-12");
+        endDates.add("2021-12-16");
+        endDates.add("2021-12-16");
+        endDates.add("2021-12-16");
+        endDates.add("2021-12-18");
+        endDates.add("2021-12-18");
+        endDates.add("2021-12-18");
+        endDates.add("2021-12-20");
+        endDates.add("2021-12-20");
+        endDates.add("2021-12-20");
 
 
 
@@ -199,7 +199,7 @@ public class LoadData {
             ArrayList<Integer> ticketIds = new ArrayList<>();
 
 
-            String statement = "SELECT TicketId FROM TICKET WHERE SeatInstanceID IN (2,5) AND TicketStatus = 'SOLD'";
+            String statement = "SELECT TicketId FROM TICKET WHERE SeatInstanceID IN (100,155) AND TicketStatus = 'SOLD'";
             PreparedStatement prepStatement = conn.prepareStatement(statement);
             ResultSet rs = prepStatement.executeQuery();
             while (rs.next()) {
@@ -214,7 +214,7 @@ public class LoadData {
 
             ArrayList<Integer> seatIds = new ArrayList<>();
 
-            statement = "SELECT SeatID FROM SEAT_INSTANCE WHERE SeatInstanceID IN (2,5)";
+            statement = "SELECT SeatID FROM SEAT_INSTANCE WHERE SeatInstanceID IN (100,155)";
             prepStatement = conn.prepareStatement(statement);
             rs = prepStatement.executeQuery();
             while (rs.next()) {
@@ -240,10 +240,10 @@ public class LoadData {
         try{
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
             String statement = "INSERT INTO COUPONS(CouponCode, CouponValue, TicketID, ExpiryDate) " +
-                    "VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 1, NOW() + INTERVAL 1 YEAR),\n" +
+                    "VALUES((SELECT LEFT(MD5(RAND()), 15)), 2000, 15, NOW() + INTERVAL 1 YEAR),\n" +
                     "       ('AAAAAAAAAAAA', 200000, 1, NOW() + INTERVAL 1 YEAR),\n" +
-                    "       ('BBBBBBBBBBBB', 20000, 1, NOW() + INTERVAL 1 YEAR),\n" +
-                    "       ('CCCCCCCCCCCC', 1500, 1, NOW() + INTERVAL 1 YEAR);\n" +
+                    "       ('BBBBBBBBBBBB', 20000, 2, NOW() + INTERVAL 1 YEAR),\n" +
+                    "       ('CCCCCCCCCCCC', 1500, 3, NOW() + INTERVAL 1 YEAR);\n" +
                     "\n";
 
             PreparedStatement prepStatement = conn.prepareStatement(statement);
@@ -255,7 +255,7 @@ public class LoadData {
     }
 
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         LoadData loadData = new LoadData();
         loadData.insertRUs();
         loadData.insertMovies();
