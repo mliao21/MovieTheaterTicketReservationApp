@@ -27,25 +27,6 @@ public class ModelController {
 	private ArrayList<ShowTime> showTimeList;
 	private ArrayList<Ticket> ticketList;
 	private ArrayList<Credit> couponList;
-	
-	public User getUserInstance() {
-		return userInstance;
-	}
-
-	/**
-	 * Method to check the type of user. Return true if the user is an ordinary user
-	 *
-	 * @return true if the user is an ordinary user
-	 */
-	public boolean isOrdinaryUser() {
-		if(userInstance instanceof OrdinaryUser) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 
 	/**
 	 * Constructor with a user passed in
@@ -62,6 +43,25 @@ public class ModelController {
 		ticketList = new ArrayList<Ticket>();
 		this.couponList = new ArrayList<Credit>();
 
+	}
+
+
+	public User getUserInstance() {
+		return userInstance;
+	}
+
+	/**
+	 * Method to check the type of user. Return true if the user is an ordinary user
+	 *
+	 * @return true if the user is an ordinary user
+	 */
+	public boolean isOrdinaryUser() {
+		if(userInstance instanceof OrdinaryUser) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 
@@ -348,6 +348,7 @@ public class ModelController {
 		} catch (Exception sqlException) {
 			return 0;
 		}
+		return 0;
 	}
 
 	/**
@@ -950,10 +951,11 @@ public class ModelController {
 
 			// call issue coupon
 			Credit returned_credit =  issueCoupon(ticketId, subscriber);
-			return "Credit code: " + returned_credit.getCode() + " Amount: " + returned_credit.getBalance() / 100.0;
+			if (returned_credit != null)
+				return "Credit code: " + returned_credit.getCode() + " Amount: $" + returned_credit.getBalance() / 100.0;
 
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return null;
 		}
 		return null;
 	}
@@ -1069,6 +1071,7 @@ public class ModelController {
 		} catch (Exception sqlException) {
 			return 0;
 		}
+		return 0;
 	}
 
 }
