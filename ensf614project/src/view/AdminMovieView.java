@@ -3,19 +3,25 @@ package ensf614project.src.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
+
 import javax.swing.*;
 
 public class AdminMovieView extends JFrame {
 	
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+	NumberFormat integerFormat = NumberFormat.getIntegerInstance();
 	private JTextField movie = new JTextField (30);
-	private JTextField theaterId = new JTextField (2);
-	private JTextField cleaningTime = new JTextField (2);
-	private JTextField openingDate = new JTextField (8); 
-	private JTextField endDate = new JTextField (8);
+	private JFormattedTextField theaterId = new JFormattedTextField(integerFormat);
+	private JFormattedTextField cleaningTime = new JFormattedTextField(integerFormat);
+	private JFormattedTextField openingDate = new JFormattedTextField(dateFormat);
+	private JFormattedTextField endDate = new JFormattedTextField(dateFormat);
 	private JButton addButton = new JButton("Add");
 
 	public AdminMovieView() {
-				
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 128, 128));
 		this.getContentPane().add(panel);
@@ -50,7 +56,7 @@ public class AdminMovieView extends JFrame {
 		end.setFont(new Font("Tahoma", Font.BOLD, 12));
 		end.setBounds(28, 201, 200, 20);
 		panel.add(end);
-		
+	    
 		this.movie.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		this.movie.setBounds(220, 57, 156, 20);
 		panel.add(this.movie);		
@@ -85,8 +91,8 @@ public class AdminMovieView extends JFrame {
 		return movie.getText();
 	}
 
-	public String getTheaterId() {
-		return theaterId.getText();
+	public int getTheaterId() {
+		return Integer.parseInt(theaterId.getText());
 	}
 
 	public int getCleaningTime() {

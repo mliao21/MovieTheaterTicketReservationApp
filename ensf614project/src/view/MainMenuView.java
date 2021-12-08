@@ -67,7 +67,7 @@ public class MainMenuView extends JFrame{
 		sidePanel.add(searchMovieButton);
 		
 		topLabel = new JLabel("New label");
-		topLabel.setIcon(new ImageIcon("Images\\Alberta Cinema's.png"));
+		topLabel.setIcon(new ImageIcon("Alberta Cinema's.png"));
 		topLabel.setBounds(193, 11, 592, 76);
 		frame.getContentPane().add(topLabel);
 		
@@ -78,7 +78,7 @@ public class MainMenuView extends JFrame{
 		panel.setLayout(null);
 		
 		movieLabel = new JLabel("");
-		movieLabel.setIcon(new ImageIcon("Images\\LOTR.png"));
+		movieLabel.setIcon(new ImageIcon("LOTR.png"));
 		movieLabel.setBounds(67, 0, 478, 396);
 		panel.add(movieLabel);
 		

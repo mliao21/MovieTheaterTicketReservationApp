@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class TheaterView extends JFrame {
 		menu.setBackground(new Color(0, 128, 128));
 		
 		for(JButton t: theaters) {
-			t.setPreferredSize(new Dimension(300, 50));
+			t.setPreferredSize(new Dimension(400, 50));
 			menu.add(t);
 		}
 	
@@ -32,7 +33,7 @@ public class TheaterView extends JFrame {
 		contentPane.add("Center", menu);
 		
 		setTitle("THEATERS AVAILABLE");
-		setSize(400, 400);
+		setSize(400, 210);
 		setResizable(false);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
@@ -55,6 +56,5 @@ public class TheaterView extends JFrame {
 		}
 		
 	}
-
 
 }

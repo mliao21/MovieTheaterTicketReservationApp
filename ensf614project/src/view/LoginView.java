@@ -1,7 +1,5 @@
 package ensf614project.src.view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -73,13 +71,13 @@ public class LoginView extends JFrame {
 		return frame;
 	}
 
-	public JTextField getEmailAddress() {
-		return emailAddress;
+	public String getEmailAddress() {
+		return emailAddress.getText();
 	}
 
 
-	public JTextField getPassword() {
-		return password;
+	public String getPassword() {
+		return password.getText();
 	}
 
 
@@ -112,13 +110,13 @@ public class LoginView extends JFrame {
 		this.passwordLabel = passwordLabel;
 	}
 
-	public void setEmailAddress(JTextField emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress.setText(emailAddress);
 	}
 
 
-	public void setPassword(JTextField password) {
-		this.password = password;
+	public void setPassword(String  password) {
+		this.password.setText(password);
 	}
 
 

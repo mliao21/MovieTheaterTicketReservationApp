@@ -70,14 +70,14 @@ public class CancelView extends JFrame{
 		return frame;
 	}
 
-	public JTextField getTicketNumber() {
-		return ticketNumber;
+	public String getTicketNumber() {
+		return ticketNumber.getText();
 	}
 
 
 
-	public JTextField getEmailAddress() {
-		return emailAddress;
+	public String getEmailAddress() {
+		return emailAddress.getText();
 	}
 
 
@@ -94,14 +94,14 @@ public class CancelView extends JFrame{
 
 
 
-	public void setTicketNumber(JTextField ticketNumber) {
-		this.ticketNumber = ticketNumber;
+	public void setTicketNumber(String ticketNumber) {
+		this.ticketNumber.setText(ticketNumber);
 	}
 
 
 
-	public void setEmailAddress(JTextField emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress.setText(emailAddress);
 	}
 	
 	//private JButton cancelButton, mainMenuButton;

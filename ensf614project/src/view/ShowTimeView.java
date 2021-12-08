@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -20,6 +21,7 @@ public class ShowTimeView extends JFrame {
 		this.setShowTimesListButtons(showTimesList);
 		
 		JPanel menu = new JPanel();
+		menu.setLayout(new GridLayout(0, 1));
 		menu.setBackground(new Color(0, 128, 128));
 		
 		for(JButton s: showTimes) {
@@ -32,7 +34,7 @@ public class ShowTimeView extends JFrame {
 		contentPane.add("Center", menu);
 		
 		setTitle("AVAILABLE SHOWTIMES");
-		setSize(600, 400);
+		setSize(600, 600);
 		setResizable(false);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
