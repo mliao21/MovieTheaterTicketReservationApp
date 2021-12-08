@@ -48,7 +48,7 @@ public class MovieApp {
 		loadData.sellTickets();
 		loadData.refundTickets();
 		loadData.insertCoupons();
-		
+
 		MovieApp app = new MovieApp();
 		app.start();
 	}

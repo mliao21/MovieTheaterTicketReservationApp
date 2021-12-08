@@ -211,3 +211,5 @@ FLUSH PRIVILEGES;
 CREATE USER 'mock_user'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON ensf614_movie_theatre. * TO 'mock_user'@'localhost';
 
+UPDATE SEAT_INSTANCE JOIN TICKET ON SEAT_INSTANCE.SeatInstanceID = TICKET.SeatInstanceID
+WHERE Occupied
