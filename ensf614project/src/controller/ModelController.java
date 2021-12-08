@@ -791,17 +791,9 @@ public class ModelController {
 	public void refundTicket(int ticketId, boolean subscriber) {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
-			// get ticket id that you are refunding
-			PreparedStatement prepStatement = conn.prepareStatement(
-					"SELECT TicketID FROM UPDATE SEAT_INSTANCE JOIN TICKET ON SEAT_INSTANCE.SeatInstanceID = TICKET.SeatInstanceID " +
-							"WHERE TicketStatus = 'SOLD'\n" +
-							"AND TicketID = ?;\n");
-
-			prepStatement.setInt(1, ticketId);
-			ResultSet resultSet = prepStatement.executeQuery();
 
 			// update ticket status to refunded
-			prepStatement = conn.prepareStatement(
+			PreparedStatement prepStatement = conn.prepareStatement(
 					"UPDATE TICKET SET TicketStatus = 'REFUNDED' WHERE TicketID = ?;");
 			prepStatement.setInt(1, ticketId);
 			prepStatement.executeUpdate();
@@ -809,7 +801,8 @@ public class ModelController {
 
 			// update seat instance status to available, presale to false by default
 			prepStatement = conn.prepareStatement(
-					"UPDATE SEAT_INSTANCE JOIN TICKET ON SET Occupied = FALSE AND Presale = FALSE WHERE SeatInstanceID = ?;");
+					"UPDATE SEAT_INSTANCE JOIN TICKET ON SEAT_INSTANCE.SeatInstanceID = TICKET.SeatInstanceID " +
+							"SET Occupied = FALSE AND Presale = FALSE WHERE TicketID = ?;");
 			prepStatement.setInt(1, ticketId);
 			prepStatement.executeUpdate();
 

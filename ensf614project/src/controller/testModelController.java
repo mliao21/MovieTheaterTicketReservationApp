@@ -17,33 +17,33 @@ public class testModelController {
 		// TODO Auto-generated method stub
 		User me = OrdinaryUser.getInstance();
 		ModelController test = new  ModelController(me);
-		
-		
-//		for (int i = 0; i < seatList.size(); i++) { 	
+
+
+//		for (int i = 0; i < seatList.size(); i++) {
 //			System.out.println("Seat list size: "+seatList.size());
-//	          System.out.println("Seat: " + seatList.get(i).getId() + " row: " + seatList.get(i).getRow() + " column: " + seatList.get(i).getCol() + " status: " + seatList.get(i).isStatus()); 		
-//	      }  
-//		
-//		
+//	          System.out.println("Seat: " + seatList.get(i).getId() + " row: " + seatList.get(i).getRow() + " column: " + seatList.get(i).getCol() + " status: " + seatList.get(i).isStatus());
+//	      }
+//
+//
 //		System.out.println("Seat list size: "+test.getTheaterList().get(0).getSeatList().size());
-		
+
 //		System.out.println(test.getMovieList().get(0).getName());
 //		for(int i = 0; i< test.getMovieList().size();i++) {
 //
 //			System.out.println("Movide id: "+test.getMovieList().get(i).getId());
-//			
+//
 //		}
-//		
+//
 //		//System.out.println(test.getShowTimeList().get(0).getMovie().getName());
 //		for(int i = 0; i< test.getAllSubscribers().size();i++) {
 //			System.out.println(test.getAllSubscribers().get(i));
 //		}
-//		
+//
 //		//test.createTicket(1, 2, 10, "SOLD", "mike@mike.com", "111111111111");
 //		//test.addMovies("TEST Movie2", "2021-01-01", "Titanic, the movie", 100, "Black Theatre", "08:00:00", "11:14:00", "2021-02-02");
 //		System.out.println(test.getCouponList().get(0).toString());
 //		test.login("al@test.com", "testpassword");
-		
+
 //		ArrayList<Seat> seatList = test.getTheaters().get(0).getSeatList();
 //
 //		int maxRow = 7;
@@ -72,7 +72,7 @@ public class testModelController {
 //			System.out.println(seatMatrix.get(0).get(i).getId());
 //		}
 //
-		
+
 
 	}
 
