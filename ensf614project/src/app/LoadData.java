@@ -184,7 +184,7 @@ public class LoadData {
 
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Database duplication error");
         }
     }
 
@@ -227,7 +227,7 @@ public class LoadData {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Database duplication error");
         }
     }
 
@@ -250,7 +250,7 @@ public class LoadData {
             prepStatement.executeUpdate();
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Database duplication error");
         }
     }
 
