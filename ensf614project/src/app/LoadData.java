@@ -255,7 +255,7 @@ public class LoadData {
     }
 
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         LoadData loadData = new LoadData();
         loadData.insertRUs();
         loadData.insertMovies();

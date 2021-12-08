@@ -42,6 +42,13 @@ public class MovieApp {
 	}
 	
 	public static void main(String[] args) {
+		LoadData loadData = new LoadData();
+		loadData.insertRUs();
+		loadData.insertMovies();
+		loadData.sellTickets();
+		loadData.refundTickets();
+		loadData.insertCoupons();
+		
 		MovieApp app = new MovieApp();
 		app.start();
 	}
