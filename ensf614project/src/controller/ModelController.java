@@ -107,7 +107,7 @@ public class ModelController {
 			}
 			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return false;
 		}
 
 		return false;
@@ -144,7 +144,6 @@ public class ModelController {
 			conn.close();
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -175,7 +174,7 @@ public class ModelController {
                 movieList.add(movie);
             }
         } catch (Exception sqlException) {
-            sqlException.printStackTrace();
+            return null;
         }
 		return movieList;
 	}
@@ -226,7 +225,7 @@ public class ModelController {
                 theaterList.add(theatre);
             }
         } catch (Exception sqlException) {
-            sqlException.printStackTrace();
+			return null;
         }
 		return theaterList;
 	}
@@ -290,7 +289,7 @@ public class ModelController {
 				showTimeList.add(showtime);
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return null;
 		}
 		return showTimeList;
 	}
@@ -347,9 +346,8 @@ public class ModelController {
 				return result;
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return 0;
 		}
-		return 0;
 	}
 
 	/**
@@ -376,7 +374,7 @@ public class ModelController {
 				seatStatusList.add(status);
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return null;
 		}
 		return seatStatusList;
 	}
@@ -431,7 +429,7 @@ public class ModelController {
 				temp.add(resObj.getString("Email"));
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return null;
 		}
 		return temp;
 	}
@@ -453,7 +451,7 @@ public class ModelController {
 				this.couponList.add( new Credit(resObj.getString("CouponCode"), resObj.getInt("CouponValue")));
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return;
 		}
 
 	}
@@ -477,7 +475,7 @@ public class ModelController {
 				theaterList.add(theatre);
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return;
 		}
 
 	}
@@ -507,7 +505,7 @@ public class ModelController {
 				movieList.add(movie);
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return;
 		}
 
 		// get movies that are pre sale
@@ -529,7 +527,7 @@ public class ModelController {
 				moviePreSaleList.add(movie);
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return;
 		}
 	}
 
@@ -605,7 +603,7 @@ public class ModelController {
 			}
 
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return;
 		}
 	}
 
@@ -640,8 +638,7 @@ public class ModelController {
 				test.put(id + ":" + rs.getString("SEATROW")+ ":" + rs.getString("SEATCOL"), occupy);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 		return test;
 	}
@@ -673,7 +670,7 @@ public class ModelController {
 	 * @param email is the email of the customer to email their ticket
 	 * @param creditCard is the credit card number of the customer
 	 */
-	public void createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
+	public boolean createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
 		String statement = "";
 		PreparedStatement prepStatement;
 		try {
@@ -699,9 +696,10 @@ public class ModelController {
 			prepStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return false;
 		}
 		this.loadModelsQuery();
+		return true;
 	}
 
 	/**
@@ -717,7 +715,7 @@ public class ModelController {
 	 * @param creditCard is the credit card number of the customer
 	 * @param couponCode is the coupon code to be used
 	 */
-	public void createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
+	public boolean createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
 		// update seat instance
 		String statement = "";
 		PreparedStatement prepStatement;
@@ -777,9 +775,10 @@ public class ModelController {
 			this.loadModelsQuery();
 
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			return false;
 		}
 
+		return true;
 	}
 
 	/**
@@ -899,7 +898,7 @@ public class ModelController {
 			subject.notifyAllObservers(movieTitle + " is pre-selling tickets now! ShowDates are: " + dates);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return;
 		}
 
 	}
@@ -931,7 +930,7 @@ public class ModelController {
 	 * @param ticketId is the id of the ticket to be refunded
 	 * @param subscriber is a boolean that determines if the refund is being done by a subscriber
 	 */
-	public Credit refundTicket(int ticketId, boolean subscriber) {
+	public String refundTicket(int ticketId, boolean subscriber) {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 
@@ -950,7 +949,8 @@ public class ModelController {
 			prepStatement.executeUpdate();
 
 			// call issue coupon
-			return issueCoupon(ticketId, subscriber);
+			Credit returned_credit =  issueCoupon(ticketId, subscriber);
+			return "Credit code: " + returned_credit.getCode() + " Amount: " + returned_credit.getBalance() / 100.0;
 
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
@@ -1035,9 +1035,8 @@ public class ModelController {
 			return credit;
 		}
 		catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -1068,9 +1067,8 @@ public class ModelController {
 				return result;
 			}
 		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+			return 0;
 		}
-		return 0;
 	}
 
 }

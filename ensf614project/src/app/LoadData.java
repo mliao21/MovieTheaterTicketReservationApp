@@ -119,15 +119,15 @@ public class LoadData {
 
         //create list of startdate strings
         ArrayList<String> startDates = new ArrayList<>();
-        startDates.add("2021-12-07");
-        startDates.add("2021-12-07");
-        startDates.add("2021-12-07");
-        startDates.add("2021-12-09");
-        startDates.add("2021-12-09");
-        startDates.add("2021-12-09");
-        startDates.add("2021-12-11");
-        startDates.add("2021-12-11");
-        startDates.add("2021-12-11");
+        startDates.add("2021-12-31");
+        startDates.add("2021-12-31");
+        startDates.add("2021-12-31");
+        startDates.add("2021-12-");
+        startDates.add("2021-12-13");
+        startDates.add("2021-12-15");
+        startDates.add("2021-12-15");
+        startDates.add("2021-12-15");
+        startDates.add("2021-12-15");
 
         //create list of enddate strings
         ArrayList<String> endDates = new ArrayList<>();
