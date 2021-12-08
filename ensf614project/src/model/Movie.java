@@ -16,6 +16,8 @@ public class Movie {
 		this.name = name;
 		this.description = description;
 		this.releaseDate = releaseDate;
+		this.runTime = runTime;
+
 		
 	}
 
@@ -25,6 +27,7 @@ public class Movie {
 		this.name = name;
 		this.description = description;
 		this.releaseDateString = releaseDate;
+		this.runTime = runTime;
 
 	}
 

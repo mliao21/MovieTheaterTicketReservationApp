@@ -6,24 +6,24 @@ import ensf614project.src.model.Movie;
 import ensf614project.src.model.OrdinaryUser;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
+
+/**
+ * Loads into the database.
+ */
 public class LoadData {
     OrdinaryUser user = (OrdinaryUser) OrdinaryUser.getInstance();
     ModelController mc = new ModelController(user);
 
-    public Date convertDate(int year, int month, int day) {
-        LocalDate myLocalDate = LocalDate.of(year, month, day);
-        // format the date as yyyy-mm-dd
-        return Date.from(myLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-    }
 
+    /**
+     * Loads Registered Users into the database
+     * @throws SQLException
+     */
     public void insertRUs() {
         // create an array list of first names
         ArrayList<String> firstNames = new ArrayList<>();
@@ -74,6 +74,10 @@ public class LoadData {
     }
 
 
+    /**
+     * Loads Movies into the database - adds showtimes and dates automatically based on run time of the movie and dates selected
+     * @throws SQLException
+     */
     public void insertMovies() {
 
 
@@ -146,6 +150,10 @@ public class LoadData {
     }
 
 
+    /**
+     * Populates the database with tickets sold - updates the payment table with the ticket id and the payment id
+     * @throws SQLException
+     */
     public void sellTickets() {
         try {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
@@ -180,6 +188,10 @@ public class LoadData {
         }
     }
 
+    /**
+     * Updates the database with refunded tickets
+     * @throws SQLException
+     */
     public void refundTickets() {
         try {
             Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
@@ -210,7 +222,7 @@ public class LoadData {
             }
 
             for (Integer seatId : seatIds) {
-                mc.refundTicket(seatId);
+                mc.refundTicket(seatId, false);
                 System.out.println("Ticket " + seatId + " has been refunded");
             }
 
@@ -219,6 +231,10 @@ public class LoadData {
         }
     }
 
+    /**
+     * Updates the database with coupons
+     * @throws SQLException
+     */
     public void insertCoupons(){
         // insert coupons into database
         try{
@@ -233,13 +249,9 @@ public class LoadData {
             PreparedStatement prepStatement = conn.prepareStatement(statement);
             prepStatement.executeUpdate();
             conn.close();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
