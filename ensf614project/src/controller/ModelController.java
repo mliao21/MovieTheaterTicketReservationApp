@@ -76,7 +76,7 @@ public class ModelController {
 	public boolean login(String email, String password) {
 
 		int id, cardCVV;
-		String firstName, lastName, address, cardFullName,  cardNum, cardExp, username;
+		String firstName, lastName, address, cardFullName,  cardNum, cardExp;
 		ArrayList<String> creditCodes = new ArrayList<String> ();
 
 		try {
@@ -89,7 +89,6 @@ public class ModelController {
 			if (resultSet.next()) {
 
 				id = resultSet.getInt("UserID");
-				username = resultSet.getString("Username");
 				firstName = resultSet.getString("Fname");
 				lastName = resultSet.getString("Lname");
 				cardNum = resultSet.getString("CreditCardNo");
@@ -305,7 +304,7 @@ public class ModelController {
 		ArrayList<String> showTimesList = new ArrayList<String>();
 		ArrayList<ShowTime> showtimes = getShowTimeList(selectedMovie, selectedTheater);
 		for (ShowTime s: showtimes) {
-			showTimesList.add(s.getStartTime() + " - " + s.getEndTime());
+			showTimesList.add("Start Time: " + s.getStartTime() + ", End Time: " + s.getEndTime() + ", Show Date: " + s.getShowDate());
 		}
 		return showTimesList;
 	}
@@ -338,15 +337,13 @@ public class ModelController {
 			prepStatement.setString(3, startTime);
 			prepStatement.setString(4, endTime);
 			prepStatement.setString(5, showDate);
-
 			ResultSet resObj = prepStatement.executeQuery();
 			while(resObj.next()) {
 				int result = resObj.getInt("S.ShowtimeID");
-				System.out.println(result);
 				return result;
 			}
 		} catch (Exception sqlException) {
-			return 0;
+			sqlException.printStackTrace();
 		}
 		return 0;
 	}
