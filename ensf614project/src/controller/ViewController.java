@@ -3,10 +3,7 @@ package ensf614project.src.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import ensf614project.src.view.*;
 
 public class ViewController {
@@ -78,7 +75,6 @@ public class ViewController {
 		
 		// Adding signupView ActionListeners
 		this.signupView.addRegisterButtonListener(new signupRegisterButtonListener());
-		this.signupView.addEnterPaymentButtonListener(new signupEnterPaymentButtonListener());
 		this.signupView.addMainMenuButtonListener(new signupMainMenuButtonListener());
 		
 		// Adding paymentView ActionListeners
@@ -90,6 +86,7 @@ public class ViewController {
 		
 		// Adding movieView ActionListeners
 		this.movieView.selectMovieButtonListener(new selectMovieButtonListener());
+		this.movieView.searchMainMenuButtonListener(new searchMainMenuButtonListener());
 		
 		// Adding theaterView ActionListeners
 		this.theaterView.selectTheaterButtonListener(new selectTheaterButtonListener());
@@ -116,6 +113,11 @@ public class ViewController {
 		public void actionPerformed(ActionEvent e) {
 			mainMenuView.getFrame().setVisible(false);
 			signupView.getFrame().setVisible(true);	
+			signupView.setFirstName(null);
+			signupView.setLastName(null);
+			signupView.setEmailAddress(null);
+			signupView.setPassword(null);
+			signupView.setCcn(null);
 		}
 	}
 	
@@ -153,26 +155,27 @@ public class ViewController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-//			String emailAddress;
-//			String password;
-//			try {
-//				emailAddress = loginView.getEmailAddress();
-//				password = loginView.getPassword();
-//				
-//				boolean response = modelController.verifyLogin(emailAddress, password);
-//				
-//				if(response = true) {
-//					loginView.getFrame().setVisible(false);
-//					mainMenuView.getFrame().setVisible(true);
-//				} else if (response = false) {
-//					JOptionPane.showMessageDialog(null,"Invalid input" );
-//					loginView.setEmailAddress(null);
-//					loginView.setPassword(null);
-//				}
-//				
-//			} catch (Exception ex) {
-//				ex.printStackTrace();
-//			}			
+			String emailAddress;
+			String password;
+			try {
+				emailAddress = loginView.getEmailAddress();
+				password = loginView.getPassword();
+				
+				boolean response = modelController.login(emailAddress, password);
+				
+				if(response == true) {
+					JOptionPane.showMessageDialog(null,"Logged in" );
+					loginView.getFrame().setVisible(false);
+					mainMenuView.getFrame().setVisible(true);
+				} else if (response == false) {
+					JOptionPane.showMessageDialog(null,"Invalid input" );
+					loginView.setEmailAddress(null);
+					loginView.setPassword(null);
+				}
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}			
 		}
 	}
 	
@@ -188,44 +191,40 @@ public class ViewController {
 	class signupRegisterButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			String firstName;
-//			String lastName;
-//			String emailAddress;
-//			String password;
-//			String ccnumber;
-//			
-//			try {
-//				firstName = signupView.getFirstName();
-//				lastName = signupView.getLastName();
-//				emailAddress = signupView.getEmailAddress();
-//				password = signupView.getPassword();
-//				ccnumber = signupView.getCcn();
-//				
-//				boolean response = modelcontroller.registerUser(firstName, lastName,
-//						ccnumber, emailAddress, password);
-//				
-//				if (response = true) {
-//					signupView.getFrame().setVisible(false);
-//					mainMenuView.getFrame().setVisible(true);
-//				} else if (response = false) {
-//			
-//					JOptionPane.showMessageDialog(null,"Invalid input" );
-//					signupView.setFirstName(null);
-//					signupView.setLastName(null);
-//					signupView.setEmailAddress(null);
-//					signupView.setPassword(null);
-//					signupView.setCcn(null);
-//				}
-//				
-//			} catch (Exception ex) {
-//				ex.printStackTrace();
-//			}	
-		}
-	}
-	
-	class signupEnterPaymentButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {	
+			String firstName;
+			String lastName;
+			String emailAddress;
+			String password;
+			String ccnumber;
+			boolean response;
+			
+			try {
+				firstName = signupView.getFirstName();
+				lastName = signupView.getLastName();
+				emailAddress = signupView.getEmailAddress();
+				password = signupView.getPassword();
+				ccnumber = signupView.getCcn();
+				
+				response = modelController.registerUser(firstName, lastName,
+						ccnumber, emailAddress, password);
+				
+				if (response == true) {
+					JOptionPane.showMessageDialog(null,"Registered!");
+					signupView.getFrame().setVisible(false);
+					mainMenuView.getFrame().setVisible(true);
+					
+				} else if (response == false) {
+					JOptionPane.showMessageDialog(null,"Invalid input" );
+					signupView.setFirstName(null);
+					signupView.setLastName(null);
+					signupView.setEmailAddress(null);
+					signupView.setPassword(null);
+					signupView.setCcn(null);
+				}
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}	
 		}
 	}
 	
@@ -243,7 +242,24 @@ public class ViewController {
 	class paymentSubmitButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-	
+			int price = 20;
+			String couponCode = "";
+			String email = "";
+			String creditCard = "";
+			int seatInstance = modelController.searchSeatInstanceID(selectedShowTimeID, selectedSeat);
+			
+			paymentView.getFrame().setVisible(false);
+			if (couponCode.length() == 0) {
+				modelController.createTicket(selectedShowTimeID, seatInstance, price, "SOLD", email, creditCard);
+			}
+			else {
+				modelController.createTicket(selectedShowTimeID, seatInstance, price, "SOLD", email, creditCard, couponCode);
+			}
+			JOptionPane.showMessageDialog(null, "Successfull Payment. Thank you for choosing us ;D!");
+			mainMenuView.getFrame().setVisible(true);
+			paymentView.setCouponLabel(null);
+			paymentView.setEmailLabel(null);
+			paymentView.setCardNumberLabel(null);
 		}
 	}
 	
@@ -252,36 +268,28 @@ public class ViewController {
 	class cancelButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			String ticketNumber;
-//			String emailAddress;
-//			
-//			try {
-//				
-//				ticketNumber = cancelView.getTicketNumber();
-//				emailAddress = cancelView.getEmailAddress();
-//				
-//				// NEED TO ADD THIS METHOD IN M CTR
-//				boolean response = modelController.cancelTicket(ticketNumber, emailAddress);
-//				
-//				if(response = true) {
-//					cancelView.getFrame().setVisible(false);
-//					mainMenuView.getFrame().setVisible(true);
-//				} else if (response = false) {
-//					JOptionPane.showMessageDialog(null,"Invalid input" );
-//					cancelView.setEmailAddress(null);
-//					cancelView.setTicketNumber(null);
-//				}
-//				
-//			} catch (Exception ex) {
-//				ex.printStackTrace();
-//			}
+			String ticketNumber;
+			try {
+				ticketNumber = cancelView.getTicketNumber();
+
+				String check = modelController.refundTicket(Integer.parseInt(ticketNumber), modelController.isOrdinaryUser());
+				if (check != null) {
+					JOptionPane.showMessageDialog(null,check);
+					cancelView.getFrame().setVisible(false);
+					mainMenuView.getFrame().setVisible(true);
+				}
+				cancelView.setEmailAddress(null);
+				cancelView.setTicketNumber(null);
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 	
 	class cancelMainMenuButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			cancelView.getFrame().setVisible(false);
 			mainMenuView.getFrame().setVisible(true);	
 		}
@@ -295,6 +303,15 @@ public class ViewController {
 			theaterView = new TheaterView(modelController.getTheaterNameList());
 			theaterView.setVisible(true);
 			theaterView.selectTheaterButtonListener(new selectTheaterButtonListener());
+		}
+	}
+	
+	class searchMainMenuButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("hello");
+			movieView.setVisible(false);
+			mainMenuView.getFrame().setVisible(true);
 		}
 	}
 	
@@ -322,12 +339,13 @@ public class ViewController {
 			selectedShowTime = e.getActionCommand();
 			showTimeView.setVisible(false);
 			selectedShowTimeID = modelController.searchShowTimeID(selectedMovie, selectedTheater, selectedShowTime);
-			if (selectedShowTimeID == 0) {
+			ArrayList<Integer> statuses = modelController.getSeatsStatuses(selectedShowTimeID);
+			if (statuses.size() == 0) {
 				JOptionPane.showMessageDialog(null, "Tickets are sold out... Please try again!");
 				showTimeView.setVisible(true);
 			}
 			else {
-				seatView = new SeatView(modelController.getSeatsStatuses(selectedShowTimeID));
+				seatView = new SeatView(statuses);
 				seatView.setVisible(true);
 				seatView.selectSeatButtonListener(new selectSeatButtonListener());
 			}
@@ -352,12 +370,12 @@ public class ViewController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String movie = adminMovieView.getMovie();
-			String theaterId = adminMovieView.getTheaterId();
+			int theaterId = adminMovieView.getTheaterId();
 			int cleaningTime = adminMovieView.getCleaningTime();
 			String openingDate = adminMovieView.getOpeningDate();
 			String endDate = adminMovieView.getEndDate();
 			adminMovieView.setVisible(false);
-//			modelController.addMovies(movie, theaterId, cleaningTime, openingDate, endDate);
+			modelController.addMovies(movie, theaterId, cleaningTime, openingDate, endDate);
 			JOptionPane.showMessageDialog(null, "Movie added successfully into the database!");
 		}
 	}
