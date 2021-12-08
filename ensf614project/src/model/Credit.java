@@ -1,6 +1,8 @@
-//package ensf614project.src.model;
 package ensf614project.src.model;
 
+/**
+ * This class represents a coupon that can be used to get a discount on a movie
+ */
 public class Credit {
 	private String code;
 

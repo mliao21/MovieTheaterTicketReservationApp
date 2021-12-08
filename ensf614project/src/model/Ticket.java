@@ -3,6 +3,10 @@ package ensf614project.src.model;
 
 import java.time.LocalDate;
 
+/**
+ * This class represents a ticket.
+ *
+ */
 public class Ticket {
 	private String id;
 	private User user;

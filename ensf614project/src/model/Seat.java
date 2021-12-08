@@ -1,6 +1,11 @@
 //package model;
 package ensf614project.src.model;
 
+/**
+ * Seat class within a movie theater.
+ * Row is the row number of the seat - 1, 2, 3, etc.
+ * Column is the column of the seat - A, B, C, etc.
+ */
 public class Seat {
 	private String id;
 	private int row;

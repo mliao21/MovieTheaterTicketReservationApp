@@ -3,6 +3,10 @@ package ensf614project.src.model;
 
 import java.util.Date;
 
+/**
+ * This class represents a Movie
+ * A movie is a single entity in the database and is referenced by Showtime object to create an instance of a movie
+ */
 public class Movie {
 	private int id, runTime;
 	private String name;

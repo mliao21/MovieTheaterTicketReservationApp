@@ -31,7 +31,12 @@ public class ModelController {
 	public User getUserInstance() {
 		return userInstance;
 	}
-	
+
+	/**
+	 * Method to check the type of user. Return true if the user is an ordinary user
+	 *
+	 * @return true if the user is an ordinary user
+	 */
 	public boolean isOrdinaryUser() {
 		if(userInstance instanceof OrdinaryUser) {
 			return true;
@@ -42,6 +47,32 @@ public class ModelController {
 	}
 
 
+	/**
+	 * Constructor with a user passed in
+	 *
+	 * @param userInstance
+	 */
+	public ModelController(User userInstance) {
+		super();
+		this.userInstance = userInstance;
+		movieList = new ArrayList<Movie>();
+		moviePreSaleList = new ArrayList<Movie>();
+		theaterList = new ArrayList<Theater>();
+		showTimeList = new ArrayList<ShowTime>();
+		ticketList = new ArrayList<Ticket>();
+		this.couponList = new ArrayList<Credit>();
+
+	}
+
+
+	/**
+	 *
+	 * Login method - check username and password in database
+	 *
+	 * @param email is the email of the user
+	 * @param password is the password of the user
+	 * @return true if user is found and password is correct
+	 */
 	public boolean login(String email, String password) {
 
 		int id, cardCVV;
@@ -70,7 +101,6 @@ public class ModelController {
 				RegisteredUser.RegisteredInstance();
 				RegisteredUser temp = (RegisteredUser) RegisteredUser.getOnlyInstance();
 				temp.loadUserinfo(id, firstName, lastName, email, address, cardFullName, cardNum, cardExp, cardCVV, creditCodes, password);
-				System.out.println(temp.toString());
 				conn.close();
 				return true;
 
@@ -81,10 +111,20 @@ public class ModelController {
 		}
 
 		return false;
-		//check if user match
 
 	}
 
+	/**
+	 * Takes in customer's email and password and returns true if the email is unique, confirming registration
+	 *
+	 *
+	 * @param firstName is the first name of the user
+	 * @param lastName is the last name of the user
+	 * @param creditCardNumber is the credit card number of the user
+	 * @param email is the email of the user
+	 * @param password is the password of the user
+	 * @return true if the email is unique
+	 */
 	public boolean registerUser(String firstName, String lastName, String creditCardNumber, String email, String password) {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
@@ -109,6 +149,11 @@ public class ModelController {
 		}
 	}
 
+	/**
+	 * Searches for all movies in the database that are currently open
+	 *
+	 * @return an ArrayList of all movies that are currently open
+	 */
 	public ArrayList<Movie> getMovieList() {
         movieList = new ArrayList<Movie>();
         try {
@@ -136,7 +181,11 @@ public class ModelController {
 	}
 
 
-
+	/**
+     * Filters the movie list only returning the names of the movies
+     *
+     * @return ArrayList of all movie titles
+     */
 	public ArrayList<String> getMovieNameList() {
 		ArrayList<String> movieNameList = new ArrayList<String>();
 		ArrayList<Movie> movies = getMovieList();
@@ -154,6 +203,11 @@ public class ModelController {
 		return this.theaterList;
 	}
 
+	/**
+     * Searches for all theaters in the database, builds theater objects and adds them to the theater list
+     *
+     * @return an ArrayList of all theaters
+     */
 	public ArrayList<Theater> getTheaterList() {
 		theaterList = new ArrayList<Theater>();
 
@@ -176,7 +230,12 @@ public class ModelController {
         }
 		return theaterList;
 	}
-	
+
+	/**
+     * Filters the theater list only returning the names of the theaters
+     *
+     * @return an ArrayList of all theater names
+     */
 	public ArrayList<String> getTheaterNameList() {
 		ArrayList<String> theaterNameList = new ArrayList<String>();
 		ArrayList<Theater> theaters = getTheaterList();
@@ -186,6 +245,12 @@ public class ModelController {
 		return theaterNameList;
 	}
 
+	/**
+	 * Searches for all a movie title and theater in the database
+	 * @param selectedMovie the movie title
+	 * @param selectedTheater the theater name
+	 * @return
+	 */
 	public ArrayList<ShowTime> getShowTimeList(String selectedMovie, String selectedTheater) {
 		showTimeList = new ArrayList<ShowTime>();
 		try {
@@ -230,6 +295,13 @@ public class ModelController {
 		return showTimeList;
 	}
 
+	/**
+	 * Filters teh showtime list only returning the showtimes for the selected movie and theater
+	 *
+	 * @param selectedMovie the movie title
+	 * @param selectedTheater the theater name
+	 * @return an ArrayList of all showtimes for the selected movie and theater
+	 */
 	public ArrayList<String> getAvailableShowTimesList(String selectedMovie, String selectedTheater) {
 		ArrayList<String> showTimesList = new ArrayList<String>();
 		ArrayList<ShowTime> showtimes = getShowTimeList(selectedMovie, selectedTheater);
@@ -239,6 +311,13 @@ public class ModelController {
 		return showTimesList;
 	}
 
+	/**
+	 * Search for a specific showtime in the database by movie title, theater name, and time
+	 * @param selectedMovie the movie title
+	 * @param selectedTheater the theater name
+	 * @param selectedShowTime the showtime start and time to be parsed
+	 * @return showtimeID if found, 0 if not found
+	 */
 	public int searchShowTimeID(String selectedMovie, String selectedTheater, String selectedShowTime) {
 		String startTime = selectedShowTime.substring(12, 19);
 		String endTime = selectedShowTime.substring(32, 39);
@@ -273,6 +352,12 @@ public class ModelController {
 		return 0;
 	}
 
+	/**
+	 * Returns all seats for a specific showtime to populate the seat selection menu
+	 *
+	 * @param selectedShowTimeID the showtimeID to be searched
+	 * @return an ArrayList of all seats for the selected showtime
+	 */
 	public ArrayList<Integer> getSeatsStatuses(int selectedShowTimeID) {
 		ArrayList<Integer> seatStatusList = new ArrayList<Integer>();
 		try {
@@ -306,18 +391,10 @@ public class ModelController {
 		return couponList;
 	}
 
-	public ModelController(User userInstance) {
-		super();
-		this.userInstance = userInstance;
-		movieList = new ArrayList<Movie>();
-		moviePreSaleList = new ArrayList<Movie>();
-		theaterList = new ArrayList<Theater>();
-		showTimeList = new ArrayList<ShowTime>();
-		ticketList = new ArrayList<Ticket>();
-		this.couponList = new ArrayList<Credit>();
-
-	}
-
+	/**
+	 * Called when the database is updated to keep a list in memory of all movies and theaters
+	 *
+	 */
 	public void loadModelsQuery() {
 
 		this.movieList.clear();
@@ -335,6 +412,12 @@ public class ModelController {
 
 	}
 
+	/**
+	 * Gets all registered users from the database to be able to email them.
+	 * Note we have not implemented the feature to email users yet but this would help with that.
+	 *
+	 * @return an ArrayList of all subscriber emails
+	 */
 	public ArrayList<String> getAllSubscribers(){
 		ArrayList<String> temp = new ArrayList<String>();
 		try {
@@ -347,8 +430,6 @@ public class ModelController {
 
 				temp.add(resObj.getString("Email"));
 			}
-
-
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
@@ -356,6 +437,10 @@ public class ModelController {
 	}
 
 
+	/**
+	 * Get all coupons from the database to populate our model
+	 *
+	 */
 	private void loadCredits() {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
@@ -367,14 +452,15 @@ public class ModelController {
 
 				this.couponList.add( new Credit(resObj.getString("CouponCode"), resObj.getInt("CouponValue")));
 			}
-
-
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Get all theaters from the database to populate our model
+	 */
 	private void loadTheaters() {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
@@ -390,15 +476,18 @@ public class ModelController {
 				);
 				theaterList.add(theatre);
 			}
-
-
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Get all movies from the database to populate our model
+	 */
 	private void loadMovies() {
+
+		// get movies that are not pre-sale
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
@@ -417,12 +506,11 @@ public class ModelController {
 				);
 				movieList.add(movie);
 			}
-
-
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
 
+		// get movies that are pre sale
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 			PreparedStatement prepStatement = conn
@@ -443,11 +531,14 @@ public class ModelController {
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
-
-
 	}
 
-
+	/**
+     *  Searches through our movieList to check for an id matching the given id
+	 *
+	 * @param id is the id of the movie we are searching for
+	 * @return the Movie object
+     */
 	public Movie getMovie(int id) {
 		for(int i = 0; i< this.movieList.size();i++) {
 			if(this.movieList.get(i).getId()==id) {
@@ -462,6 +553,13 @@ public class ModelController {
 		return null;
 	}
 
+
+	/**
+	 * Searches through our TheaterList to check for an id matching the given id
+	 *
+	 * @param id is the id of the theater we are searching for
+	 * @return the Theater object
+	 */
 	public Theater getTheater(int id) {
 		for(int i = 0; i< this.theaterList.size();i++) {
 			if(this.theaterList.get(i).getId()==id) {
@@ -472,6 +570,10 @@ public class ModelController {
 	}
 
 
+	/**
+	 * Get all shows from the database to populate our model
+	 *
+	 */
 	private void loadShowTime() {
 		int showTimeID, movieID, theatreID;
 		String startTime, endTime;
@@ -499,16 +601,19 @@ public class ModelController {
 				tempT = this.getTheater(theatreID);
 				ShowTime stemp = new ShowTime(showTimeID, startTime, endTime, date.toString(), tempM, tempT);
 
-
 				this.showTimeList.add(stemp);
 			}
-
 
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
 	}
 
+	/**
+	 * Returns a list of the seats in a searchable format
+	 * @param theaterId is the id of the theater that has the seats
+	 * @return a list of the seats in HashMap format
+	 */
 	private HashMap<String, Boolean> getSeats(String theaterId){
 		String id = "";
 
@@ -533,18 +638,18 @@ public class ModelController {
 					}
 				}
 				test.put(id + ":" + rs.getString("SEATROW")+ ":" + rs.getString("SEATCOL"), occupy);
-
-
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 		return test;
 	}
 
+
+	/**
+	 * Loads the seats from a previous query into our model
+	 */
 	private void loadSeats() {
 
 		for(int j = 0;j<this.theaterList.size();j++) {
@@ -557,6 +662,17 @@ public class ModelController {
 		}
 	}
 
+	/**
+	 * Create a ticket purchase for a given showtime and seat
+	 * Updates the database with teh new ticket, state of the seat, and creates a new payment line item
+	 *
+	 * @param showTimeId is the id of the showtime
+	 * @param seatInstanceID is the id of the seat instance
+	 * @param price is the price of the ticket
+	 * @param ticketStatus is the state of the ticket, occupied or not
+	 * @param email is the email of the customer to email their ticket
+	 * @param creditCard is the credit card number of the customer
+	 */
 	public void createTicket(int showTimeId, int seatInstanceID, int price, String ticketStatus, String email, String creditCard) {
 		String statement = "";
 		PreparedStatement prepStatement;
@@ -582,18 +698,25 @@ public class ModelController {
 			prepStatement = conn.prepareStatement(statement);
 			prepStatement.executeUpdate();
 
-
-
-
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		this.loadModelsQuery();
-
 	}
 
+	/**
+	 * Create a ticket purchase for a given showtime and seat
+	 * Updates the database with teh new ticket, state of the seat, and creates a new payment line item
+	 * Takes a coupon code and checks if it is valid, how much it is worth, and updates that value
+	 *
+	 * @param showTimeId is the id of the showtime
+	 * @param seatInstanceId is the id of the seat instance
+	 * @param price is the price of the ticket
+	 * @param ticketStatus is the state of the ticket, occupied or not
+	 * @param email is the email of the customer to email their ticket
+	 * @param creditCard is the credit card number of the customer
+	 * @param couponCode is the coupon code to be used
+	 */
 	public void createTicket(int showTimeId, int seatInstanceId, int price, String ticketStatus, String email, String creditCard, String couponCode) {
 		// update seat instance
 		String statement = "";
@@ -601,6 +724,7 @@ public class ModelController {
 
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
+
 			// check coupon code database:
 			statement = "SELECT CouponValue FROM COUPONS WHERE CouponCode = ? AND ExpiryDate > CURRENT_DATE;";
 			prepStatement = conn.prepareStatement(statement);
@@ -658,8 +782,18 @@ public class ModelController {
 
 	}
 
-
+	/**
+	 * Add a movie to the database by the admin.
+	 * The times and dates are automatically added to the database based on the start and end dates and movie length
+	 *
+	 * @param movieTitle is the title of the movie
+	 * @param theaterId is the id of the theater
+	 * @param cleaningTime is the time it takes to clean a theater
+	 * @param openingDateString is the date the movie is opening
+	 * @param endDateString is the date the movie is closing
+	 */
 	public void addMovies(String movieTitle, int theaterId, int cleaningTime, String openingDateString, String endDateString) {
+		// hard coding for now
 		int runtime = 150;
 		String description = "";
 
@@ -756,22 +890,24 @@ public class ModelController {
 				prepStatement.executeUpdate();
 			}
 
-
 			conn.close();
 
+			// send a response to all of our subscribers
 			MovieNotification subject = new MovieNotification();
 			Subscribers ob1 = new Subscribers(subject);
 			subject.addObserver(ob1);
 			subject.notifyAllObservers(movieTitle + " is pre-selling tickets now! ShowDates are: " + dates);
 
-
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Admin method to cancel a movie
+	 * @param movieId is the id of the movie to be cancelled
+	 */
 	public void cancelMovie(int movieId) {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
@@ -788,7 +924,14 @@ public class ModelController {
 		}
 	}
 
-	public void refundTicket(int ticketId, boolean subscriber) {
+	/**
+	 * Refunds a ticket, updates the state of the seat and ticket within the database
+	 * Calls issueCoupon at the end
+	 *
+	 * @param ticketId is the id of the ticket to be refunded
+	 * @param subscriber is a boolean that determines if the refund is being done by a subscriber
+	 */
+	public Credit refundTicket(int ticketId, boolean subscriber) {
 		try {
 			Connection conn = DriverManager.getConnection(Configuration.getConnection(), Configuration.getUsername(), Configuration.getPassword());
 
@@ -807,13 +950,21 @@ public class ModelController {
 			prepStatement.executeUpdate();
 
 			// call issue coupon
-			issueCoupon(ticketId, subscriber);
+			return issueCoupon(ticketId, subscriber);
 
 		} catch (Exception sqlException) {
 			sqlException.printStackTrace();
 		}
+		return null;
 	}
 
+	/**
+	 * Issues a coupon after checking if the ticket is a subscriber or not, if the cancellation is within 72 hours
+	 *
+	 * @param ticketId is the id of the ticket to be refunded
+	 * @param subscriber is a boolean that determines if the refund is being done by a subscriber
+	 * @return is a Credit object which contains the amount of the coupon and the code
+	 */
 	public Credit issueCoupon(int ticketId, boolean subscriber) {
 		double multiplier = 1;
 
@@ -889,6 +1040,12 @@ public class ModelController {
 		return null;
 	}
 
+	/**
+	 * Checks the database for a chosen seat within a showtime
+	 * @param showTimeId is the id of the showtime
+	 * @param chosenSeat is the seat to be checked
+	 * @return the id of the seat instance
+	 */
 	public int searchSeatInstanceID(int showTimeId, String chosenSeat) {
 		String seatCol = chosenSeat.substring(0,1);
 		int seatRow = Integer.parseInt(chosenSeat.substring(1, 2));

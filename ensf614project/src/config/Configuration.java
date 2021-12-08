@@ -1,17 +1,15 @@
 package ensf614project.src.config;
-//package config;
 
+
+/**
+ * This class helps the database connect and gives the user access to the admin methods within
+ */
 public class Configuration {
-//	static public String getUsername() {
-//		return "";
-//	}
+
 	static public String getUsername() {
 		return "mock_user";
 	}
 
-//	static public String getPassword() {
-//		return "";
-//	}
 	static public String getPassword() {
 		return "password";
 	}

@@ -3,14 +3,11 @@ package ensf614project.src.model;
 
 import java.util.ArrayList;
 
+
 public class Subscribers implements Observer {
 	private Subject subject;
 	private ArrayList<String> subscriberList;
-	
-	
-	
-	
-	
+
 	public Subject getSubject() {
 		return subject;
 	}

@@ -1,6 +1,9 @@
 package ensf614project.src.model;
-//package ensf614project.src.model;
 
+/**
+ * Represents a show time.
+ * A showtime is an instance of a movie at a specific time in a specific theater.
+ */
 public class ShowTime {
 	private int id;
 	private String startTime, endTime;

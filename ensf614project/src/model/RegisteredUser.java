@@ -3,6 +3,10 @@ package ensf614project.src.model;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a registered user.
+ * Registered users can create and manage their own accounts and have credit cards stored in the database
+ */
 public class RegisteredUser extends User{
 	private int id;
 	private String firstName;
@@ -26,16 +30,12 @@ public class RegisteredUser extends User{
 	       }
 
 	       return onlyInstance;
-	} 
-	
+	}
 	
 	public static synchronized void RegisteredInstance() {
 		onlyInstance = new RegisteredUser();
 	}
-	
-	
-	
-	
+
 	public void loadUserinfo(int id, String firstName, String lastName, String email, String address, String cardFullName,
 			String cardNum, String cardExp, int cardCVV, ArrayList<String> creditCodes, String password) {
 		

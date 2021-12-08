@@ -11,10 +11,7 @@ public class Theater {
 	private String nameId;
 	private ArrayList<Seat> seatList;
 	private int rows;
-	
-	
-	
-	
+
 	public Theater(int id, String nameId, int capacity) {
 		super();
 		this.nameId = nameId;
@@ -23,32 +20,26 @@ public class Theater {
 		this.capacity = capacity;
 	}
 
-
-
 	public int getId() {
 		return id;
 	}
-
-
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
-
 	public int getCapacity() {
 		return capacity;
 	}
-
-
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
 
-
-
+	/**
+	 * Loops through the seats obejct and parses the info to create a seat object
+	 * @param seats is the string of seats in ROW:COL format
+	 */
 	public void createAllSeats(HashMap<String, Boolean> seats) {
 		this.seatList.clear();
 		int i = 0;
@@ -65,32 +56,20 @@ public class Theater {
 		    this.seatList.add(tempseat);
 		    
 		}
-		
-		
-		
-		
-		
+
 	}
-
-
 
 	public String getNameId() {
 		return nameId;
 	}
 
-
-
 	public void setNameId(String nameId) {
 		this.nameId = nameId;
 	}
 
-
-
 	public ArrayList<Seat> getSeatList() {
 		return seatList;
 	}
-
-
 
 	public void setSeatList(ArrayList<Seat> seatList) {
 		this.seatList = seatList;

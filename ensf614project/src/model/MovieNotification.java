@@ -3,12 +3,12 @@ package ensf614project.src.model;
 
 import java.util.ArrayList;
 
+/**
+ * Concrete implementation of the Subject to let subscribers know about a new movie
+ */
 public class MovieNotification implements Subject {
 	
 	private ArrayList<Observer> observers;
-	
-	
-	
 
 	public MovieNotification() {
 		super();
